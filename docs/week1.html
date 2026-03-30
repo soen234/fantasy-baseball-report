@@ -3,959 +3,654 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Week 1 Report — Fantasy Baseball 2026</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Week 1 — Fantasy Baseball 2026</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: { sans: ['Inter', 'sans-serif'] },
-        }
-      }
-    }
-  </script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    body { background: #0f172a; }
-    .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(148, 163, 184, 0.1); }
-    .glow-green { box-shadow: 0 0 20px rgba(34, 197, 94, 0.15); }
-    .glow-red { box-shadow: 0 0 20px rgba(239, 68, 68, 0.15); }
-    .gradient-text { background: linear-gradient(135deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .rank-bar { transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
-    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    .animate-in { animation: fadeInUp 0.5s ease-out forwards; }
-    .matchup-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0.5rem; align-items: center; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0e17; --surface: #111827; --surface2: #1a2236;
+      --border: rgba(255,255,255,0.06); --border-active: rgba(255,255,255,0.15);
+      --text: #e2e8f0; --text2: #94a3b8; --text3: #475569;
+      --accent: #3b82f6; --green: #22c55e; --red: #ef4444; --amber: #f59e0b;
+      --font: 'DM Sans', system-ui, sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+    body { background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    .mono { font-family: var(--mono); }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    /* Cards */
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
+    .card-flush { background: transparent; border: 1px solid var(--border); border-radius: 12px; }
+
+    /* Grid system */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+    .grid-sidebar { display: grid; grid-template-columns: 320px 1fr; gap: 20px; }
+    @media (max-width: 768px) { .grid-2, .grid-3, .grid-sidebar { grid-template-columns: 1fr; } }
+
+    /* Matchup grid */
+    .mg { display: grid; grid-template-columns: 1fr 80px 1fr; align-items: center; gap: 4px; padding: 10px 14px; border-radius: 8px; cursor: pointer; transition: background 0.15s; }
+    .mg:hover { background: var(--surface2); }
+    .mg.active { background: var(--surface2); border: 1px solid var(--accent); }
+
+    /* Category row */
+    .cat-row { display: grid; grid-template-columns: 52px 1fr auto 1fr 52px; align-items: center; gap: 0; padding: 6px 10px; border-radius: 6px; font-size: 13px; }
+    .cat-row:nth-child(odd) { background: rgba(255,255,255,0.02); }
+
+    /* Rank bar */
+    .rank-pill { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; font-family: var(--mono); }
+    .rank-pill.top { background: rgba(34,197,94,0.12); color: var(--green); }
+    .rank-pill.mid { background: rgba(148,163,184,0.1); color: var(--text2); }
+    .rank-pill.bot { background: rgba(239,68,68,0.1); color: var(--red); }
+
+    /* Tabs */
+    .tab-bar { display: flex; gap: 2px; background: var(--surface); border-radius: 8px; padding: 3px; border: 1px solid var(--border); }
+    .tab-btn { padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; color: var(--text3); cursor: pointer; border: none; background: none; transition: all 0.15s; white-space: nowrap; }
+    .tab-btn:hover { color: var(--text2); }
+    .tab-btn.active { background: var(--accent); color: white; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* Scrollable regions */
+    .scroll-y { max-height: 420px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--surface2) transparent; }
+    .scroll-y::-webkit-scrollbar { width: 4px; }
+    .scroll-y::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 2px; }
+
+    /* Transaction compact */
+    .txn-row { display: grid; grid-template-columns: 52px 1fr 1fr; gap: 8px; padding: 5px 10px; font-size: 12px; border-bottom: 1px solid var(--border); }
+    .txn-row:last-child { border-bottom: none; }
+
+    /* Animations */
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { animation: fadeIn 0.35s ease-out both; }
+
+    /* Select */
+    select { appearance: none; background: var(--surface2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2394a3b8' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E") no-repeat right 10px center; border: 1px solid var(--border); color: var(--text); font-family: var(--font); font-size: 13px; padding: 7px 30px 7px 12px; border-radius: 8px; cursor: pointer; }
+    select:focus { outline: none; border-color: var(--accent); }
+
+    /* Utility */
+    .w { color: var(--green); } .l { color: var(--red); } .t { color: var(--text3); }
+    .text-xs { font-size: 11px; } .text-sm { font-size: 13px; } .text-base { font-size: 14px; }
+    .fw-600 { font-weight: 600; } .fw-700 { font-weight: 700; }
+    .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .opacity-50 { opacity: 0.5; }
   </style>
 </head>
-<body class="text-slate-200 font-sans min-h-screen">
+<body>
   <!-- Header -->
-  <header class="border-b border-slate-800 px-6 py-4">
-    <div class="max-w-7xl mx-auto flex items-center justify-between">
-      <div>
-        <h1 class="text-2xl font-bold gradient-text">Fantasy Baseball 2026</h1>
-        <p class="text-slate-500 text-sm">리그 네이밍 후원 환영합니다</p>
+  <header style="border-bottom:1px solid var(--border);padding:16px 0;">
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between;">
+      <div style="display:flex;align-items:baseline;gap:12px;">
+        <span class="mono fw-700" style="font-size:18px;color:var(--accent);">FB</span>
+        <span class="text-sm" style="color:var(--text2);">Week 1</span>
+        <span class="text-xs" style="color:var(--text3);">2026. 3. 30.</span>
       </div>
-      <div class="flex items-center gap-4">
-        <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-sm font-semibold">Week 1</span>
-        <span class="text-slate-500 text-xs">2026. 3. 30.</span>
-      </div>
+      <select id="matchup-select" style="min-width:220px;"></select>
     </div>
   </header>
 
-  <main class="max-w-7xl mx-auto px-6 py-8 space-y-8">
+  <main class="container" style="padding-top:24px;padding-bottom:40px;">
 
-    <!-- Matchup Detail (Dynamic) -->
-    <section id="matchup-detail" class="glass rounded-2xl p-8 animate-in">
-      <div class="flex items-center justify-between flex-wrap gap-4 mb-6">
-        <div class="flex items-center gap-3">
-          <span class="text-xl">⚾</span>
-          <h2 class="text-lg font-bold">매치업 상세</h2>
-        </div>
-        <select id="matchup-select" class="bg-slate-800 border border-slate-600 text-slate-200 text-sm rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer min-w-[280px]"></select>
-      </div>
-      <div id="matchup-header" class="mb-6"></div>
-      <div id="matchup-cats" class="grid md:grid-cols-2 gap-6"></div>
-    </section>
+    <!-- Row 1: Matchup + Standings -->
+    <div class="grid-sidebar fade-in" style="margin-bottom:20px;">
 
-    <!-- Standings + Radar Charts -->
-    <div class="grid lg:grid-cols-3 gap-6">
       <!-- Standings -->
-      <section class="lg:col-span-1 glass rounded-2xl p-6 animate-in" style="animation-delay:0.1s">
-        <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
-          <span class="text-xl">🏆</span> 리그 순위
-        </h2>
-        <div class="space-y-2">
-          <div class="flex items-center gap-3 bg-slate-700/30 rounded-lg px-3 py-2">
-              <span class="text-lg font-extrabold text-yellow-400 w-6 text-center">1</span>
-              <div class="flex-1 min-w-0">
-                <p class="text-sm font-semibold truncate text-slate-200">UTU_무네타카 무라콴호</p>
-                <p class="text-xs text-slate-500">Kyung-Hoon, Hyungkwang</p>
-              </div>
-              <div class="text-right">
-                <p class="text-sm font-bold">.700</p>
-                <p class="text-xs text-slate-500">15-5-5</p>
-              </div>
+      <div class="card" style="padding:16px;">
+        <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:12px;text-transform:uppercase;letter-spacing:1px;">Standings</div>
+        <div>
+          <div style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;">
+              <span class="mono fw-700 text-sm" style="color:var(--amber);width:18px;text-align:right;">1</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">UTU_무네타카 무라콴호</span>
+              <span class="mono text-xs" style="color:var(--text2);">.700</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">15-5-5</span>
             </div>
-          <div class="flex items-center gap-3 bg-blue-500/20 border border-blue-500/30 rounded-lg px-3 py-2">
-              <span class="text-lg font-extrabold text-slate-300 w-6 text-center">2</span>
-              <div class="flex-1 min-w-0">
-                <p class="text-sm font-semibold truncate text-blue-300">🏆 ProfeSuh</p>
-                <p class="text-xs text-slate-500">Hyoungjun, Seungheon</p>
-              </div>
-              <div class="text-right">
-                <p class="text-sm font-bold">.560</p>
-                <p class="text-xs text-slate-500">13-10-2</p>
-              </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);">
+              <span class="mono fw-700 text-sm" style="color:var(--text2);width:18px;text-align:right;">2</span>
+              <span class="text-sm truncate fw-700" style="flex:1;color:var(--accent);">🏆 ProfeSuh</span>
+              <span class="mono text-xs" style="color:var(--text2);">.560</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">13-10-2</span>
             </div>
-          <div class="flex items-center gap-3 bg-slate-700/30 rounded-lg px-3 py-2">
-              <span class="text-lg font-extrabold text-amber-600 w-6 text-center">3</span>
-              <div class="flex-1 min-w-0">
-                <p class="text-sm font-semibold truncate text-slate-200">💥 JeongWoo's Shockers</p>
-                <p class="text-xs text-slate-500">JeongWoo, Seungjae</p>
-              </div>
-              <div class="text-right">
-                <p class="text-sm font-bold">.540</p>
-                <p class="text-xs text-slate-500">12-10-3</p>
-              </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;">
+              <span class="mono fw-700 text-sm" style="color:var(--text2);width:18px;text-align:right;">3</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">💥 JeongWoo's Shockers</span>
+              <span class="mono text-xs" style="color:var(--text2);">.540</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">12-10-3</span>
             </div>
-          <div class="flex items-center gap-3  rounded-lg px-3 py-2">
-              <span class="text-lg font-extrabold text-slate-500 w-6 text-center">4</span>
-              <div class="flex-1 min-w-0">
-                <p class="text-sm font-semibold truncate text-slate-200">xXXXxAIxXXXx</p>
-                <p class="text-xs text-slate-500">Yanghoo</p>
-              </div>
-              <div class="text-right">
-                <p class="text-sm font-bold">.520</p>
-                <p class="text-xs text-slate-500">11-10-4</p>
-              </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">4</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">xXXXxAIxXXXx</span>
+              <span class="mono text-xs" style="color:var(--text2);">.520</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">11-10-4</span>
             </div>
-          <div class="flex items-center gap-3  rounded-lg px-3 py-2">
-              <span class="text-lg font-extrabold text-slate-500 w-6 text-center">5</span>
-              <div class="flex-1 min-w-0">
-                <p class="text-sm font-semibold truncate text-slate-200">JJ yoogwanholt</p>
-                <p class="text-xs text-slate-500">Jinyoung, JinGi</p>
-              </div>
-              <div class="text-right">
-                <p class="text-sm font-bold">.520</p>
-                <p class="text-xs text-slate-500">12-11-2</p>
-              </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">5</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">JJ yoogwanholt</span>
+              <span class="mono text-xs" style="color:var(--text2);">.520</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">12-11-2</span>
             </div>
-          <div class="flex items-center gap-3  rounded-lg px-3 py-2">
-              <span class="text-lg font-extrabold text-slate-500 w-6 text-center">6</span>
-              <div class="flex-1 min-w-0">
-                <p class="text-sm font-semibold truncate text-slate-200">2026 MVP Mike Trout</p>
-                <p class="text-xs text-slate-500">유현</p>
-              </div>
-              <div class="text-right">
-                <p class="text-sm font-bold">.500</p>
-                <p class="text-xs text-slate-500">10-10-5</p>
-              </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">6</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">2026 MVP Mike Trout</span>
+              <span class="mono text-xs" style="color:var(--text2);">.500</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">10-10-5</span>
             </div>
-          <div class="flex items-center gap-3  rounded-lg px-3 py-2">
-              <span class="text-lg font-extrabold text-slate-500 w-6 text-center">7</span>
-              <div class="flex-1 min-w-0">
-                <p class="text-sm font-semibold truncate text-slate-200">독후감 신속히 제출해주세요.</p>
-                <p class="text-xs text-slate-500">Kyoungoh, SungHwan</p>
-              </div>
-              <div class="text-right">
-                <p class="text-sm font-bold">.500</p>
-                <p class="text-xs text-slate-500">10-10-5</p>
-              </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">7</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">독후감 신속히 제출해주세요.</span>
+              <span class="mono text-xs" style="color:var(--text2);">.500</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">10-10-5</span>
             </div>
-          <div class="flex items-center gap-3  rounded-lg px-3 py-2">
-              <span class="text-lg font-extrabold text-slate-500 w-6 text-center">8</span>
-              <div class="flex-1 min-w-0">
-                <p class="text-sm font-semibold truncate text-slate-200">TRUCK</p>
-                <p class="text-xs text-slate-500">JeongJin, Sungsoo</p>
-              </div>
-              <div class="text-right">
-                <p class="text-sm font-bold">.480</p>
-                <p class="text-xs text-slate-500">10-11-4</p>
-              </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">8</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">TRUCK</span>
+              <span class="mono text-xs" style="color:var(--text2);">.480</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">10-11-4</span>
             </div>
-          <div class="flex items-center gap-3  rounded-lg px-3 py-2">
-              <span class="text-lg font-extrabold text-slate-500 w-6 text-center">9</span>
-              <div class="flex-1 min-w-0">
-                <p class="text-sm font-semibold truncate text-slate-200">응노</p>
-                <p class="text-xs text-slate-500">응재, Joohyeon</p>
-              </div>
-              <div class="text-right">
-                <p class="text-sm font-bold">.480</p>
-                <p class="text-xs text-slate-500">11-12-2</p>
-              </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">9</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">응노</span>
+              <span class="mono text-xs" style="color:var(--text2);">.480</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">11-12-2</span>
             </div>
-          <div class="flex items-center gap-3  rounded-lg px-3 py-2">
-              <span class="text-lg font-extrabold text-slate-500 w-6 text-center">10</span>
-              <div class="flex-1 min-w-0">
-                <p class="text-sm font-semibold truncate text-slate-200">✌️ Yeonwoo's Double Play</p>
-                <p class="text-xs text-slate-500">Yeonwoo</p>
-              </div>
-              <div class="text-right">
-                <p class="text-sm font-bold">.460</p>
-                <p class="text-xs text-slate-500">10-12-3</p>
-              </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">10</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">✌️ Yeonwoo's Double Play</span>
+              <span class="mono text-xs" style="color:var(--text2);">.460</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">10-12-3</span>
             </div>
-          <div class="flex items-center gap-3  rounded-lg px-3 py-2">
-              <span class="text-lg font-extrabold text-slate-500 w-6 text-center">11</span>
-              <div class="flex-1 min-w-0">
-                <p class="text-sm font-semibold truncate text-slate-200">💥 JongHun's Busters</p>
-                <p class="text-xs text-slate-500">JongHun, seungjin</p>
-              </div>
-              <div class="text-right">
-                <p class="text-sm font-bold">.440</p>
-                <p class="text-xs text-slate-500">10-13-2</p>
-              </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">11</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">💥 JongHun's Busters</span>
+              <span class="mono text-xs" style="color:var(--text2);">.440</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">10-13-2</span>
             </div>
-          <div class="flex items-center gap-3  rounded-lg px-3 py-2">
-              <span class="text-lg font-extrabold text-slate-500 w-6 text-center">12</span>
-              <div class="flex-1 min-w-0">
-                <p class="text-sm font-semibold truncate text-slate-200">커츠 나의어둠 나의삶</p>
-                <p class="text-xs text-slate-500">Young, 태형</p>
-              </div>
-              <div class="text-right">
-                <p class="text-sm font-bold">.300</p>
-                <p class="text-xs text-slate-500">5-15-5</p>
-              </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">12</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">커츠 나의어둠 나의삶</span>
+              <span class="mono text-xs" style="color:var(--text2);">.300</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">5-15-5</span>
             </div>
         </div>
-      </section>
+      </div>
 
-      <!-- Radar Charts -->
-      <section class="lg:col-span-2 glass rounded-2xl p-6 animate-in" style="animation-delay:0.2s">
-        <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
-          <span class="text-xl">📊</span> 카테고리 경쟁력 (순위 → 점수 변환: 1위=12, 12위=1)
-        </h2>
-        <div class="grid md:grid-cols-2 gap-6">
-          <div>
-            <h3 class="text-center text-sm font-semibold text-blue-400 mb-2">Batting</h3>
-            <canvas id="radarBat" height="260"></canvas>
-          </div>
-          <div>
-            <h3 class="text-center text-sm font-semibold text-purple-400 mb-2">Pitching</h3>
-            <canvas id="radarPit" height="260"></canvas>
-          </div>
-        </div>
-      </section>
+      <!-- Matchup Detail -->
+      <div class="card" style="padding:20px;" id="matchup-detail">
+        <div id="matchup-header" style="margin-bottom:16px;"></div>
+        <div id="matchup-cats" class="grid-2" style="gap:12px;"></div>
+      </div>
     </div>
 
-    <!-- Category Rankings Bar -->
-    <section class="glass rounded-2xl p-6 animate-in" style="animation-delay:0.3s">
-      <h2 class="text-lg font-bold mb-6 flex items-center gap-2">
-        <span class="text-xl">📈</span> 카테고리별 리그 내 위치
-      </h2>
-      <div class="grid md:grid-cols-2 gap-x-8 gap-y-3">
-        <div class="flex items-center gap-3">
-            <span class="text-xs font-bold w-14 text-right text-green-400">AVG</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-5 relative overflow-hidden">
-              <div class="rank-bar bg-green-500/60 h-full rounded-full" style="width:100%"></div>
-              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold">1위 (.294)</span>
-            </div>
+    <!-- Row 2: Radar + Rankings + Matchup Cards -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
+      <!-- Radar Charts -->
+      <div class="card fade-in" style="padding:16px;animation-delay:0.1s;">
+        <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">Category Radar</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div>
+            <div class="text-xs fw-600" style="color:var(--accent);text-align:center;margin-bottom:4px;">Batting</div>
+            <canvas id="radarBat" height="220"></canvas>
           </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs font-bold w-14 text-right text-green-400">OBP</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-5 relative overflow-hidden">
-              <div class="rank-bar bg-green-500/60 h-full rounded-full" style="width:83%"></div>
-              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold">3위 (.375)</span>
-            </div>
+          <div>
+            <div class="text-xs fw-600" style="color:#a78bfa;text-align:center;margin-bottom:4px;">Pitching</div>
+            <canvas id="radarPit" height="220"></canvas>
           </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs font-bold w-14 text-right text-green-400">SLG</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-5 relative overflow-hidden">
-              <div class="rank-bar bg-green-500/60 h-full rounded-full" style="width:83%"></div>
-              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold">3위 (.471)</span>
-            </div>
-          </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs font-bold w-14 text-right text-slate-300">R</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-5 relative overflow-hidden">
-              <div class="rank-bar bg-blue-500/60 h-full rounded-full" style="width:58%"></div>
-              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold">6위 (15)</span>
-            </div>
-          </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs font-bold w-14 text-right text-green-400">H</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-5 relative overflow-hidden">
-              <div class="rank-bar bg-green-500/60 h-full rounded-full" style="width:100%"></div>
-              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold">1위 (35)</span>
-            </div>
-          </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs font-bold w-14 text-right text-slate-300">HR</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-5 relative overflow-hidden">
-              <div class="rank-bar bg-blue-500/60 h-full rounded-full" style="width:75%"></div>
-              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold">4위 (5)</span>
-            </div>
-          </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs font-bold w-14 text-right text-green-400">RBI</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-5 relative overflow-hidden">
-              <div class="rank-bar bg-green-500/60 h-full rounded-full" style="width:83%"></div>
-              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold">3위 (15)</span>
-            </div>
-          </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs font-bold w-14 text-right text-slate-300">BB</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-5 relative overflow-hidden">
-              <div class="rank-bar bg-blue-500/60 h-full rounded-full" style="width:33%"></div>
-              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold">9위 (12)</span>
-            </div>
-          </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs font-bold w-14 text-right text-red-400">K</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-5 relative overflow-hidden">
-              <div class="rank-bar bg-red-500/60 h-full rounded-full" style="width:17%"></div>
-              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold">11위 (35)</span>
-            </div>
-          </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs font-bold w-14 text-right text-green-400">TB</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-5 relative overflow-hidden">
-              <div class="rank-bar bg-green-500/60 h-full rounded-full" style="width:83%"></div>
-              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold">3위 (56)</span>
-            </div>
-          </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs font-bold w-14 text-right text-slate-300">ERA</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-5 relative overflow-hidden">
-              <div class="rank-bar bg-blue-500/60 h-full rounded-full" style="width:75%"></div>
-              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold">4위 (2.49)</span>
-            </div>
-          </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs font-bold w-14 text-right text-green-400">WHIP</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-5 relative overflow-hidden">
-              <div class="rank-bar bg-green-500/60 h-full rounded-full" style="width:100%"></div>
-              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold">1위 (0.75)</span>
-            </div>
-          </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs font-bold w-14 text-right text-green-400">W</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-5 relative overflow-hidden">
-              <div class="rank-bar bg-green-500/60 h-full rounded-full" style="width:83%"></div>
-              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold">3위 (2)</span>
-            </div>
-          </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs font-bold w-14 text-right text-slate-300">L</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-5 relative overflow-hidden">
-              <div class="rank-bar bg-blue-500/60 h-full rounded-full" style="width:58%"></div>
-              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold">6위 (2)</span>
-            </div>
-          </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs font-bold w-14 text-right text-green-400">CG</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-5 relative overflow-hidden">
-              <div class="rank-bar bg-green-500/60 h-full rounded-full" style="width:92%"></div>
-              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold">2위 (0)</span>
-            </div>
-          </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs font-bold w-14 text-right text-slate-300">K(P)</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-5 relative overflow-hidden">
-              <div class="rank-bar bg-blue-500/60 h-full rounded-full" style="width:42%"></div>
-              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold">8위 (31)</span>
-            </div>
-          </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs font-bold w-14 text-right text-red-400">GIDP</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-5 relative overflow-hidden">
-              <div class="rank-bar bg-red-500/60 h-full rounded-full" style="width:17%"></div>
-              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold">11위 (0)</span>
-            </div>
-          </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs font-bold w-14 text-right text-green-400">TB(P)</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-5 relative overflow-hidden">
-              <div class="rank-bar bg-green-500/60 h-full rounded-full" style="width:100%"></div>
-              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold">1위 (18)</span>
-            </div>
-          </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs font-bold w-14 text-right text-slate-300">A</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-5 relative overflow-hidden">
-              <div class="rank-bar bg-blue-500/60 h-full rounded-full" style="width:33%"></div>
-              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold">9위 (24)</span>
-            </div>
-          </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs font-bold w-14 text-right text-slate-300">K/BB</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-5 relative overflow-hidden">
-              <div class="rank-bar bg-blue-500/60 h-full rounded-full" style="width:58%"></div>
-              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold">6위 (3.88)</span>
-            </div>
-          </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs font-bold w-14 text-right text-slate-300">NSB</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-5 relative overflow-hidden">
-              <div class="rank-bar bg-blue-500/60 h-full rounded-full" style="width:67%"></div>
-              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold">5위 (2)</span>
-            </div>
-          </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs font-bold w-14 text-right text-slate-300">SLAM</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-5 relative overflow-hidden">
-              <div class="rank-bar bg-blue-500/60 h-full rounded-full" style="width:75%"></div>
-              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold">4위 (0)</span>
-            </div>
-          </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs font-bold w-14 text-right text-green-400">RAPP</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-5 relative overflow-hidden">
-              <div class="rank-bar bg-green-500/60 h-full rounded-full" style="width:100%"></div>
-              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold">1위 (10)</span>
-            </div>
-          </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs font-bold w-14 text-right text-slate-300">QS</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-5 relative overflow-hidden">
-              <div class="rank-bar bg-blue-500/60 h-full rounded-full" style="width:42%"></div>
-              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold">8위 (1)</span>
-            </div>
-          </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs font-bold w-14 text-right text-green-400">NSVH</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-5 relative overflow-hidden">
-              <div class="rank-bar bg-green-500/60 h-full rounded-full" style="width:92%"></div>
-              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold">2위 (3)</span>
-            </div>
-          </div>
+        </div>
       </div>
-    </section>
 
-    <!-- All Matchups -->
-    <section class="glass rounded-2xl p-6 animate-in" style="animation-delay:0.4s">
-      <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
-        <span class="text-xl">⚾</span> 전체 매치업 결과
-        <span class="text-xs text-slate-500 ml-2">클릭하면 상세 보기</span>
-      </h2>
-      <div class="space-y-3" id="matchup-cards">
-        <div class="matchup-card matchup-grid  bg-slate-800/50 rounded-xl px-4 py-3 cursor-pointer hover:bg-slate-700/50 transition-colors" data-idx="0">
-            <div class="text-right">
-              <p class="text-sm font-semibold text-slate-300 truncate">2026 MVP Mike Trout</p>
+      <!-- Category Rankings -->
+      <div class="card fade-in" style="padding:16px;animation-delay:0.15s;">
+        <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">My Rankings</div>
+        <div class="grid-2" style="gap:4px 16px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:3px 0;">
+              <span class="mono text-xs fw-600" style="color:var(--text2);width:44px;">AVG</span>
+              <span class="rank-pill top">#1 .294</span>
             </div>
-            <div class="text-center px-3">
-              <span class="text-lg font-extrabold text-slate-400">10</span>
-              <span class="text-slate-600 mx-1">-</span>
-              <span class="text-lg font-extrabold text-slate-400">10</span>
-              <span class="text-slate-600 mx-1">-</span>
-              <span class="text-sm text-slate-500">5</span>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:3px 0;">
+              <span class="mono text-xs fw-600" style="color:var(--text2);width:44px;">OBP</span>
+              <span class="rank-pill top">#3 .375</span>
             </div>
-            <div>
-              <p class="text-sm font-semibold text-slate-300 truncate">독후감 신속히 제출해주세요.</p>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:3px 0;">
+              <span class="mono text-xs fw-600" style="color:var(--text2);width:44px;">SLG</span>
+              <span class="rank-pill top">#3 .471</span>
             </div>
-          </div>
-        <div class="matchup-card matchup-grid  bg-slate-800/50 rounded-xl px-4 py-3 cursor-pointer hover:bg-slate-700/50 transition-colors" data-idx="1">
-            <div class="text-right">
-              <p class="text-sm font-semibold text-green-400 truncate">xXXXxAIxXXXx</p>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:3px 0;">
+              <span class="mono text-xs fw-600" style="color:var(--text2);width:44px;">R</span>
+              <span class="rank-pill mid">#6 15</span>
             </div>
-            <div class="text-center px-3">
-              <span class="text-lg font-extrabold text-green-400">11</span>
-              <span class="text-slate-600 mx-1">-</span>
-              <span class="text-lg font-extrabold text-slate-400">10</span>
-              <span class="text-slate-600 mx-1">-</span>
-              <span class="text-sm text-slate-500">4</span>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:3px 0;">
+              <span class="mono text-xs fw-600" style="color:var(--text2);width:44px;">H</span>
+              <span class="rank-pill top">#1 35</span>
             </div>
-            <div>
-              <p class="text-sm font-semibold text-slate-500 truncate">TRUCK</p>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:3px 0;">
+              <span class="mono text-xs fw-600" style="color:var(--text2);width:44px;">HR</span>
+              <span class="rank-pill mid">#4 5</span>
             </div>
-          </div>
-        <div class="matchup-card matchup-grid  bg-slate-800/50 rounded-xl px-4 py-3 cursor-pointer hover:bg-slate-700/50 transition-colors" data-idx="2">
-            <div class="text-right">
-              <p class="text-sm font-semibold text-green-400 truncate">UTU_무네타카 무라콴호</p>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:3px 0;">
+              <span class="mono text-xs fw-600" style="color:var(--text2);width:44px;">RBI</span>
+              <span class="rank-pill top">#3 15</span>
             </div>
-            <div class="text-center px-3">
-              <span class="text-lg font-extrabold text-green-400">15</span>
-              <span class="text-slate-600 mx-1">-</span>
-              <span class="text-lg font-extrabold text-slate-400">5</span>
-              <span class="text-slate-600 mx-1">-</span>
-              <span class="text-sm text-slate-500">5</span>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:3px 0;">
+              <span class="mono text-xs fw-600" style="color:var(--text2);width:44px;">BB</span>
+              <span class="rank-pill mid">#9 12</span>
             </div>
-            <div>
-              <p class="text-sm font-semibold text-slate-500 truncate">커츠 나의어둠 나의삶</p>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:3px 0;">
+              <span class="mono text-xs fw-600" style="color:var(--text2);width:44px;">K</span>
+              <span class="rank-pill bot">#11 35</span>
             </div>
-          </div>
-        <div class="matchup-card matchup-grid  bg-slate-800/50 rounded-xl px-4 py-3 cursor-pointer hover:bg-slate-700/50 transition-colors" data-idx="3">
-            <div class="text-right">
-              <p class="text-sm font-semibold text-slate-500 truncate">✌️ Yeonwoo's Double Play</p>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:3px 0;">
+              <span class="mono text-xs fw-600" style="color:var(--text2);width:44px;">TB</span>
+              <span class="rank-pill top">#3 56</span>
             </div>
-            <div class="text-center px-3">
-              <span class="text-lg font-extrabold text-slate-400">10</span>
-              <span class="text-slate-600 mx-1">-</span>
-              <span class="text-lg font-extrabold text-green-400">12</span>
-              <span class="text-slate-600 mx-1">-</span>
-              <span class="text-sm text-slate-500">3</span>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:3px 0;">
+              <span class="mono text-xs fw-600" style="color:var(--text2);width:44px;">ERA</span>
+              <span class="rank-pill mid">#4 2.49</span>
             </div>
-            <div>
-              <p class="text-sm font-semibold text-green-400 truncate">💥 JeongWoo's Shockers</p>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:3px 0;">
+              <span class="mono text-xs fw-600" style="color:var(--text2);width:44px;">WHIP</span>
+              <span class="rank-pill top">#1 0.75</span>
             </div>
-          </div>
-        <div class="matchup-card matchup-grid  bg-slate-800/50 rounded-xl px-4 py-3 cursor-pointer hover:bg-slate-700/50 transition-colors" data-idx="4">
-            <div class="text-right">
-              <p class="text-sm font-semibold text-slate-500 truncate">응노</p>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:3px 0;">
+              <span class="mono text-xs fw-600" style="color:var(--text2);width:44px;">W</span>
+              <span class="rank-pill top">#3 2</span>
             </div>
-            <div class="text-center px-3">
-              <span class="text-lg font-extrabold text-slate-400">11</span>
-              <span class="text-slate-600 mx-1">-</span>
-              <span class="text-lg font-extrabold text-green-400">12</span>
-              <span class="text-slate-600 mx-1">-</span>
-              <span class="text-sm text-slate-500">2</span>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:3px 0;">
+              <span class="mono text-xs fw-600" style="color:var(--text2);width:44px;">L</span>
+              <span class="rank-pill mid">#6 2</span>
             </div>
-            <div>
-              <p class="text-sm font-semibold text-green-400 truncate">JJ yoogwanholt</p>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:3px 0;">
+              <span class="mono text-xs fw-600" style="color:var(--text2);width:44px;">CG</span>
+              <span class="rank-pill top">#2 0</span>
             </div>
-          </div>
-        <div class="matchup-card matchup-grid border border-blue-500/30 bg-slate-800/50 rounded-xl px-4 py-3 cursor-pointer hover:bg-slate-700/50 transition-colors" data-idx="5">
-            <div class="text-right">
-              <p class="text-sm font-semibold text-green-400 truncate">🏆 ProfeSuh</p>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:3px 0;">
+              <span class="mono text-xs fw-600" style="color:var(--text2);width:44px;">K(P)</span>
+              <span class="rank-pill mid">#8 31</span>
             </div>
-            <div class="text-center px-3">
-              <span class="text-lg font-extrabold text-green-400">13</span>
-              <span class="text-slate-600 mx-1">-</span>
-              <span class="text-lg font-extrabold text-slate-400">10</span>
-              <span class="text-slate-600 mx-1">-</span>
-              <span class="text-sm text-slate-500">2</span>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:3px 0;">
+              <span class="mono text-xs fw-600" style="color:var(--text2);width:44px;">GIDP</span>
+              <span class="rank-pill bot">#11 0</span>
             </div>
-            <div>
-              <p class="text-sm font-semibold text-slate-500 truncate">💥 JongHun's Busters</p>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:3px 0;">
+              <span class="mono text-xs fw-600" style="color:var(--text2);width:44px;">TB(P)</span>
+              <span class="rank-pill top">#1 18</span>
             </div>
-          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:3px 0;">
+              <span class="mono text-xs fw-600" style="color:var(--text2);width:44px;">A</span>
+              <span class="rank-pill mid">#9 24</span>
+            </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:3px 0;">
+              <span class="mono text-xs fw-600" style="color:var(--text2);width:44px;">K/BB</span>
+              <span class="rank-pill mid">#6 3.88</span>
+            </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:3px 0;">
+              <span class="mono text-xs fw-600" style="color:var(--text2);width:44px;">NSB</span>
+              <span class="rank-pill mid">#5 2</span>
+            </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:3px 0;">
+              <span class="mono text-xs fw-600" style="color:var(--text2);width:44px;">SLAM</span>
+              <span class="rank-pill mid">#4 0</span>
+            </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:3px 0;">
+              <span class="mono text-xs fw-600" style="color:var(--text2);width:44px;">RAPP</span>
+              <span class="rank-pill top">#1 10</span>
+            </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:3px 0;">
+              <span class="mono text-xs fw-600" style="color:var(--text2);width:44px;">QS</span>
+              <span class="rank-pill mid">#8 1</span>
+            </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:3px 0;">
+              <span class="mono text-xs fw-600" style="color:var(--text2);width:44px;">NSVH</span>
+              <span class="rank-pill top">#2 3</span>
+            </div>
+        </div>
       </div>
-    </section>
+    </div>
 
-    <!-- Transactions -->
-    <section class="glass rounded-2xl p-6 animate-in" style="animation-delay:0.5s">
-      <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
-        <span class="text-xl">🔄</span> 주요 트랜잭션
-        <span class="text-xs text-slate-500 ml-2">(63건)</span>
-      </h2>
-      
-      <div class="overflow-x-auto">
-        <table class="w-full text-sm">
-          <thead>
-            <tr class="text-slate-500 text-xs uppercase tracking-wider border-b border-slate-700">
-              <th class="text-left py-2 px-2">날짜</th>
-              <th class="text-left py-2 px-2">팀</th>
-              <th class="text-left py-2 px-2">Add</th>
-              <th class="text-left py-2 px-2">Drop</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="border-b border-slate-800 hover:bg-slate-800/50">
-                <td class="py-2 px-2 text-slate-500 whitespace-nowrap">3. 30.</td>
-                <td class="py-2 px-2 font-medium whitespace-nowrap">커츠 나의어둠 나의삶</td>
-                <td class="py-2 px-2"><span class="text-green-400">Aaron Ashby</span> <span class="text-slate-600">(MIL)</span></td>
-                <td class="py-2 px-2"><span class="text-red-400">Grant Holmes</span> <span class="text-slate-600">(ATL)</span></td>
-              </tr>
-            <tr class="border-b border-slate-800 hover:bg-slate-800/50">
-                <td class="py-2 px-2 text-slate-500 whitespace-nowrap">3. 30.</td>
-                <td class="py-2 px-2 font-medium whitespace-nowrap">커츠 나의어둠 나의삶</td>
-                <td class="py-2 px-2"><span class="text-green-400">Hunter Gaddis</span> <span class="text-slate-600">(CLE)</span></td>
-                <td class="py-2 px-2">—</td>
-              </tr>
-            <tr class="border-b border-slate-800 hover:bg-slate-800/50">
-                <td class="py-2 px-2 text-slate-500 whitespace-nowrap">3. 30.</td>
-                <td class="py-2 px-2 font-medium whitespace-nowrap">xXXXxAIxXXXx</td>
-                <td class="py-2 px-2"><span class="text-green-400">Ryan O'Hearn</span> <span class="text-slate-600">(PIT)</span></td>
-                <td class="py-2 px-2"><span class="text-red-400">Teoscar Hernández</span> <span class="text-slate-600">(LAD)</span></td>
-              </tr>
-            <tr class="border-b border-slate-800 hover:bg-slate-800/50">
-                <td class="py-2 px-2 text-slate-500 whitespace-nowrap">3. 30.</td>
-                <td class="py-2 px-2 font-medium whitespace-nowrap">UTU_무네타카 무라콴호</td>
-                <td class="py-2 px-2"><span class="text-green-400">Dennis Santana</span> <span class="text-slate-600">(PIT)</span></td>
-                <td class="py-2 px-2"><span class="text-red-400">Will Vest</span> <span class="text-slate-600">(DET)</span></td>
-              </tr>
-            <tr class="border-b border-slate-800 hover:bg-slate-800/50">
-                <td class="py-2 px-2 text-slate-500 whitespace-nowrap">3. 30.</td>
-                <td class="py-2 px-2 font-medium whitespace-nowrap">UTU_무네타카 무라콴호</td>
-                <td class="py-2 px-2"><span class="text-green-400">Emilio Pagán</span> <span class="text-slate-600">(CIN)</span></td>
-                <td class="py-2 px-2"><span class="text-red-400">Jordan Romano</span> <span class="text-slate-600">(LAA)</span></td>
-              </tr>
-            <tr class="border-b border-slate-800 hover:bg-slate-800/50">
-                <td class="py-2 px-2 text-slate-500 whitespace-nowrap">3. 30.</td>
-                <td class="py-2 px-2 font-medium whitespace-nowrap">2026 MVP Mike Trout</td>
-                <td class="py-2 px-2"><span class="text-green-400">Jordan Walker</span> <span class="text-slate-600">(STL)</span></td>
-                <td class="py-2 px-2"><span class="text-red-400">Max Meyer</span> <span class="text-slate-600">(MIA)</span></td>
-              </tr>
-            <tr class="border-b border-slate-800 hover:bg-slate-800/50">
-                <td class="py-2 px-2 text-slate-500 whitespace-nowrap">3. 30.</td>
-                <td class="py-2 px-2 font-medium whitespace-nowrap">✌️ Yeonwoo's Double Play</td>
-                <td class="py-2 px-2"><span class="text-green-400">Tim Hill</span> <span class="text-slate-600">(NYY)</span></td>
-                <td class="py-2 px-2"><span class="text-red-400">Oneil Cruz</span> <span class="text-slate-600">(PIT)</span></td>
-              </tr>
-            <tr class="border-b border-slate-800 hover:bg-slate-800/50">
-                <td class="py-2 px-2 text-slate-500 whitespace-nowrap">3. 30.</td>
-                <td class="py-2 px-2 font-medium whitespace-nowrap">2026 MVP Mike Trout</td>
-                <td class="py-2 px-2"><span class="text-green-400">Emerson Hancock</span> <span class="text-slate-600">(SEA)</span></td>
-                <td class="py-2 px-2"><span class="text-red-400">Carmen Mlodzinski</span> <span class="text-slate-600">(PIT)</span></td>
-              </tr>
-            <tr class="border-b border-slate-800 hover:bg-slate-800/50">
-                <td class="py-2 px-2 text-slate-500 whitespace-nowrap">3. 30.</td>
-                <td class="py-2 px-2 font-medium whitespace-nowrap">응노</td>
-                <td class="py-2 px-2"><span class="text-green-400">Kyle Harrison</span> <span class="text-slate-600">(MIL)</span></td>
-                <td class="py-2 px-2"><span class="text-red-400">Dustin May</span> <span class="text-slate-600">(STL)</span></td>
-              </tr>
-            <tr class="border-b border-slate-800 hover:bg-slate-800/50">
-                <td class="py-2 px-2 text-slate-500 whitespace-nowrap">3. 30.</td>
-                <td class="py-2 px-2 font-medium whitespace-nowrap">응노</td>
-                <td class="py-2 px-2"><span class="text-green-400">Jason Adam</span> <span class="text-slate-600">(SD)</span></td>
-                <td class="py-2 px-2">—</td>
-              </tr>
-            <tr class="border-b border-slate-800 hover:bg-slate-800/50">
-                <td class="py-2 px-2 text-slate-500 whitespace-nowrap">3. 30.</td>
-                <td class="py-2 px-2 font-medium whitespace-nowrap">xXXXxAIxXXXx</td>
-                <td class="py-2 px-2"><span class="text-green-400">Chris Bassitt</span> <span class="text-slate-600">(BAL)</span></td>
-                <td class="py-2 px-2"><span class="text-red-400">Slade Cecconi</span> <span class="text-slate-600">(CLE)</span></td>
-              </tr>
-            <tr class="border-b border-slate-800 hover:bg-slate-800/50">
-                <td class="py-2 px-2 text-slate-500 whitespace-nowrap">3. 30.</td>
-                <td class="py-2 px-2 font-medium whitespace-nowrap">🏆 ProfeSuh</td>
-                <td class="py-2 px-2"><span class="text-green-400">Randy Vásquez</span> <span class="text-slate-600">(SD)</span></td>
-                <td class="py-2 px-2">—</td>
-              </tr>
-            <tr class="border-b border-slate-800 hover:bg-slate-800/50">
-                <td class="py-2 px-2 text-slate-500 whitespace-nowrap">3. 30.</td>
-                <td class="py-2 px-2 font-medium whitespace-nowrap">🏆 ProfeSuh</td>
-                <td class="py-2 px-2">—</td>
-                <td class="py-2 px-2"><span class="text-red-400">Bryan Abreu</span> <span class="text-slate-600">(HOU)</span></td>
-              </tr>
-            <tr class="border-b border-slate-800 hover:bg-slate-800/50">
-                <td class="py-2 px-2 text-slate-500 whitespace-nowrap">3. 30.</td>
-                <td class="py-2 px-2 font-medium whitespace-nowrap">UTU_무네타카 무라콴호</td>
-                <td class="py-2 px-2"><span class="text-green-400">Jonathan Loáisiga</span> <span class="text-slate-600">(AZ)</span></td>
-                <td class="py-2 px-2"><span class="text-red-400">Noelvi Marte</span> <span class="text-slate-600">(CIN)</span></td>
-              </tr>
-            <tr class="border-b border-slate-800 hover:bg-slate-800/50">
-                <td class="py-2 px-2 text-slate-500 whitespace-nowrap">3. 29.</td>
-                <td class="py-2 px-2 font-medium whitespace-nowrap">UTU_무네타카 무라콴호</td>
-                <td class="py-2 px-2"><span class="text-green-400">Erik Sabrowski</span> <span class="text-slate-600">(CLE)</span></td>
-                <td class="py-2 px-2"><span class="text-red-400">Ezequiel Tovar</span> <span class="text-slate-600">(COL)</span></td>
-              </tr>
-            <tr class="border-b border-slate-800 hover:bg-slate-800/50">
-                <td class="py-2 px-2 text-slate-500 whitespace-nowrap">3. 29.</td>
-                <td class="py-2 px-2 font-medium whitespace-nowrap">2026 MVP Mike Trout</td>
-                <td class="py-2 px-2"><span class="text-green-400">Francisco Alvarez</span> <span class="text-slate-600">(NYM)</span></td>
-                <td class="py-2 px-2"><span class="text-red-400">Samuel Basallo</span> <span class="text-slate-600">(BAL)</span></td>
-              </tr>
-            <tr class="border-b border-slate-800 hover:bg-slate-800/50">
-                <td class="py-2 px-2 text-slate-500 whitespace-nowrap">3. 29.</td>
-                <td class="py-2 px-2 font-medium whitespace-nowrap">커츠 나의어둠 나의삶</td>
-                <td class="py-2 px-2"><span class="text-green-400">Camilo Doval</span> <span class="text-slate-600">(NYY)</span></td>
-                <td class="py-2 px-2"><span class="text-red-400">Brandon Sproat</span> <span class="text-slate-600">(MIL)</span></td>
-              </tr>
-            <tr class="border-b border-slate-800 hover:bg-slate-800/50">
-                <td class="py-2 px-2 text-slate-500 whitespace-nowrap">3. 29.</td>
-                <td class="py-2 px-2 font-medium whitespace-nowrap">응노</td>
-                <td class="py-2 px-2"><span class="text-green-400">Dustin May</span> <span class="text-slate-600">(STL)</span></td>
-                <td class="py-2 px-2"><span class="text-red-400">Reid Detmers</span> <span class="text-slate-600">(LAA)</span></td>
-              </tr>
-            <tr class="border-b border-slate-800 hover:bg-slate-800/50">
-                <td class="py-2 px-2 text-slate-500 whitespace-nowrap">3. 29.</td>
-                <td class="py-2 px-2 font-medium whitespace-nowrap">UTU_무네타카 무라콴호</td>
-                <td class="py-2 px-2"><span class="text-green-400">Ezequiel Tovar</span> <span class="text-slate-600">(COL)</span></td>
-                <td class="py-2 px-2"><span class="text-red-400">Bryan King</span> <span class="text-slate-600">(HOU)</span></td>
-              </tr>
-            <tr class="border-b border-slate-800 hover:bg-slate-800/50">
-                <td class="py-2 px-2 text-slate-500 whitespace-nowrap">3. 29.</td>
-                <td class="py-2 px-2 font-medium whitespace-nowrap">UTU_무네타카 무라콴호</td>
-                <td class="py-2 px-2"><span class="text-green-400">Jordan Romano</span> <span class="text-slate-600">(LAA)</span></td>
-                <td class="py-2 px-2"><span class="text-red-400">Adrian Morejon</span> <span class="text-slate-600">(SD)</span></td>
-              </tr>
-            <tr class="border-b border-slate-800 hover:bg-slate-800/50">
-                <td class="py-2 px-2 text-slate-500 whitespace-nowrap">3. 29.</td>
-                <td class="py-2 px-2 font-medium whitespace-nowrap">xXXXxAIxXXXx</td>
-                <td class="py-2 px-2"><span class="text-green-400">Jonathan Aranda</span> <span class="text-slate-600">(TB)</span></td>
-                <td class="py-2 px-2"><span class="text-red-400">Andy Pages</span> <span class="text-slate-600">(LAD)</span></td>
-              </tr>
-            <tr class="border-b border-slate-800 hover:bg-slate-800/50">
-                <td class="py-2 px-2 text-slate-500 whitespace-nowrap">3. 29.</td>
-                <td class="py-2 px-2 font-medium whitespace-nowrap">xXXXxAIxXXXx</td>
-                <td class="py-2 px-2"><span class="text-green-400">Slade Cecconi</span> <span class="text-slate-600">(CLE)</span></td>
-                <td class="py-2 px-2"><span class="text-red-400">Will Warren</span> <span class="text-slate-600">(NYY)</span></td>
-              </tr>
-            <tr class="border-b border-slate-800 hover:bg-slate-800/50">
-                <td class="py-2 px-2 text-slate-500 whitespace-nowrap">3. 29.</td>
-                <td class="py-2 px-2 font-medium whitespace-nowrap">💥 JongHun's Busters</td>
-                <td class="py-2 px-2"><span class="text-green-400">Clay Holmes</span> <span class="text-slate-600">(NYM)</span></td>
-                <td class="py-2 px-2"><span class="text-red-400">Matthew Liberatore</span> <span class="text-slate-600">(STL)</span></td>
-              </tr>
-            <tr class="border-b border-slate-800 hover:bg-slate-800/50">
-                <td class="py-2 px-2 text-slate-500 whitespace-nowrap">3. 29.</td>
-                <td class="py-2 px-2 font-medium whitespace-nowrap">💥 JongHun's Busters</td>
-                <td class="py-2 px-2"><span class="text-green-400">Seth Lugo</span> <span class="text-slate-600">(KC)</span></td>
-                <td class="py-2 px-2">—</td>
-              </tr>
-            <tr class="border-b border-slate-800 hover:bg-slate-800/50">
-                <td class="py-2 px-2 text-slate-500 whitespace-nowrap">3. 29.</td>
-                <td class="py-2 px-2 font-medium whitespace-nowrap">💥 JongHun's Busters</td>
-                <td class="py-2 px-2">—</td>
-                <td class="py-2 px-2"><span class="text-red-400">David Peterson</span> <span class="text-slate-600">(NYM)</span></td>
-              </tr>
-            <tr class="border-b border-slate-800 hover:bg-slate-800/50">
-                <td class="py-2 px-2 text-slate-500 whitespace-nowrap">3. 29.</td>
-                <td class="py-2 px-2 font-medium whitespace-nowrap">커츠 나의어둠 나의삶</td>
-                <td class="py-2 px-2"><span class="text-green-400">Grant Holmes</span> <span class="text-slate-600">(ATL)</span></td>
-                <td class="py-2 px-2"><span class="text-red-400">Chad Patrick</span> <span class="text-slate-600">(MIL)</span></td>
-              </tr>
-            <tr class="border-b border-slate-800 hover:bg-slate-800/50">
-                <td class="py-2 px-2 text-slate-500 whitespace-nowrap">3. 29.</td>
-                <td class="py-2 px-2 font-medium whitespace-nowrap">💥 JeongWoo's Shockers</td>
-                <td class="py-2 px-2"><span class="text-green-400">Max Scherzer</span> <span class="text-slate-600">(TOR)</span></td>
-                <td class="py-2 px-2"><span class="text-red-400">Konnor Griffin</span> <span class="text-slate-600">(PIT)</span></td>
-              </tr>
-            <tr class="border-b border-slate-800 hover:bg-slate-800/50">
-                <td class="py-2 px-2 text-slate-500 whitespace-nowrap">3. 29.</td>
-                <td class="py-2 px-2 font-medium whitespace-nowrap">2026 MVP Mike Trout</td>
-                <td class="py-2 px-2"><span class="text-green-400">Carmen Mlodzinski</span> <span class="text-slate-600">(PIT)</span></td>
-                <td class="py-2 px-2"><span class="text-red-400">Jung Hoo Lee</span> <span class="text-slate-600">(SF)</span></td>
-              </tr>
-            <tr class="border-b border-slate-800 hover:bg-slate-800/50">
-                <td class="py-2 px-2 text-slate-500 whitespace-nowrap">3. 28.</td>
-                <td class="py-2 px-2 font-medium whitespace-nowrap">🏆 ProfeSuh</td>
-                <td class="py-2 px-2"><span class="text-green-400">Dominic Canzone</span> <span class="text-slate-600">(SEA)</span></td>
-                <td class="py-2 px-2"><span class="text-red-400">Brayan Bello</span> <span class="text-slate-600">(BOS)</span></td>
-              </tr>
-            <tr class="border-b border-slate-800 hover:bg-slate-800/50">
-                <td class="py-2 px-2 text-slate-500 whitespace-nowrap">3. 28.</td>
-                <td class="py-2 px-2 font-medium whitespace-nowrap">커츠 나의어둠 나의삶</td>
-                <td class="py-2 px-2"><span class="text-green-400">Brandon Sproat</span> <span class="text-slate-600">(MIL)</span></td>
-                <td class="py-2 px-2"><span class="text-red-400">Cristian Javier</span> <span class="text-slate-600">(HOU)</span></td>
-              </tr>
-          </tbody>
-        </table>
+    <!-- Row 3: Matchup Cards + Transactions (side by side) -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <!-- All Matchups -->
+      <div class="card fade-in" style="padding:16px;animation-delay:0.2s;">
+        <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">All Matchups</div>
+        <div id="matchup-cards">
+          <div class="mg matchup-card" data-idx="0">
+              <div style="text-align:right;" class="text-sm truncate fw-600 ">2026 MVP Mike Trout</div>
+              <div class="mono fw-700 text-sm" style="text-align:center;">
+                <span class="">10</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="">10</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="t">5</span>
+              </div>
+              <div class="text-sm truncate fw-600 ">독후감 신속히 제출해주세요.</div>
+            </div>
+          <div class="mg matchup-card" data-idx="1">
+              <div style="text-align:right;" class="text-sm truncate fw-600 w">xXXXxAIxXXXx</div>
+              <div class="mono fw-700 text-sm" style="text-align:center;">
+                <span class="w">11</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="">10</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="t">4</span>
+              </div>
+              <div class="text-sm truncate fw-600 opacity-50">TRUCK</div>
+            </div>
+          <div class="mg matchup-card" data-idx="2">
+              <div style="text-align:right;" class="text-sm truncate fw-600 w">UTU_무네타카 무라콴호</div>
+              <div class="mono fw-700 text-sm" style="text-align:center;">
+                <span class="w">15</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="">5</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="t">5</span>
+              </div>
+              <div class="text-sm truncate fw-600 opacity-50">커츠 나의어둠 나의삶</div>
+            </div>
+          <div class="mg matchup-card" data-idx="3">
+              <div style="text-align:right;" class="text-sm truncate fw-600 opacity-50">✌️ Yeonwoo's Double Play</div>
+              <div class="mono fw-700 text-sm" style="text-align:center;">
+                <span class="">10</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="w">12</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="t">3</span>
+              </div>
+              <div class="text-sm truncate fw-600 w">💥 JeongWoo's Shockers</div>
+            </div>
+          <div class="mg matchup-card" data-idx="4">
+              <div style="text-align:right;" class="text-sm truncate fw-600 opacity-50">응노</div>
+              <div class="mono fw-700 text-sm" style="text-align:center;">
+                <span class="">11</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="w">12</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="t">2</span>
+              </div>
+              <div class="text-sm truncate fw-600 w">JJ yoogwanholt</div>
+            </div>
+          <div class="mg matchup-card" data-idx="5">
+              <div style="text-align:right;" class="text-sm truncate fw-600 w">🏆 ProfeSuh</div>
+              <div class="mono fw-700 text-sm" style="text-align:center;">
+                <span class="w">13</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="">10</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="t">2</span>
+              </div>
+              <div class="text-sm truncate fw-600 opacity-50">💥 JongHun's Busters</div>
+            </div>
+        </div>
       </div>
-      
-    </section>
 
-    <!-- Team Activity -->
-    <section class="glass rounded-2xl p-6 animate-in" style="animation-delay:0.6s">
-      <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
-        <span class="text-xl">🏃</span> 팀별 활동량
-      </h2>
-      <div class="space-y-2">
-        <div class="flex items-center gap-3">
-            <span class="text-xs w-32 truncate text-slate-400">커츠 나의어둠 나의삶</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-4 relative overflow-hidden">
-              <div class="bg-slate-600/60 h-full rounded-full" style="width:100%"></div>
-            </div>
-            <span class="text-xs font-bold w-8 text-right text-slate-400">14</span>
-          </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs w-32 truncate text-slate-400">UTU_무네타카 무라콴호</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-4 relative overflow-hidden">
-              <div class="bg-slate-600/60 h-full rounded-full" style="width:64%"></div>
-            </div>
-            <span class="text-xs font-bold w-8 text-right text-slate-400">9</span>
-          </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs w-32 truncate text-slate-400">xXXXxAIxXXXx</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-4 relative overflow-hidden">
-              <div class="bg-slate-600/60 h-full rounded-full" style="width:57%"></div>
-            </div>
-            <span class="text-xs font-bold w-8 text-right text-slate-400">8</span>
-          </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs w-32 truncate text-slate-400">2026 MVP Mike Trout</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-4 relative overflow-hidden">
-              <div class="bg-slate-600/60 h-full rounded-full" style="width:50%"></div>
-            </div>
-            <span class="text-xs font-bold w-8 text-right text-slate-400">7</span>
-          </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs w-32 truncate text-slate-400">💥 JeongWoo's Shockers</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-4 relative overflow-hidden">
-              <div class="bg-slate-600/60 h-full rounded-full" style="width:43%"></div>
-            </div>
-            <span class="text-xs font-bold w-8 text-right text-slate-400">6</span>
-          </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs w-32 truncate text-slate-400">응노</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-4 relative overflow-hidden">
-              <div class="bg-slate-600/60 h-full rounded-full" style="width:43%"></div>
-            </div>
-            <span class="text-xs font-bold w-8 text-right text-slate-400">6</span>
-          </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs w-32 truncate text-blue-300 font-bold">🏆 ProfeSuh</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-4 relative overflow-hidden">
-              <div class="bg-blue-500/60 h-full rounded-full" style="width:36%"></div>
-            </div>
-            <span class="text-xs font-bold w-8 text-right text-blue-300">5</span>
-          </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs w-32 truncate text-slate-400">💥 JongHun's Busters</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-4 relative overflow-hidden">
-              <div class="bg-slate-600/60 h-full rounded-full" style="width:36%"></div>
-            </div>
-            <span class="text-xs font-bold w-8 text-right text-slate-400">5</span>
-          </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs w-32 truncate text-slate-400">독후감 신속히 제출해주세요.</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-4 relative overflow-hidden">
-              <div class="bg-slate-600/60 h-full rounded-full" style="width:29%"></div>
-            </div>
-            <span class="text-xs font-bold w-8 text-right text-slate-400">4</span>
-          </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs w-32 truncate text-slate-400">✌️ Yeonwoo's Double Play</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-4 relative overflow-hidden">
-              <div class="bg-slate-600/60 h-full rounded-full" style="width:29%"></div>
-            </div>
-            <span class="text-xs font-bold w-8 text-right text-slate-400">4</span>
-          </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs w-32 truncate text-slate-400">JJ yoogwanholt</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-4 relative overflow-hidden">
-              <div class="bg-slate-600/60 h-full rounded-full" style="width:14%"></div>
-            </div>
-            <span class="text-xs font-bold w-8 text-right text-slate-400">2</span>
-          </div>
-        <div class="flex items-center gap-3">
-            <span class="text-xs w-32 truncate text-slate-400">TRUCK</span>
-            <div class="flex-1 bg-slate-700/50 rounded-full h-4 relative overflow-hidden">
-              <div class="bg-slate-600/60 h-full rounded-full" style="width:14%"></div>
-            </div>
-            <span class="text-xs font-bold w-8 text-right text-slate-400">2</span>
-          </div>
+      <!-- Transactions (compact, scrollable) -->
+      <div class="card fade-in" style="padding:16px;animation-delay:0.25s;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <div class="text-xs fw-600" style="color:var(--text3);text-transform:uppercase;letter-spacing:1px;">Transactions</div>
+          <span class="mono text-xs" style="color:var(--text3);">63</span>
+        </div>
+        <div class="scroll-y">
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 30.</span>
+                <div>+<span class="w">Aaron Ashby</span><span style="color:var(--text3);"> MIL</span></div>
+                <div>-<span class="l">Grant Holmes</span><span style="color:var(--text3);"> ATL</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 30.</span>
+                <div>+<span class="w">Hunter Gaddis</span><span style="color:var(--text3);"> CLE</span></div>
+                <div></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 30.</span>
+                <div>+<span class="w">Ryan O'Hearn</span><span style="color:var(--text3);"> PIT</span></div>
+                <div>-<span class="l">Teoscar Hernández</span><span style="color:var(--text3);"> LAD</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 30.</span>
+                <div>+<span class="w">Dennis Santana</span><span style="color:var(--text3);"> PIT</span></div>
+                <div>-<span class="l">Will Vest</span><span style="color:var(--text3);"> DET</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 30.</span>
+                <div>+<span class="w">Emilio Pagán</span><span style="color:var(--text3);"> CIN</span></div>
+                <div>-<span class="l">Jordan Romano</span><span style="color:var(--text3);"> LAA</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 30.</span>
+                <div>+<span class="w">Jordan Walker</span><span style="color:var(--text3);"> STL</span></div>
+                <div>-<span class="l">Max Meyer</span><span style="color:var(--text3);"> MIA</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 30.</span>
+                <div>+<span class="w">Tim Hill</span><span style="color:var(--text3);"> NYY</span></div>
+                <div>-<span class="l">Oneil Cruz</span><span style="color:var(--text3);"> PIT</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 30.</span>
+                <div>+<span class="w">Emerson Hancock</span><span style="color:var(--text3);"> SEA</span></div>
+                <div>-<span class="l">Carmen Mlodzinski</span><span style="color:var(--text3);"> PIT</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 30.</span>
+                <div>+<span class="w">Kyle Harrison</span><span style="color:var(--text3);"> MIL</span></div>
+                <div>-<span class="l">Dustin May</span><span style="color:var(--text3);"> STL</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 30.</span>
+                <div>+<span class="w">Jason Adam</span><span style="color:var(--text3);"> SD</span></div>
+                <div></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 30.</span>
+                <div>+<span class="w">Chris Bassitt</span><span style="color:var(--text3);"> BAL</span></div>
+                <div>-<span class="l">Slade Cecconi</span><span style="color:var(--text3);"> CLE</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 30.</span>
+                <div>+<span class="w">Randy Vásquez</span><span style="color:var(--text3);"> SD</span></div>
+                <div></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 30.</span>
+                <div></div>
+                <div>-<span class="l">Bryan Abreu</span><span style="color:var(--text3);"> HOU</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 30.</span>
+                <div>+<span class="w">Jonathan Loáisiga</span><span style="color:var(--text3);"> AZ</span></div>
+                <div>-<span class="l">Noelvi Marte</span><span style="color:var(--text3);"> CIN</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 29.</span>
+                <div>+<span class="w">Erik Sabrowski</span><span style="color:var(--text3);"> CLE</span></div>
+                <div>-<span class="l">Ezequiel Tovar</span><span style="color:var(--text3);"> COL</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 29.</span>
+                <div>+<span class="w">Francisco Alvarez</span><span style="color:var(--text3);"> NYM</span></div>
+                <div>-<span class="l">Samuel Basallo</span><span style="color:var(--text3);"> BAL</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 29.</span>
+                <div>+<span class="w">Camilo Doval</span><span style="color:var(--text3);"> NYY</span></div>
+                <div>-<span class="l">Brandon Sproat</span><span style="color:var(--text3);"> MIL</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 29.</span>
+                <div>+<span class="w">Dustin May</span><span style="color:var(--text3);"> STL</span></div>
+                <div>-<span class="l">Reid Detmers</span><span style="color:var(--text3);"> LAA</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 29.</span>
+                <div>+<span class="w">Ezequiel Tovar</span><span style="color:var(--text3);"> COL</span></div>
+                <div>-<span class="l">Bryan King</span><span style="color:var(--text3);"> HOU</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 29.</span>
+                <div>+<span class="w">Jordan Romano</span><span style="color:var(--text3);"> LAA</span></div>
+                <div>-<span class="l">Adrian Morejon</span><span style="color:var(--text3);"> SD</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 29.</span>
+                <div>+<span class="w">Jonathan Aranda</span><span style="color:var(--text3);"> TB</span></div>
+                <div>-<span class="l">Andy Pages</span><span style="color:var(--text3);"> LAD</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 29.</span>
+                <div>+<span class="w">Slade Cecconi</span><span style="color:var(--text3);"> CLE</span></div>
+                <div>-<span class="l">Will Warren</span><span style="color:var(--text3);"> NYY</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 29.</span>
+                <div>+<span class="w">Clay Holmes</span><span style="color:var(--text3);"> NYM</span></div>
+                <div>-<span class="l">Matthew Liberatore</span><span style="color:var(--text3);"> STL</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 29.</span>
+                <div>+<span class="w">Seth Lugo</span><span style="color:var(--text3);"> KC</span></div>
+                <div></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 29.</span>
+                <div></div>
+                <div>-<span class="l">David Peterson</span><span style="color:var(--text3);"> NYM</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 29.</span>
+                <div>+<span class="w">Grant Holmes</span><span style="color:var(--text3);"> ATL</span></div>
+                <div>-<span class="l">Chad Patrick</span><span style="color:var(--text3);"> MIL</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 29.</span>
+                <div>+<span class="w">Max Scherzer</span><span style="color:var(--text3);"> TOR</span></div>
+                <div>-<span class="l">Konnor Griffin</span><span style="color:var(--text3);"> PIT</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 29.</span>
+                <div>+<span class="w">Carmen Mlodzinski</span><span style="color:var(--text3);"> PIT</span></div>
+                <div>-<span class="l">Jung Hoo Lee</span><span style="color:var(--text3);"> SF</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 28.</span>
+                <div>+<span class="w">Dominic Canzone</span><span style="color:var(--text3);"> SEA</span></div>
+                <div>-<span class="l">Brayan Bello</span><span style="color:var(--text3);"> BOS</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 28.</span>
+                <div>+<span class="w">Brandon Sproat</span><span style="color:var(--text3);"> MIL</span></div>
+                <div>-<span class="l">Cristian Javier</span><span style="color:var(--text3);"> HOU</span></div>
+              </div>
+        </div>
       </div>
-    </section>
+    </div>
 
   </main>
 
-  <footer class="border-t border-slate-800 px-6 py-4 mt-8">
-    <p class="text-center text-xs text-slate-600">Fantasy Baseball CLI | Week 1 Report | 2026 Season</p>
-  </footer>
-
   <script>
-    // Radar Charts
-    const radarOpts = {
-      responsive: true, maintainAspectRatio: false,
-      scales: { r: { min: 0, max: 12, ticks: { display: false, stepSize: 3 }, grid: { color: 'rgba(148,163,184,0.15)' }, pointLabels: { color: '#94a3b8', font: { size: 11, weight: '600' } }, angleLines: { color: 'rgba(148,163,184,0.1)' } } },
-      plugins: { legend: { display: false } }
-    };
-    new Chart(document.getElementById('radarBat'), { type: 'radar', data: { labels: ["AVG","OBP","SLG","R","H","HR","RBI","BB","K","TB","A","NSB","SLAM"], datasets: [{ data: [12,10,10,7,12,9,10,4,2,10,4,8,9], backgroundColor: 'rgba(96,165,250,0.15)', borderColor: 'rgba(96,165,250,0.8)', borderWidth: 2, pointBackgroundColor: 'rgba(96,165,250,1)', pointRadius: 4 }] }, options: radarOpts });
-    new Chart(document.getElementById('radarPit'), { type: 'radar', data: { labels: ["ERA","WHIP","W","L","CG","K(P)","GIDP","TB(P)","K/BB","RAPP","QS","NSVH"], datasets: [{ data: [9,12,10,7,11,5,2,12,7,12,5,11], backgroundColor: 'rgba(167,139,250,0.15)', borderColor: 'rgba(167,139,250,0.8)', borderWidth: 2, pointBackgroundColor: 'rgba(167,139,250,1)', pointRadius: 4 }] }, options: radarOpts });
+    // Radar
+    var ro = { responsive:true, maintainAspectRatio:false, scales:{r:{min:0,max:12,ticks:{display:false,stepSize:3},grid:{color:'rgba(148,163,184,0.08)'},pointLabels:{color:'#64748b',font:{size:10,weight:'600',family:'JetBrains Mono'}},angleLines:{color:'rgba(148,163,184,0.05)'}}},plugins:{legend:{display:false}} };
+    new Chart(document.getElementById('radarBat'),{type:'radar',data:{labels:["AVG","OBP","SLG","R","H","HR","RBI","BB","K","TB","A","NSB","SLAM"],datasets:[{data:[12,10,10,7,12,9,10,4,2,10,4,8,9],backgroundColor:'rgba(59,130,246,0.1)',borderColor:'rgba(59,130,246,0.6)',borderWidth:1.5,pointBackgroundColor:'#3b82f6',pointRadius:3}]},options:ro});
+    new Chart(document.getElementById('radarPit'),{type:'radar',data:{labels:["ERA","WHIP","W","L","CG","K(P)","GIDP","TB(P)","K/BB","RAPP","QS","NSVH"],datasets:[{data:[9,12,10,7,11,5,2,12,7,12,5,11],backgroundColor:'rgba(167,139,250,0.1)',borderColor:'rgba(167,139,250,0.6)',borderWidth:1.5,pointBackgroundColor:'#a78bfa',pointRadius:3}]},options:ro});
 
-    // Matchup & team data (server-generated, trusted)
+    // Data
     var MATCHUPS = [{"idx":0,"t1Name":"2026 MVP Mike Trout","t1Key":"469.l.18247.t.1","t2Name":"독후감 신속히 제출해주세요.","t2Key":"469.l.18247.t.6","t1Wins":10,"t2Wins":10,"ties":5,"cats":[{"abbr":"AVG","statId":"3","group":"batting","t1Val":".274","t2Val":".288","winner":"t2"},{"abbr":"OBP","statId":"4","group":"batting","t1Val":".381","t2Val":".378","winner":"t1"},{"abbr":"SLG","statId":"5","group":"batting","t1Val":".462","t2Val":".414","winner":"t1"},{"abbr":"R","statId":"7","group":"batting","t1Val":"18","t2Val":"18","winner":"tie"},{"abbr":"H","statId":"8","group":"batting","t1Val":"29","t2Val":"32","winner":"t2"},{"abbr":"HR","statId":"12","group":"batting","t1Val":"4","t2Val":"2","winner":"t1"},{"abbr":"RBI","statId":"13","group":"batting","t1Val":"13","t2Val":"11","winner":"t1"},{"abbr":"BB","statId":"18","group":"batting","t1Val":"19","t2Val":"15","winner":"t1"},{"abbr":"K","statId":"21","group":"batting","t1Val":"26","t2Val":"22","winner":"t2"},{"abbr":"TB","statId":"23","group":"batting","t1Val":"49","t2Val":"46","winner":"t1"},{"abbr":"ERA","statId":"26","group":"pitching","t1Val":"3.82","t2Val":"1.23","winner":"t2"},{"abbr":"WHIP","statId":"27","group":"pitching","t1Val":"1.22","t2Val":"0.86","winner":"t2"},{"abbr":"W","statId":"28","group":"pitching","t1Val":"1","t2Val":"2","winner":"t2"},{"abbr":"L","statId":"29","group":"pitching","t1Val":"0","t2Val":"0","winner":"tie"},{"abbr":"CG","statId":"30","group":"pitching","t1Val":"0","t2Val":"0","winner":"tie"},{"abbr":"K(P)","statId":"42","group":"pitching","t1Val":"47","t2Val":"29","winner":"t1"},{"abbr":"GIDP","statId":"46","group":"pitching","t1Val":"4","t2Val":"1","winner":"t1"},{"abbr":"TB(P)","statId":"49","group":"pitching","t1Val":"52","t2Val":"20","winner":"t2"},{"abbr":"A","statId":"52","group":"batting","t1Val":"22","t2Val":"33","winner":"t2"},{"abbr":"K/BB","statId":"56","group":"pitching","t1Val":"4.70","t2Val":"4.14","winner":"t1"},{"abbr":"NSB","statId":"62","group":"batting","t1Val":"4","t2Val":"0","winner":"t1"},{"abbr":"SLAM","statId":"66","group":"batting","t1Val":"0","t2Val":"0","winner":"tie"},{"abbr":"RAPP","statId":"73","group":"pitching","t1Val":"0","t2Val":"6","winner":"t2"},{"abbr":"QS","statId":"83","group":"pitching","t1Val":"2","t2Val":"2","winner":"tie"},{"abbr":"NSVH","statId":"90","group":"pitching","t1Val":"0","t2Val":"3","winner":"t2"}]},{"idx":1,"t1Name":"xXXXxAIxXXXx","t1Key":"469.l.18247.t.2","t2Name":"TRUCK","t2Key":"469.l.18247.t.3","t1Wins":11,"t2Wins":10,"ties":4,"cats":[{"abbr":"AVG","statId":"3","group":"batting","t1Val":".239","t2Val":".232","winner":"t1"},{"abbr":"OBP","statId":"4","group":"batting","t1Val":".320","t2Val":".345","winner":"t2"},{"abbr":"SLG","statId":"5","group":"batting","t1Val":".358","t2Val":".343","winner":"t1"},{"abbr":"R","statId":"7","group":"batting","t1Val":"15","t2Val":"12","winner":"t1"},{"abbr":"H","statId":"8","group":"batting","t1Val":"26","t2Val":"23","winner":"t1"},{"abbr":"HR","statId":"12","group":"batting","t1Val":"3","t2Val":"1","winner":"t1"},{"abbr":"RBI","statId":"13","group":"batting","t1Val":"14","t2Val":"3","winner":"t1"},{"abbr":"BB","statId":"18","group":"batting","t1Val":"12","t2Val":"16","winner":"t2"},{"abbr":"K","statId":"21","group":"batting","t1Val":"21","t2Val":"33","winner":"t1"},{"abbr":"TB","statId":"23","group":"batting","t1Val":"39","t2Val":"34","winner":"t1"},{"abbr":"ERA","statId":"26","group":"pitching","t1Val":"5.80","t2Val":"3.74","winner":"t2"},{"abbr":"WHIP","statId":"27","group":"pitching","t1Val":"1.39","t2Val":"1.09","winner":"t2"},{"abbr":"W","statId":"28","group":"pitching","t1Val":"2","t2Val":"2","winner":"tie"},{"abbr":"L","statId":"29","group":"pitching","t1Val":"4","t2Val":"3","winner":"t2"},{"abbr":"CG","statId":"30","group":"pitching","t1Val":"0","t2Val":"0","winner":"tie"},{"abbr":"K(P)","statId":"42","group":"pitching","t1Val":"41","t2Val":"48","winner":"t2"},{"abbr":"GIDP","statId":"46","group":"pitching","t1Val":"4","t2Val":"4","winner":"tie"},{"abbr":"TB(P)","statId":"49","group":"pitching","t1Val":"59","t2Val":"47","winner":"t2"},{"abbr":"A","statId":"52","group":"batting","t1Val":"25","t2Val":"33","winner":"t2"},{"abbr":"K/BB","statId":"56","group":"pitching","t1Val":"2.56","t2Val":"2.00","winner":"t1"},{"abbr":"NSB","statId":"62","group":"batting","t1Val":"2","t2Val":"-1","winner":"t1"},{"abbr":"SLAM","statId":"66","group":"batting","t1Val":"0","t2Val":"0","winner":"tie"},{"abbr":"RAPP","statId":"73","group":"pitching","t1Val":"6","t2Val":"7","winner":"t2"},{"abbr":"QS","statId":"83","group":"pitching","t1Val":"2","t2Val":"1","winner":"t1"},{"abbr":"NSVH","statId":"90","group":"pitching","t1Val":"1","t2Val":"3","winner":"t2"}]},{"idx":2,"t1Name":"UTU_무네타카 무라콴호","t1Key":"469.l.18247.t.4","t2Name":"커츠 나의어둠 나의삶","t2Key":"469.l.18247.t.7","t1Wins":15,"t2Wins":5,"ties":5,"cats":[{"abbr":"AVG","statId":"3","group":"batting","t1Val":".218","t2Val":".247","winner":"t2"},{"abbr":"OBP","statId":"4","group":"batting","t1Val":".347","t2Val":".345","winner":"t1"},{"abbr":"SLG","statId":"5","group":"batting","t1Val":".406","t2Val":".371","winner":"t1"},{"abbr":"R","statId":"7","group":"batting","t1Val":"19","t2Val":"13","winner":"t1"},{"abbr":"H","statId":"8","group":"batting","t1Val":"22","t2Val":"24","winner":"t2"},{"abbr":"HR","statId":"12","group":"batting","t1Val":"6","t2Val":"3","winner":"t1"},{"abbr":"RBI","statId":"13","group":"batting","t1Val":"13","t2Val":"13","winner":"tie"},{"abbr":"BB","statId":"18","group":"batting","t1Val":"18","t2Val":"13","winner":"t1"},{"abbr":"K","statId":"21","group":"batting","t1Val":"24","t2Val":"30","winner":"t1"},{"abbr":"TB","statId":"23","group":"batting","t1Val":"41","t2Val":"36","winner":"t1"},{"abbr":"ERA","statId":"26","group":"pitching","t1Val":"1.82","t2Val":"6.50","winner":"t1"},{"abbr":"WHIP","statId":"27","group":"pitching","t1Val":"0.97","t2Val":"1.50","winner":"t1"},{"abbr":"W","statId":"28","group":"pitching","t1Val":"3","t2Val":"1","winner":"t1"},{"abbr":"L","statId":"29","group":"pitching","t1Val":"0","t2Val":"2","winner":"t1"},{"abbr":"CG","statId":"30","group":"pitching","t1Val":"0","t2Val":"0","winner":"tie"},{"abbr":"K(P)","statId":"42","group":"pitching","t1Val":"30","t2Val":"32","winner":"t2"},{"abbr":"GIDP","statId":"46","group":"pitching","t1Val":"4","t2Val":"4","winner":"tie"},{"abbr":"TB(P)","statId":"49","group":"pitching","t1Val":"29","t2Val":"81","winner":"t1"},{"abbr":"A","statId":"52","group":"batting","t1Val":"16","t2Val":"34","winner":"t2"},{"abbr":"K/BB","statId":"56","group":"pitching","t1Val":"3.75","t2Val":"1.88","winner":"t1"},{"abbr":"NSB","statId":"62","group":"batting","t1Val":"4","t2Val":"2","winner":"t1"},{"abbr":"SLAM","statId":"66","group":"batting","t1Val":"0","t2Val":"0","winner":"tie"},{"abbr":"RAPP","statId":"73","group":"pitching","t1Val":"7","t2Val":"2","winner":"t1"},{"abbr":"QS","statId":"83","group":"pitching","t1Val":"1","t2Val":"2","winner":"t2"},{"abbr":"NSVH","statId":"90","group":"pitching","t1Val":"0","t2Val":"0","winner":"tie"}]},{"idx":3,"t1Name":"✌️ Yeonwoo's Double Play","t1Key":"469.l.18247.t.5","t2Name":"💥 JeongWoo's Shockers","t2Key":"469.l.18247.t.11","t1Wins":10,"t2Wins":12,"ties":3,"cats":[{"abbr":"AVG","statId":"3","group":"batting","t1Val":".192","t2Val":".190","winner":"t1"},{"abbr":"OBP","statId":"4","group":"batting","t1Val":".290","t2Val":".277","winner":"t1"},{"abbr":"SLG","statId":"5","group":"batting","t1Val":".312","t2Val":".328","winner":"t2"},{"abbr":"R","statId":"7","group":"batting","t1Val":"15","t2Val":"12","winner":"t1"},{"abbr":"H","statId":"8","group":"batting","t1Val":"24","t2Val":"22","winner":"t1"},{"abbr":"HR","statId":"12","group":"batting","t1Val":"3","t2Val":"4","winner":"t2"},{"abbr":"RBI","statId":"13","group":"batting","t1Val":"14","t2Val":"13","winner":"t1"},{"abbr":"BB","statId":"18","group":"batting","t1Val":"17","t2Val":"12","winner":"t1"},{"abbr":"K","statId":"21","group":"batting","t1Val":"40","t2Val":"33","winner":"t2"},{"abbr":"TB","statId":"23","group":"batting","t1Val":"39","t2Val":"38","winner":"t1"},{"abbr":"ERA","statId":"26","group":"pitching","t1Val":"6.07","t2Val":"5.02","winner":"t2"},{"abbr":"WHIP","statId":"27","group":"pitching","t1Val":"1.69","t2Val":"1.19","winner":"t2"},{"abbr":"W","statId":"28","group":"pitching","t1Val":"0","t2Val":"1","winner":"t2"},{"abbr":"L","statId":"29","group":"pitching","t1Val":"3","t2Val":"1","winner":"t2"},{"abbr":"CG","statId":"30","group":"pitching","t1Val":"0","t2Val":"0","winner":"tie"},{"abbr":"K(P)","statId":"42","group":"pitching","t1Val":"39","t2Val":"15","winner":"t1"},{"abbr":"GIDP","statId":"46","group":"pitching","t1Val":"2","t2Val":"0","winner":"t1"},{"abbr":"TB(P)","statId":"49","group":"pitching","t1Val":"63","t2Val":"22","winner":"t2"},{"abbr":"A","statId":"52","group":"batting","t1Val":"33","t2Val":"31","winner":"t1"},{"abbr":"K/BB","statId":"56","group":"pitching","t1Val":"3.55","t2Val":"5.00","winner":"t2"},{"abbr":"NSB","statId":"62","group":"batting","t1Val":"2","t2Val":"6","winner":"t2"},{"abbr":"SLAM","statId":"66","group":"batting","t1Val":"0","t2Val":"0","winner":"tie"},{"abbr":"RAPP","statId":"73","group":"pitching","t1Val":"5","t2Val":"5","winner":"tie"},{"abbr":"QS","statId":"83","group":"pitching","t1Val":"0","t2Val":"1","winner":"t2"},{"abbr":"NSVH","statId":"90","group":"pitching","t1Val":"0","t2Val":"4","winner":"t2"}]},{"idx":4,"t1Name":"응노","t1Key":"469.l.18247.t.8","t2Name":"JJ yoogwanholt","t2Key":"469.l.18247.t.9","t1Wins":11,"t2Wins":12,"ties":2,"cats":[{"abbr":"AVG","statId":"3","group":"batting","t1Val":".261","t2Val":".248","winner":"t1"},{"abbr":"OBP","statId":"4","group":"batting","t1Val":".313","t2Val":".355","winner":"t2"},{"abbr":"SLG","statId":"5","group":"batting","t1Val":".639","t2Val":".556","winner":"t1"},{"abbr":"R","statId":"7","group":"batting","t1Val":"20","t2Val":"22","winner":"t2"},{"abbr":"H","statId":"8","group":"batting","t1Val":"31","t2Val":"29","winner":"t1"},{"abbr":"HR","statId":"12","group":"batting","t1Val":"14","t2Val":"11","winner":"t1"},{"abbr":"RBI","statId":"13","group":"batting","t1Val":"26","t2Val":"25","winner":"t1"},{"abbr":"BB","statId":"18","group":"batting","t1Val":"10","t2Val":"20","winner":"t2"},{"abbr":"K","statId":"21","group":"batting","t1Val":"33","t2Val":"31","winner":"t2"},{"abbr":"TB","statId":"23","group":"batting","t1Val":"76","t2Val":"65","winner":"t1"},{"abbr":"ERA","statId":"26","group":"pitching","t1Val":"6.37","t2Val":"3.18","winner":"t2"},{"abbr":"WHIP","statId":"27","group":"pitching","t1Val":"1.42","t2Val":"1.27","winner":"t2"},{"abbr":"W","statId":"28","group":"pitching","t1Val":"2","t2Val":"1","winner":"t1"},{"abbr":"L","statId":"29","group":"pitching","t1Val":"4","t2Val":"2","winner":"t2"},{"abbr":"CG","statId":"30","group":"pitching","t1Val":"0","t2Val":"0","winner":"tie"},{"abbr":"K(P)","statId":"42","group":"pitching","t1Val":"44","t2Val":"31","winner":"t1"},{"abbr":"GIDP","statId":"46","group":"pitching","t1Val":"1","t2Val":"2","winner":"t2"},{"abbr":"TB(P)","statId":"49","group":"pitching","t1Val":"62","t2Val":"40","winner":"t2"},{"abbr":"A","statId":"52","group":"batting","t1Val":"32","t2Val":"20","winner":"t1"},{"abbr":"K/BB","statId":"56","group":"pitching","t1Val":"11.00","t2Val":"2.38","winner":"t1"},{"abbr":"NSB","statId":"62","group":"batting","t1Val":"1","t2Val":"3","winner":"t2"},{"abbr":"SLAM","statId":"66","group":"batting","t1Val":"1","t2Val":"1","winner":"tie"},{"abbr":"RAPP","statId":"73","group":"pitching","t1Val":"6","t2Val":"5","winner":"t1"},{"abbr":"QS","statId":"83","group":"pitching","t1Val":"1","t2Val":"2","winner":"t2"},{"abbr":"NSVH","statId":"90","group":"pitching","t1Val":"0","t2Val":"3","winner":"t2"}]},{"idx":5,"t1Name":"🏆 ProfeSuh","t1Key":"469.l.18247.t.10","t2Name":"💥 JongHun's Busters","t2Key":"469.l.18247.t.12","t1Wins":13,"t2Wins":10,"ties":2,"cats":[{"abbr":"AVG","statId":"3","group":"batting","t1Val":".294","t2Val":".200","winner":"t1"},{"abbr":"OBP","statId":"4","group":"batting","t1Val":".375","t2Val":".322","winner":"t1"},{"abbr":"SLG","statId":"5","group":"batting","t1Val":".471","t2Val":".240","winner":"t1"},{"abbr":"R","statId":"7","group":"batting","t1Val":"15","t2Val":"11","winner":"t1"},{"abbr":"H","statId":"8","group":"batting","t1Val":"35","t2Val":"20","winner":"t1"},{"abbr":"HR","statId":"12","group":"batting","t1Val":"5","t2Val":"1","winner":"t1"},{"abbr":"RBI","statId":"13","group":"batting","t1Val":"15","t2Val":"12","winner":"t1"},{"abbr":"BB","statId":"18","group":"batting","t1Val":"12","t2Val":"17","winner":"t2"},{"abbr":"K","statId":"21","group":"batting","t1Val":"35","t2Val":"27","winner":"t2"},{"abbr":"TB","statId":"23","group":"batting","t1Val":"56","t2Val":"24","winner":"t1"},{"abbr":"ERA","statId":"26","group":"pitching","t1Val":"2.49","t2Val":"1.51","winner":"t2"},{"abbr":"WHIP","statId":"27","group":"pitching","t1Val":"0.75","t2Val":"1.07","winner":"t1"},{"abbr":"W","statId":"28","group":"pitching","t1Val":"2","t2Val":"3","winner":"t2"},{"abbr":"L","statId":"29","group":"pitching","t1Val":"2","t2Val":"0","winner":"t2"},{"abbr":"CG","statId":"30","group":"pitching","t1Val":"0","t2Val":"0","winner":"tie"},{"abbr":"K(P)","statId":"42","group":"pitching","t1Val":"31","t2Val":"47","winner":"t2"},{"abbr":"GIDP","statId":"46","group":"pitching","t1Val":"0","t2Val":"2","winner":"t2"},{"abbr":"TB(P)","statId":"49","group":"pitching","t1Val":"18","t2Val":"63","winner":"t1"},{"abbr":"A","statId":"52","group":"batting","t1Val":"24","t2Val":"25","winner":"t2"},{"abbr":"K/BB","statId":"56","group":"pitching","t1Val":"3.88","t2Val":"4.70","winner":"t2"},{"abbr":"NSB","statId":"62","group":"batting","t1Val":"2","t2Val":"1","winner":"t1"},{"abbr":"SLAM","statId":"66","group":"batting","t1Val":"0","t2Val":"0","winner":"tie"},{"abbr":"RAPP","statId":"73","group":"pitching","t1Val":"10","t2Val":"4","winner":"t1"},{"abbr":"QS","statId":"83","group":"pitching","t1Val":"1","t2Val":"4","winner":"t2"},{"abbr":"NSVH","statId":"90","group":"pitching","t1Val":"3","t2Val":"1","winner":"t1"}]}];
     var TEAMS = [{"key":"469.l.18247.t.4","name":"UTU_무네타카 무라콴호"},{"key":"469.l.18247.t.10","name":"🏆 ProfeSuh"},{"key":"469.l.18247.t.11","name":"💥 JeongWoo's Shockers"},{"key":"469.l.18247.t.2","name":"xXXXxAIxXXXx"},{"key":"469.l.18247.t.9","name":"JJ yoogwanholt"},{"key":"469.l.18247.t.1","name":"2026 MVP Mike Trout"},{"key":"469.l.18247.t.6","name":"독후감 신속히 제출해주세요."},{"key":"469.l.18247.t.3","name":"TRUCK"},{"key":"469.l.18247.t.8","name":"응노"},{"key":"469.l.18247.t.5","name":"✌️ Yeonwoo's Double Play"},{"key":"469.l.18247.t.12","name":"💥 JongHun's Busters"},{"key":"469.l.18247.t.7","name":"커츠 나의어둠 나의삶"}];
     var MY_KEY = "469.l.18247.t.10";
-
     var sel = document.getElementById('matchup-select');
 
-    // Populate with team names (순위 순)
     TEAMS.forEach(function(t) {
-      var opt = document.createElement('option');
-      opt.value = t.key;
-      opt.textContent = t.name;
-      if (t.key === MY_KEY) opt.selected = true;
-      sel.appendChild(opt);
+      var o = document.createElement('option');
+      o.value = t.key; o.textContent = t.name;
+      if (t.key === MY_KEY) o.selected = true;
+      sel.appendChild(o);
     });
 
-    function findMatchupByTeam(teamKey) {
-      return MATCHUPS.findIndex(function(m) { return m.t1Key === teamKey || m.t2Key === teamKey; });
-    }
-
-    function buildCatRow(c) {
-      var t1Win = c.winner === 't1', t2Win = c.winner === 't2', isTie = c.winner === 'tie';
-      var row = document.createElement('div');
-      row.className = 'flex items-center rounded-lg px-3 py-2 ' + (isTie ? 'bg-slate-700/50' : (t1Win ? 'bg-gradient-to-r from-green-500/10 to-transparent' : 'bg-gradient-to-r from-transparent to-green-500/10'));
-
-      var s1 = document.createElement('span');
-      s1.className = 'text-sm w-16 text-right ' + (t1Win ? 'text-green-400 font-bold' : isTie ? 'text-slate-300' : 'text-slate-500');
-      s1.textContent = c.t1Val;
-
-      var mid = document.createElement('div');
-      mid.className = 'flex-1 text-center';
-      var abbr = document.createElement('span');
-      abbr.className = 'text-xs font-semibold text-slate-400';
-      abbr.textContent = c.abbr;
-      mid.appendChild(abbr);
-
-      var s2 = document.createElement('span');
-      s2.className = 'text-sm w-16 text-left ' + (t2Win ? 'text-green-400 font-bold' : isTie ? 'text-slate-300' : 'text-slate-500');
-      s2.textContent = c.t2Val;
-
-      row.appendChild(s1);
-      row.appendChild(mid);
-      row.appendChild(s2);
-      return row;
-    }
+    function findMatchupByTeam(k) { return MATCHUPS.findIndex(function(m){return m.t1Key===k||m.t2Key===k;}); }
 
     function renderMatchup(idx) {
       var m = MATCHUPS[idx];
       var t1Won = m.t1Wins > m.t2Wins, draw = m.t1Wins === m.t2Wins;
-      var section = document.getElementById('matchup-detail');
-      section.className = 'glass rounded-2xl p-8 animate-in';
 
-      var header = document.getElementById('matchup-header');
-      header.replaceChildren();
-      var wrap = document.createElement('div');
-      wrap.className = 'flex items-center justify-between flex-wrap gap-4';
+      // Header
+      var h = document.getElementById('matchup-header');
+      h.replaceChildren();
+      var row = document.createElement('div');
+      row.style.cssText = 'display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;';
 
-      var left = document.createElement('div');
-      left.className = 'flex-1 text-center md:text-left';
-      var t1p = document.createElement('p');
-      t1p.className = 'text-2xl font-extrabold ' + (t1Won ? 'text-green-400' : draw ? 'text-slate-300' : 'text-red-400');
-      t1p.textContent = m.t1Name;
-      left.appendChild(t1p);
+      var l = document.createElement('div');
+      l.style.textAlign = 'right';
+      var ln = document.createElement('div');
+      ln.className = 'text-base fw-700';
+      ln.style.color = t1Won ? 'var(--green)' : draw ? 'var(--text)' : 'var(--text3)';
+      ln.textContent = m.t1Name;
+      l.appendChild(ln);
 
-      var center = document.createElement('div');
-      center.className = 'text-center px-6';
-      var score = document.createElement('p');
-      score.className = 'text-4xl font-extrabold';
-      var s1 = document.createElement('span');
-      s1.className = t1Won ? 'text-green-400' : draw ? 'text-slate-300' : 'text-red-400';
-      s1.textContent = m.t1Wins;
-      var dash1 = document.createElement('span');
-      dash1.className = 'text-slate-600 mx-2';
-      dash1.textContent = '-';
-      var s2 = document.createElement('span');
-      s2.className = !t1Won && !draw ? 'text-green-400' : draw ? 'text-slate-300' : 'text-red-400';
-      s2.textContent = m.t2Wins;
-      var dash2 = document.createElement('span');
-      dash2.className = 'text-slate-600 mx-2';
-      dash2.textContent = '-';
-      var st = document.createElement('span');
-      st.className = 'text-slate-500 text-2xl';
-      st.textContent = m.ties;
-      score.append(s1, dash1, s2, dash2, st);
-      center.appendChild(score);
+      var c = document.createElement('div');
+      c.className = 'mono fw-700';
+      c.style.cssText = 'text-align:center;font-size:28px;letter-spacing:2px;';
+      var cs1 = document.createElement('span');
+      cs1.style.color = t1Won ? 'var(--green)' : draw ? 'var(--text)' : 'var(--text3)';
+      cs1.textContent = m.t1Wins;
+      var cd = document.createElement('span');
+      cd.style.cssText = 'color:var(--text3);margin:0 8px;font-size:20px;';
+      cd.textContent = ':';
+      var cs2 = document.createElement('span');
+      cs2.style.color = !t1Won&&!draw ? 'var(--green)' : draw ? 'var(--text)' : 'var(--text3)';
+      cs2.textContent = m.t2Wins;
+      var ct = document.createElement('span');
+      ct.style.cssText = 'color:var(--text3);margin-left:8px;font-size:14px;';
+      ct.textContent = '(T:'+m.ties+')';
+      c.append(cs1,cd,cs2,ct);
 
-      var right = document.createElement('div');
-      right.className = 'flex-1 text-center md:text-right';
-      var t2p = document.createElement('p');
-      t2p.className = 'text-2xl font-extrabold ' + (!t1Won && !draw ? 'text-green-400' : draw ? 'text-slate-300' : 'text-red-400');
-      t2p.textContent = m.t2Name;
-      right.appendChild(t2p);
+      var r = document.createElement('div');
+      var rn = document.createElement('div');
+      rn.className = 'text-base fw-700';
+      rn.style.color = !t1Won&&!draw ? 'var(--green)' : draw ? 'var(--text)' : 'var(--text3)';
+      rn.textContent = m.t2Name;
+      r.appendChild(rn);
 
-      wrap.append(left, center, right);
-      header.appendChild(wrap);
+      row.append(l,c,r);
+      h.appendChild(row);
 
-      var catsEl = document.getElementById('matchup-cats');
-      catsEl.replaceChildren();
+      // Cats
+      var ce = document.getElementById('matchup-cats');
+      ce.replaceChildren();
 
       function buildGroup(label, cats) {
         var col = document.createElement('div');
-        var h3 = document.createElement('h3');
-        h3.className = 'text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3';
-        h3.textContent = label;
-        col.appendChild(h3);
-        var list = document.createElement('div');
-        list.className = 'space-y-2';
-        cats.forEach(function(c) { list.appendChild(buildCatRow(c)); });
-        col.appendChild(list);
+        var title = document.createElement('div');
+        title.className = 'text-xs fw-600';
+        title.style.cssText = 'color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;';
+        title.textContent = label;
+        col.appendChild(title);
+        cats.forEach(function(cat) {
+          var cr = document.createElement('div');
+          cr.className = 'cat-row';
+          var t1Win = cat.winner==='t1', t2Win = cat.winner==='t2', tie = cat.winner==='tie';
+
+          var v1 = document.createElement('span');
+          v1.className = 'mono text-sm fw-600';
+          v1.style.cssText = 'text-align:right;color:'+(t1Win?'var(--green)':tie?'var(--text2)':'var(--text3)')+';';
+          v1.textContent = cat.t1Val;
+
+          var bar1 = document.createElement('div');
+          bar1.style.cssText = 'height:2px;background:'+(t1Win?'var(--green)':'transparent')+';border-radius:1px;margin:0 4px;';
+
+          var ab = document.createElement('span');
+          ab.className = 'mono text-xs fw-600';
+          ab.style.cssText = 'text-align:center;color:var(--text3);';
+          ab.textContent = cat.abbr;
+
+          var bar2 = document.createElement('div');
+          bar2.style.cssText = 'height:2px;background:'+(t2Win?'var(--green)':'transparent')+';border-radius:1px;margin:0 4px;';
+
+          var v2 = document.createElement('span');
+          v2.className = 'mono text-sm fw-600';
+          v2.style.cssText = 'color:'+(t2Win?'var(--green)':tie?'var(--text2)':'var(--text3)')+';';
+          v2.textContent = cat.t2Val;
+
+          cr.append(v1,bar1,ab,bar2,v2);
+          col.appendChild(cr);
+        });
         return col;
       }
 
-      var batting = m.cats.filter(function(c) { return c.group === 'batting'; });
-      var pitching = m.cats.filter(function(c) { return c.group === 'pitching'; });
-      catsEl.append(buildGroup('Batting', batting), buildGroup('Pitching', pitching));
+      ce.append(
+        buildGroup('Batting', m.cats.filter(function(c){return c.group==='batting';})),
+        buildGroup('Pitching', m.cats.filter(function(c){return c.group==='pitching';}))
+      );
 
+      // Highlight card
       document.querySelectorAll('.matchup-card').forEach(function(card) {
         var ci = parseInt(card.dataset.idx);
-        if (ci === idx) { card.classList.add('ring-2', 'ring-blue-500/50'); }
-        else { card.classList.remove('ring-2', 'ring-blue-500/50'); }
+        if (ci===idx) { card.classList.add('active'); } else { card.classList.remove('active'); }
       });
     }
 
-    function selectTeam(teamKey) {
-      sel.value = teamKey;
-      var idx = findMatchupByTeam(teamKey);
-      if (idx >= 0) renderMatchup(idx);
-    }
-
-    sel.addEventListener('change', function() { selectTeam(sel.value); });
-    document.querySelectorAll('.matchup-card').forEach(function(card) {
-      card.addEventListener('click', function() {
-        var idx = parseInt(card.dataset.idx);
-        var m = MATCHUPS[idx];
-        // 클릭한 카드의 t1 팀을 선택 (이미 그 매치업으로 이동)
+    function selectTeam(k) { sel.value=k; var i=findMatchupByTeam(k); if(i>=0)renderMatchup(i); }
+    sel.addEventListener('change', function(){selectTeam(sel.value);});
+    document.querySelectorAll('.matchup-card').forEach(function(card){
+      card.addEventListener('click', function(){
+        var m = MATCHUPS[parseInt(card.dataset.idx)];
         selectTeam(m.t1Key);
-        document.getElementById('matchup-detail').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.getElementById('matchup-detail').scrollIntoView({behavior:'smooth',block:'nearest'});
       });
     });
-
     selectTeam(MY_KEY);
   </script>
 </body>
