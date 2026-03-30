@@ -191,7 +191,23 @@
       </div>
     </div>
 
-    <!-- Row 2: Radar + Rankings -->
+    <!-- Row 2: Trend Charts (H2H Rank + Roto Points) -->
+    <div class="row-2col" style="margin-bottom:20px;">
+      <div class="card fade-in" style="padding:16px;animation-delay:0.08s;">
+        <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">H2H Rank Trend</div>
+        <div style="position:relative;height:220px;">
+          <canvas id="chartRank"></canvas>
+        </div>
+      </div>
+      <div class="card fade-in" style="padding:16px;animation-delay:0.1s;">
+        <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">Roto Points Trend</div>
+        <div style="position:relative;height:220px;">
+          <canvas id="chartRoto"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3: Radar + Rankings -->
     <div class="row-2col" style="margin-bottom:20px;">
       <!-- Radar Charts -->
       <div class="card fade-in" style="padding:16px;animation-delay:0.1s;">
@@ -450,6 +466,94 @@
     var chartBat = new Chart(document.getElementById('radarBat'),{type:'radar',data:{labels:batLabels,datasets:[{data:[12,10,10,7,12,9,10,4,2,10,4,8,9],backgroundColor:'rgba(59,130,246,0.1)',borderColor:'rgba(59,130,246,0.6)',borderWidth:1.5,pointBackgroundColor:'#3b82f6',pointRadius:3}]},options:ro});
     var chartPit = new Chart(document.getElementById('radarPit'),{type:'radar',data:{labels:pitLabels,datasets:[{data:[9,12,10,7,11,5,2,12,7,12,5,11],backgroundColor:'rgba(167,139,250,0.1)',borderColor:'rgba(167,139,250,0.6)',borderWidth:1.5,pointBackgroundColor:'#a78bfa',pointRadius:3}]},options:ro});
 
+    // Trend charts
+    var HISTORY = {"weeks":[{"week":1,"teams":[{"key":"469.l.18247.t.4","name":"UTU_무네타카 무라콴호","rank":1,"wins":15,"losses":5,"ties":5,"pct":".700","rotoPoints":206},{"key":"469.l.18247.t.10","name":"🏆 ProfeSuh","rank":2,"wins":13,"losses":10,"ties":2,"pct":".560","rotoPoints":210},{"key":"469.l.18247.t.11","name":"💥 JeongWoo's Shockers","rank":3,"wins":12,"losses":10,"ties":3,"pct":".540","rotoPoints":143},{"key":"469.l.18247.t.2","name":"xXXXxAIxXXXx","rank":4,"wins":11,"losses":10,"ties":4,"pct":".520","rotoPoints":166},{"key":"469.l.18247.t.9","name":"JJ yoogwanholt","rank":5,"wins":12,"losses":11,"ties":2,"pct":".520","rotoPoints":201},{"key":"469.l.18247.t.1","name":"2026 MVP Mike Trout","rank":6,"wins":10,"losses":10,"ties":5,"pct":".500","rotoPoints":192},{"key":"469.l.18247.t.6","name":"독후감 신속히 제출해주세요.","rank":7,"wins":10,"losses":10,"ties":5,"pct":".500","rotoPoints":194},{"key":"469.l.18247.t.3","name":"TRUCK","rank":8,"wins":10,"losses":11,"ties":4,"pct":".480","rotoPoints":135},{"key":"469.l.18247.t.8","name":"응노","rank":9,"wins":11,"losses":12,"ties":2,"pct":".480","rotoPoints":164},{"key":"469.l.18247.t.5","name":"✌️ Yeonwoo's Double Play","rank":10,"wins":10,"losses":12,"ties":3,"pct":".460","rotoPoints":102},{"key":"469.l.18247.t.12","name":"💥 JongHun's Busters","rank":11,"wins":10,"losses":13,"ties":2,"pct":".440","rotoPoints":131},{"key":"469.l.18247.t.7","name":"커츠 나의어둠 나의삶","rank":12,"wins":5,"losses":15,"ties":5,"pct":".300","rotoPoints":106}]}]};
+    var weekLabels = HISTORY.weeks.map(function(w) { return 'W' + w.week; });
+
+    var trendLineOpts = {
+      responsive: true, maintainAspectRatio: false,
+      scales: {
+        x: { grid: { color: 'rgba(148,163,184,0.05)' }, ticks: { color: '#64748b', font: { size: 10, family: 'JetBrains Mono' } } },
+        y: { grid: { color: 'rgba(148,163,184,0.08)' }, ticks: { color: '#64748b', font: { size: 10, family: 'JetBrains Mono' }, stepSize: 1 } }
+      },
+      plugins: { legend: { display: true, labels: { color: '#94a3b8', font: { size: 10 }, boxWidth: 8, padding: 8 } } },
+      interaction: { mode: 'index', intersect: false },
+      elements: { point: { radius: 4, hoverRadius: 6 }, line: { tension: 0.3 } }
+    };
+
+    var rankOpts = JSON.parse(JSON.stringify(trendLineOpts));
+    rankOpts.scales.y.reverse = true;
+    rankOpts.scales.y.min = 1;
+    rankOpts.scales.y.max = 12;
+    rankOpts.plugins.legend.display = false;
+
+    var rotoOpts = JSON.parse(JSON.stringify(trendLineOpts));
+    rotoOpts.plugins.legend.display = false;
+
+    function getTeamTrendData(teamKey, field) {
+      return HISTORY.weeks.map(function(w) {
+        var t = w.teams.find(function(t) { return t.key === teamKey; });
+        return t ? t[field] : null;
+      });
+    }
+
+    // Team color palette (consistent per team index)
+    var TEAM_COLORS = ['#3b82f6','#22c55e','#f59e0b','#ef4444','#a78bfa','#06b6d4','#ec4899','#84cc16','#f97316','#6366f1','#14b8a6','#e11d48'];
+    function teamColor(teamKey) {
+      var idx = TEAMS.findIndex(function(t) { return t.key === teamKey; });
+      return TEAM_COLORS[idx % TEAM_COLORS.length];
+    }
+
+    // Initialize with selected team + all others as faint background
+    function buildTrendDatasets(teamKey, field) {
+      var datasets = [];
+      // Background: all teams faint
+      TEAMS.forEach(function(t) {
+        if (t.key === teamKey) return;
+        datasets.push({
+          label: t.name,
+          data: getTeamTrendData(t.key, field),
+          borderColor: 'rgba(148,163,184,0.12)',
+          backgroundColor: 'transparent',
+          borderWidth: 1,
+          pointRadius: 0,
+          tension: 0.3,
+        });
+      });
+      // Foreground: selected team bold
+      var color = teamColor(teamKey);
+      datasets.push({
+        label: TEAM_NAMES[teamKey] || '',
+        data: getTeamTrendData(teamKey, field),
+        borderColor: color,
+        backgroundColor: color + '1a',
+        borderWidth: 2.5,
+        pointRadius: 5,
+        pointBackgroundColor: color,
+        tension: 0.3,
+        fill: true,
+      });
+      return datasets;
+    }
+
+    var chartRank = new Chart(document.getElementById('chartRank'), {
+      type: 'line',
+      data: { labels: weekLabels, datasets: buildTrendDatasets(MY_KEY, 'rank') },
+      options: rankOpts,
+    });
+    var chartRoto = new Chart(document.getElementById('chartRoto'), {
+      type: 'line',
+      data: { labels: weekLabels, datasets: buildTrendDatasets(MY_KEY, 'rotoPoints') },
+      options: rotoOpts,
+    });
+
+    function updateTrend(teamKey) {
+      chartRank.data.datasets = buildTrendDatasets(teamKey, 'rank');
+      chartRank.update();
+      chartRoto.data.datasets = buildTrendDatasets(teamKey, 'rotoPoints');
+      chartRoto.update();
+    }
+
     TEAMS.forEach(function(t) {
       var o = document.createElement('option');
       o.value = t.key; o.textContent = t.name;
@@ -628,6 +732,7 @@
       updateRadar(k);
       updateRankings(k);
       highlightStandings(k);
+      updateTrend(k);
     }
 
     sel.addEventListener('change', function(){selectTeam(sel.value);});
