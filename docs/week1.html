@@ -33,10 +33,16 @@
 
     @media (max-width: 768px) {
       .grid-2, .grid-3, .grid-sidebar, .row-2col { grid-template-columns: 1fr !important; }
-      .container { padding: 0 12px; }
-      .mg { grid-template-columns: 1fr 60px 1fr; padding: 8px 10px; }
-      .cat-row { grid-template-columns: 44px 1fr auto 1fr 44px; font-size: 12px; padding: 5px 6px; }
-      select { min-width: 0 !important; width: 100%; }
+      .container { padding: 0 10px; }
+      header .container { flex-direction: column; gap: 8px; align-items: flex-start; }
+      .mg { grid-template-columns: 1fr 56px 1fr; padding: 7px 8px; font-size: 12px; }
+      .cat-row { grid-template-columns: 40px 1fr auto 1fr 40px; font-size: 11px; padding: 4px 6px; }
+      .rank-pill { font-size: 10px; padding: 2px 6px; }
+      .ct-inner { min-width: 140px; padding: 8px 10px; }
+      select { min-width: 0 !important; width: 100%; font-size: 12px; }
+      .card { border-radius: 8px; }
+      .scroll-y { max-height: 300px; }
+      .txn-row { grid-template-columns: 40px 1fr 1fr; font-size: 11px; gap: 4px; }
     }
 
     /* Matchup grid */
@@ -70,6 +76,17 @@
     /* Transaction compact */
     .txn-row { display: grid; grid-template-columns: 52px 1fr 1fr; gap: 8px; padding: 5px 10px; font-size: 12px; border-bottom: 1px solid var(--border); }
     .txn-row:last-child { border-bottom: none; }
+
+    /* Custom tooltip */
+    .ct { position: absolute; pointer-events: none; z-index: 50; opacity: 0; transition: opacity 0.15s ease, transform 0.15s ease; transform: translateY(4px); }
+    .ct.show { opacity: 1; transform: translateY(0); }
+    .ct-inner { background: #1e293b; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 10px 14px; box-shadow: 0 8px 32px rgba(0,0,0,0.5); min-width: 180px; }
+    .ct-title { font-family: var(--mono); font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+    .ct-row { display: flex; align-items: center; gap: 8px; padding: 3px 0; }
+    .ct-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .ct-name { font-size: 12px; color: var(--text2); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ct-val { font-family: var(--mono); font-size: 12px; font-weight: 700; }
+    .ct-row.highlight .ct-name { color: var(--text); }
 
     /* Animations */
     @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
@@ -460,7 +477,33 @@
     var sel = document.getElementById('matchup-select');
 
     // Radar charts (stored for dynamic update)
-    var ro = { responsive:true, maintainAspectRatio:false, scales:{r:{min:0,max:12,ticks:{display:false,stepSize:3},grid:{color:'rgba(148,163,184,0.08)'},pointLabels:{color:'#64748b',font:{size:10,weight:'600',family:'JetBrains Mono'}},angleLines:{color:'rgba(148,163,184,0.05)'}}},plugins:{legend:{display:false}} };
+    // Radar tooltip
+    function radarTooltip(context) {
+      var chart = context.chart;
+      var tooltip = context.tooltip;
+      var el = chart.canvas.parentNode.querySelector('.ct');
+      if (!el) { el = document.createElement('div'); el.className = 'ct'; chart.canvas.parentNode.appendChild(el); }
+      if (tooltip.opacity === 0) { el.classList.remove('show'); return; }
+      var items = tooltip.dataPoints || [];
+      var inner = '<div class="ct-inner">';
+      items.forEach(function(pt) {
+        var label = pt.label || '';
+        var score = pt.raw;
+        var rank = 13 - score;
+        inner += '<div class="ct-row highlight">';
+        inner += '<span class="ct-name">' + label + '</span>';
+        inner += '<span class="ct-val" style="color:var(--accent);">#' + rank + '</span>';
+        inner += '</div>';
+      });
+      inner += '</div>';
+      el.replaceChildren();
+      var tmp = document.createElement('div'); tmp.innerHTML = inner;
+      while (tmp.firstChild) el.appendChild(tmp.firstChild);
+      el.style.left = tooltip.caretX + 'px';
+      el.style.top = tooltip.caretY + 'px';
+      el.classList.add('show');
+    }
+    var ro = { responsive:true, maintainAspectRatio:false, scales:{r:{min:0,max:12,ticks:{display:false,stepSize:3},grid:{color:'rgba(148,163,184,0.08)'},pointLabels:{color:'#64748b',font:{size:10,weight:'600',family:'JetBrains Mono'}},angleLines:{color:'rgba(148,163,184,0.05)'}}},plugins:{legend:{display:false},tooltip:{enabled:false,external:radarTooltip}} };
     var batLabels = ["AVG","OBP","SLG","R","H","HR","RBI","BB","K","TB","A","NSB","SLAM"];
     var pitLabels = ["ERA","WHIP","W","L","CG","K(P)","GIDP","TB(P)","K/BB","RAPP","QS","NSVH"];
     var chartBat = new Chart(document.getElementById('radarBat'),{type:'radar',data:{labels:batLabels,datasets:[{data:[12,10,10,7,12,9,10,4,2,10,4,8,9],backgroundColor:'rgba(59,130,246,0.1)',borderColor:'rgba(59,130,246,0.6)',borderWidth:1.5,pointBackgroundColor:'#3b82f6',pointRadius:3}]},options:ro});
@@ -470,13 +513,77 @@
     var HISTORY = {"weeks":[{"week":1,"teams":[{"key":"469.l.18247.t.4","name":"UTU_무네타카 무라콴호","rank":1,"wins":15,"losses":5,"ties":5,"pct":".700","rotoPoints":206},{"key":"469.l.18247.t.10","name":"🏆 ProfeSuh","rank":2,"wins":13,"losses":10,"ties":2,"pct":".560","rotoPoints":210},{"key":"469.l.18247.t.11","name":"💥 JeongWoo's Shockers","rank":3,"wins":12,"losses":10,"ties":3,"pct":".540","rotoPoints":143},{"key":"469.l.18247.t.2","name":"xXXXxAIxXXXx","rank":4,"wins":11,"losses":10,"ties":4,"pct":".520","rotoPoints":166},{"key":"469.l.18247.t.9","name":"JJ yoogwanholt","rank":5,"wins":12,"losses":11,"ties":2,"pct":".520","rotoPoints":201},{"key":"469.l.18247.t.1","name":"2026 MVP Mike Trout","rank":6,"wins":10,"losses":10,"ties":5,"pct":".500","rotoPoints":192},{"key":"469.l.18247.t.6","name":"독후감 신속히 제출해주세요.","rank":7,"wins":10,"losses":10,"ties":5,"pct":".500","rotoPoints":194},{"key":"469.l.18247.t.3","name":"TRUCK","rank":8,"wins":10,"losses":11,"ties":4,"pct":".480","rotoPoints":135},{"key":"469.l.18247.t.8","name":"응노","rank":9,"wins":11,"losses":12,"ties":2,"pct":".480","rotoPoints":164},{"key":"469.l.18247.t.5","name":"✌️ Yeonwoo's Double Play","rank":10,"wins":10,"losses":12,"ties":3,"pct":".460","rotoPoints":102},{"key":"469.l.18247.t.12","name":"💥 JongHun's Busters","rank":11,"wins":10,"losses":13,"ties":2,"pct":".440","rotoPoints":131},{"key":"469.l.18247.t.7","name":"커츠 나의어둠 나의삶","rank":12,"wins":5,"losses":15,"ties":5,"pct":".300","rotoPoints":106}]}]};
     var weekLabels = HISTORY.weeks.map(function(w) { return 'W' + w.week; });
 
+    // Custom external tooltip handler
+    function externalTooltip(context) {
+      var chart = context.chart;
+      var tooltip = context.tooltip;
+      var el = chart.canvas.parentNode.querySelector('.ct');
+      if (!el) {
+        el = document.createElement('div');
+        el.className = 'ct';
+        chart.canvas.parentNode.appendChild(el);
+      }
+      if (tooltip.opacity === 0) {
+        el.classList.remove('show');
+        return;
+      }
+      // Sort items by value for rank charts (selected team first otherwise)
+      var items = tooltip.dataPoints || [];
+      // Build rows — only show teams with visible data (pointRadius > 0 or borderWidth > 1.5)
+      var rows = [];
+      items.forEach(function(pt) {
+        var ds = chart.data.datasets[pt.datasetIndex];
+        if (pt.raw === null || pt.raw === undefined) return;
+        var isHighlight = ds.borderWidth > 1.5;
+        var color = isHighlight ? ds.borderColor : 'var(--text3)';
+        rows.push({ name: ds.label, value: pt.formattedValue, color: color, highlight: isHighlight, raw: pt.raw });
+      });
+      // Only show highlighted team + sort others by value
+      var highlighted = rows.filter(function(r) { return r.highlight; });
+      var others = rows.filter(function(r) { return !r.highlight; });
+      // For rank: sort ascending (lower is better). For roto: sort descending
+      var isRank = chart.options.scales && chart.options.scales.y && chart.options.scales.y.reverse;
+      others.sort(function(a, b) { return isRank ? a.raw - b.raw : b.raw - a.raw; });
+      // Show top 3 others + highlighted
+      var top3 = others.slice(0, 3);
+      var display = highlighted.concat(top3);
+      // Sort final display
+      display.sort(function(a, b) { return isRank ? a.raw - b.raw : b.raw - a.raw; });
+
+      var inner = '<div class="ct-inner">';
+      inner += '<div class="ct-title">' + (tooltip.title[0] || '') + '</div>';
+      display.forEach(function(r) {
+        var hl = r.highlight ? ' highlight' : '';
+        inner += '<div class="ct-row' + hl + '">';
+        inner += '<div class="ct-dot" style="background:' + r.color + ';"></div>';
+        inner += '<span class="ct-name">' + r.name + '</span>';
+        inner += '<span class="ct-val" style="color:' + r.color + ';">' + r.value + '</span>';
+        inner += '</div>';
+      });
+      if (others.length > 3) {
+        inner += '<div class="ct-row"><span class="ct-name" style="font-size:10px;color:var(--text3);">+' + (others.length - 3) + ' more</span></div>';
+      }
+      inner += '</div>';
+      el.replaceChildren();
+      var tmp = document.createElement('div');
+      tmp.innerHTML = inner;
+      while (tmp.firstChild) el.appendChild(tmp.firstChild);
+
+      el.style.left = tooltip.caretX + 'px';
+      el.style.top = tooltip.caretY + 'px';
+      el.classList.add('show');
+    }
+
     var trendLineOpts = {
       responsive: true, maintainAspectRatio: false,
       scales: {
         x: { grid: { color: 'rgba(148,163,184,0.05)' }, ticks: { color: '#64748b', font: { size: 10, family: 'JetBrains Mono' } } },
         y: { grid: { color: 'rgba(148,163,184,0.08)' }, ticks: { color: '#64748b', font: { size: 10, family: 'JetBrains Mono' }, stepSize: 1 } }
       },
-      plugins: { legend: { display: true, labels: { color: '#94a3b8', font: { size: 10 }, boxWidth: 8, padding: 8 } } },
+      plugins: {
+        legend: { display: false },
+        tooltip: { enabled: false, external: externalTooltip }
+      },
       interaction: { mode: 'index', intersect: false },
       elements: { point: { radius: 4, hoverRadius: 6 }, line: { tension: 0.3 } }
     };
@@ -485,10 +592,11 @@
     rankOpts.scales.y.reverse = true;
     rankOpts.scales.y.min = 1;
     rankOpts.scales.y.max = 12;
-    rankOpts.plugins.legend.display = false;
+    // Re-attach external fn (lost in JSON.parse)
+    rankOpts.plugins.tooltip = { enabled: false, external: externalTooltip };
 
     var rotoOpts = JSON.parse(JSON.stringify(trendLineOpts));
-    rotoOpts.plugins.legend.display = false;
+    rotoOpts.plugins.tooltip = { enabled: false, external: externalTooltip };
 
     function getTeamTrendData(teamKey, field) {
       return HISTORY.weeks.map(function(w) {
