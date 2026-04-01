@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Week 2 — Fantasy Baseball 2026</title>
+  <title>Week 1 — Fantasy Baseball 2026</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -67,6 +67,8 @@
     .tab-btn.active { background: var(--accent); color: white; }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
+    .main-tab { display: none; }
+    .main-tab.active { display: block; }
 
     /* Scrollable regions */
     .scroll-y { max-height: 420px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--surface2) transparent; }
@@ -116,18 +118,34 @@
 </head>
 <body>
   <!-- Header -->
-  <header style="border-bottom:1px solid var(--border);padding:16px 0;">
-    <div class="container" style="display:flex;align-items:center;justify-content:space-between;">
-      <div style="display:flex;align-items:baseline;gap:12px;">
+  <header style="border-bottom:1px solid var(--border);padding:12px 0;">
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+      <div style="display:flex;align-items:center;gap:12px;">
         <span class="mono fw-700" style="font-size:18px;color:var(--accent);">FB</span>
-        <span class="text-sm" style="color:var(--text2);">Week 2</span>
+        <!-- Week navigation -->
+        <div style="display:flex;align-items:center;gap:4px;">
+          <span style="padding:4px 6px;color:var(--surface2);font-size:12px;">&lt;</span>
+          <select id="week-select" onchange="location.href='week'+this.value+'.html'" style="min-width:80px;font-size:12px;padding:4px 24px 4px 8px;">
+            <option value="1" selected>Week 1</option>
+          </select>
+          <a href="week2.html" style="color:var(--text3);text-decoration:none;padding:4px 6px;border-radius:4px;font-size:12px;" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background=''">&gt;</a>
+        </div>
         <span class="text-xs" style="color:var(--text3);">2026. 4. 1.</span>
       </div>
-      <select id="matchup-select" style="min-width:220px;"></select>
+      <!-- Main tabs -->
+      <div id="main-tabs" class="tab-bar">
+        <button class="tab-btn active" onclick="switchMainTab('overview')">Overview</button>
+        <button class="tab-btn" onclick="switchMainTab('matchup')">Matchup</button>
+        <button class="tab-btn" onclick="switchMainTab('analysis')">Analysis</button>
+        <button class="tab-btn" onclick="switchMainTab('activity')">Activity</button>
+      </div>
     </div>
   </header>
 
-  <main class="container" style="padding-top:24px;padding-bottom:40px;">
+  <main class="container" style="padding-top:20px;padding-bottom:40px;">
+
+    <!-- ═══ TAB: Overview ═══ -->
+    <div id="tab-overview" class="main-tab active">
 
     <!-- Hot Zone: Players + Team -->
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px;" class="hot-grid">
@@ -141,7 +159,7 @@
               <div class="mono text-xs" style="color:var(--text3);">WSH · OF</div>
             </div>
             <div class="mono text-xs" style="text-align:right;line-height:1.6;">
-              <span style="color:var(--text);">.800</span> <span style="color:var(--text3);">AVG</span><br>
+              <span style="color:var(--text);">.615</span> <span style="color:var(--text3);">AVG</span><br>
               <span style="color:var(--amber);">2</span><span style="color:var(--text3);">HR</span> <span style="color:var(--text);">4</span><span style="color:var(--text3);">RBI</span> <span style="color:var(--text2);">16</span><span style="color:var(--text3);">TB</span>
             </div>
           </div>
@@ -152,7 +170,7 @@
               <div class="mono text-xs" style="color:var(--text3);">HOU · 2B,OF</div>
             </div>
             <div class="mono text-xs" style="text-align:right;line-height:1.6;">
-              <span style="color:var(--text);">.412</span> <span style="color:var(--text3);">AVG</span><br>
+              <span style="color:var(--text);">.368</span> <span style="color:var(--text3);">AVG</span><br>
               <span style="color:var(--amber);">2</span><span style="color:var(--text3);">HR</span> <span style="color:var(--text);">3</span><span style="color:var(--text3);">RBI</span> <span style="color:var(--text2);">14</span><span style="color:var(--text3);">TB</span>
             </div>
           </div>
@@ -163,8 +181,8 @@
               <div class="mono text-xs" style="color:var(--text3);">CIN · 1B</div>
             </div>
             <div class="mono text-xs" style="text-align:right;line-height:1.6;">
-              <span style="color:var(--text);">.667</span> <span style="color:var(--text3);">AVG</span><br>
-              <span style="color:var(--amber);">1</span><span style="color:var(--text3);">HR</span> <span style="color:var(--text);">2</span><span style="color:var(--text3);">RBI</span> <span style="color:var(--text2);">14</span><span style="color:var(--text3);">TB</span>
+              <span style="color:var(--text);">.563</span> <span style="color:var(--text3);">AVG</span><br>
+              <span style="color:var(--amber);">2</span><span style="color:var(--text3);">HR</span> <span style="color:var(--text);">3</span><span style="color:var(--text3);">RBI</span> <span style="color:var(--text2);">18</span><span style="color:var(--text3);">TB</span>
             </div>
           </div>
       </div>
@@ -190,8 +208,8 @@
               <div class="mono text-xs" style="color:var(--text3);">PHI · SP</div>
             </div>
             <div class="mono text-xs" style="text-align:right;line-height:1.6;">
-              <span style="color:var(--text);">-</span> <span style="color:var(--text3);">ERA</span> <span style="color:var(--text2);">-</span> <span style="color:var(--text3);">WHIP</span><br>
-              <span style="color:var(--amber);">0</span><span style="color:var(--text3);">W</span> <span style="color:var(--text);">0</span><span style="color:var(--text3);">K</span> <span style="color:var(--text2);">-</span><span style="color:var(--text3);">IP</span>
+              <span style="color:var(--text);">0.00</span> <span style="color:var(--text3);">ERA</span> <span style="color:var(--text2);">0.50</span> <span style="color:var(--text3);">WHIP</span><br>
+              <span style="color:var(--amber);">1</span><span style="color:var(--text3);">W</span> <span style="color:var(--text);">10</span><span style="color:var(--text3);">K</span> <span style="color:var(--text2);">6.0</span><span style="color:var(--text3);">IP</span>
             </div>
           </div>
         <div style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;">
@@ -210,21 +228,21 @@
       <!-- Hot Teams (this week's roto) -->
       <div class="card fade-in" style="padding:14px;animation-delay:0.1s;">
         <div class="text-xs fw-600" style="color:var(--amber);margin-bottom:10px;letter-spacing:1px;">🔥 HOT TEAMS <span style="color:var(--text3);font-weight:400;">This Week</span></div>
-        <div style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.15);" onclick="selectTeam('469.l.18247.t.5')" style="cursor:pointer;">
+        <div style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.15);" onclick="selectTeam('469.l.18247.t.6')" style="cursor:pointer;">
             <span style="font-size:18px;">🥇</span>
             <div style="flex:1;min-width:0;">
-              <div class="text-sm fw-700 truncate">✌️ Yeonwoo's Double Play</div>
-              <div class="mono text-xs" style="color:var(--text3);">10W-12L-3T</div>
+              <div class="text-sm fw-700 truncate">독후감 신속히 제출해주세요.</div>
+              <div class="mono text-xs" style="color:var(--text3);">10W-10L-5T</div>
             </div>
-            <div class="mono text-sm fw-700" style="color:var(--amber);">240.5<span class="text-xs" style="color:var(--text3);"> pts</span></div>
+            <div class="mono text-sm fw-700" style="color:var(--amber);">196.0<span class="text-xs" style="color:var(--text3);"> pts</span></div>
           </div>
-        <div style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;" onclick="selectTeam('469.l.18247.t.12')" style="cursor:pointer;">
+        <div style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;" onclick="selectTeam('469.l.18247.t.9')" style="cursor:pointer;">
             <span style="font-size:18px;">🥈</span>
             <div style="flex:1;min-width:0;">
-              <div class="text-sm fw-700 truncate">💥 JongHun's Busters</div>
-              <div class="mono text-xs" style="color:var(--text3);">10W-13L-2T</div>
+              <div class="text-sm fw-700 truncate">JJ yoogwanholt</div>
+              <div class="mono text-xs" style="color:var(--text3);">12W-11L-2T</div>
             </div>
-            <div class="mono text-sm fw-700" style="color:var(--amber);">199.0<span class="text-xs" style="color:var(--text3);"> pts</span></div>
+            <div class="mono text-sm fw-700" style="color:var(--amber);">196.0<span class="text-xs" style="color:var(--text3);"> pts</span></div>
           </div>
         <div style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;" onclick="selectTeam('469.l.18247.t.10')" style="cursor:pointer;">
             <span style="font-size:18px;">🥉</span>
@@ -232,22 +250,18 @@
               <div class="text-sm fw-700 truncate">🏆 ProfeSuh</div>
               <div class="mono text-xs" style="color:var(--text3);">13W-10L-2T</div>
             </div>
-            <div class="mono text-sm fw-700" style="color:var(--amber);">183.5<span class="text-xs" style="color:var(--text3);"> pts</span></div>
+            <div class="mono text-sm fw-700" style="color:var(--amber);">192.0<span class="text-xs" style="color:var(--text3);"> pts</span></div>
           </div>
       </div>
     </div>
 
-    <!-- Row 1: Matchup + Standings -->
-    <div class="grid-sidebar fade-in" style="margin-bottom:20px;">
-
-      <!-- Standings -->
-      <div class="card" style="padding:16px;">
+    <!-- Standings (H2H + Roto) -->
+    <div class="row-2col" style="margin-bottom:20px;">
+      <div class="card fade-in" style="padding:16px;">
         <div id="board-tabs" class="tab-bar" style="margin-bottom:10px;">
           <button class="tab-btn active" onclick="switchBoard('h2h')">H2H</button>
           <button class="tab-btn" onclick="switchBoard('roto')">Roto</button>
         </div>
-
-        <!-- H2H Board -->
         <div id="board-h2h" class="tab-content active">
           <div data-team-key="469.l.18247.t.4" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.4')">
               <span class="mono fw-700 text-sm" style="color:var(--amber);width:18px;text-align:right;">1</span>
@@ -322,8 +336,6 @@
               <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">5-15-5</span>
             </div>
         </div>
-
-        <!-- Roto Board -->
         <div id="board-roto" class="tab-content">
           <div data-team-key="469.l.18247.t.9" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.9')">
               <span class="mono fw-700 text-sm" style="color:var(--amber);width:18px;text-align:right;">1</span>
@@ -400,30 +412,88 @@
         </div>
       </div>
 
-      <!-- Matchup Detail -->
+      <!-- Trend Charts stacked -->
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div class="card fade-in" style="padding:14px;">
+          <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">H2H Rank Trend</div>
+          <div style="position:relative;height:160px;"><canvas id="chartRank"></canvas></div>
+        </div>
+        <div class="card fade-in" style="padding:14px;">
+          <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">Roto Points Trend</div>
+          <div style="position:relative;height:160px;"><canvas id="chartRoto"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    </div><!-- /tab-overview -->
+
+    <!-- ═══ TAB: Matchup ═══ -->
+    <div id="tab-matchup" class="main-tab">
+
+    <!-- Team selector + Matchup Detail -->
+    <div style="margin-bottom:16px;">
+      <select id="matchup-select" style="min-width:240px;"></select>
+    </div>
+    <div class="grid-sidebar fade-in" style="margin-bottom:20px;">
+      <div class="card" style="padding:16px;">
+        <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">All Matchups</div>
+        <div id="matchup-cards">
+          <div class="mg matchup-card" data-idx="0">
+              <div style="text-align:right;" class="text-sm truncate fw-600 ">2026 MVP Mike Trout</div>
+              <div class="mono fw-700 text-sm" style="text-align:center;">
+                <span class="">10</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="">10</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="t">5</span>
+              </div>
+              <div class="text-sm truncate fw-600 ">독후감 신속히 제출해주세요.</div>
+            </div>
+          <div class="mg matchup-card" data-idx="1">
+              <div style="text-align:right;" class="text-sm truncate fw-600 w">xXXXxAIxXXXx</div>
+              <div class="mono fw-700 text-sm" style="text-align:center;">
+                <span class="w">11</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="">10</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="t">4</span>
+              </div>
+              <div class="text-sm truncate fw-600 opacity-50">TRUCK</div>
+            </div>
+          <div class="mg matchup-card" data-idx="2">
+              <div style="text-align:right;" class="text-sm truncate fw-600 w">UTU_무네타카 무라콴호</div>
+              <div class="mono fw-700 text-sm" style="text-align:center;">
+                <span class="w">15</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="">5</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="t">5</span>
+              </div>
+              <div class="text-sm truncate fw-600 opacity-50">커츠 나의어둠 나의삶</div>
+            </div>
+          <div class="mg matchup-card" data-idx="3">
+              <div style="text-align:right;" class="text-sm truncate fw-600 opacity-50">✌️ Yeonwoo's Double Play</div>
+              <div class="mono fw-700 text-sm" style="text-align:center;">
+                <span class="">10</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="w">12</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="t">3</span>
+              </div>
+              <div class="text-sm truncate fw-600 w">💥 JeongWoo's Shockers</div>
+            </div>
+          <div class="mg matchup-card" data-idx="4">
+              <div style="text-align:right;" class="text-sm truncate fw-600 opacity-50">응노</div>
+              <div class="mono fw-700 text-sm" style="text-align:center;">
+                <span class="">11</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="w">12</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="t">2</span>
+              </div>
+              <div class="text-sm truncate fw-600 w">JJ yoogwanholt</div>
+            </div>
+          <div class="mg matchup-card" data-idx="5">
+              <div style="text-align:right;" class="text-sm truncate fw-600 w">🏆 ProfeSuh</div>
+              <div class="mono fw-700 text-sm" style="text-align:center;">
+                <span class="w">13</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="">10</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="t">2</span>
+              </div>
+              <div class="text-sm truncate fw-600 opacity-50">💥 JongHun's Busters</div>
+            </div>
+        </div>
+      </div>
       <div class="card" style="padding:20px;" id="matchup-detail">
         <div id="matchup-header" style="margin-bottom:16px;"></div>
         <div id="matchup-cats" class="grid-2" style="gap:12px;"></div>
       </div>
     </div>
 
-    <!-- Row 2: Trend Charts (H2H Rank + Roto Points) -->
-    <div class="row-2col" style="margin-bottom:20px;">
-      <div class="card fade-in" style="padding:16px;animation-delay:0.08s;">
-        <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">H2H Rank Trend</div>
-        <div style="position:relative;height:220px;">
-          <canvas id="chartRank"></canvas>
-        </div>
-      </div>
-      <div class="card fade-in" style="padding:16px;animation-delay:0.1s;">
-        <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">Roto Points Trend</div>
-        <div style="position:relative;height:220px;">
-          <canvas id="chartRoto"></canvas>
-        </div>
-      </div>
-    </div>
+    </div><!-- /tab-matchup -->
 
-    <!-- Row 3: Radar + Rankings -->
+    <!-- ═══ TAB: Analysis ═══ -->
+    <div id="tab-analysis" class="main-tab">
+
+    <!-- Radar + Rankings -->
     <div class="row-2col" style="margin-bottom:20px;">
       <!-- Radar Charts -->
       <div class="card fade-in" style="padding:16px;animation-delay:0.1s;">
@@ -469,223 +539,495 @@
       </div>
     </div>
 
-    <!-- Row 4: Matchup Cards + Transactions (side by side) -->
-    <div class="row-2col">
-      <!-- All Matchups -->
-      <div class="card fade-in" style="padding:16px;animation-delay:0.2s;">
-        <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">All Matchups</div>
-        <div id="matchup-cards">
-          <div class="mg matchup-card" data-idx="0">
-              <div style="text-align:right;" class="text-sm truncate fw-600 opacity-50">2026 MVP Mike Trout</div>
-              <div class="mono fw-700 text-sm" style="text-align:center;">
-                <span class="">9</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="w">12</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="t">4</span>
-              </div>
-              <div class="text-sm truncate fw-600 w">TRUCK</div>
-            </div>
-          <div class="mg matchup-card" data-idx="1">
-              <div style="text-align:right;" class="text-sm truncate fw-600 opacity-50">xXXXxAIxXXXx</div>
-              <div class="mono fw-700 text-sm" style="text-align:center;">
-                <span class="">8</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="w">11</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="t">6</span>
-              </div>
-              <div class="text-sm truncate fw-600 w">커츠 나의어둠 나의삶</div>
-            </div>
-          <div class="mg matchup-card" data-idx="2">
-              <div style="text-align:right;" class="text-sm truncate fw-600 w">UTU_무네타카 무라콴호</div>
-              <div class="mono fw-700 text-sm" style="text-align:center;">
-                <span class="w">13</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="">8</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="t">4</span>
-              </div>
-              <div class="text-sm truncate fw-600 opacity-50">JJ yoogwanholt</div>
-            </div>
-          <div class="mg matchup-card" data-idx="3">
-              <div style="text-align:right;" class="text-sm truncate fw-600 w">✌️ Yeonwoo's Double Play</div>
-              <div class="mono fw-700 text-sm" style="text-align:center;">
-                <span class="w">15</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="">2</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="t">8</span>
-              </div>
-              <div class="text-sm truncate fw-600 opacity-50">응노</div>
-            </div>
-          <div class="mg matchup-card" data-idx="4">
-              <div style="text-align:right;" class="text-sm truncate fw-600 opacity-50">독후감 신속히 제출해주세요.</div>
-              <div class="mono fw-700 text-sm" style="text-align:center;">
-                <span class="">7</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="w">15</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="t">3</span>
-              </div>
-              <div class="text-sm truncate fw-600 w">🏆 ProfeSuh</div>
-            </div>
-          <div class="mg matchup-card" data-idx="5">
-              <div style="text-align:right;" class="text-sm truncate fw-600 opacity-50">💥 JeongWoo's Shockers</div>
-              <div class="mono fw-700 text-sm" style="text-align:center;">
-                <span class="">4</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="w">13</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="t">8</span>
-              </div>
-              <div class="text-sm truncate fw-600 w">💥 JongHun's Busters</div>
-            </div>
-        </div>
-      </div>
+    </div><!-- /tab-analysis -->
 
-      <!-- Transactions (compact, scrollable) -->
-      <div class="card fade-in" style="padding:16px;animation-delay:0.25s;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-          <div class="text-xs fw-600" style="color:var(--text3);text-transform:uppercase;letter-spacing:1px;">Transactions</div>
-          <span class="mono text-xs" style="color:var(--text3);">78</span>
-        </div>
-        <div class="scroll-y">
-          <div class="txn-row">
-                <span style="color:var(--text3);">4. 1.</span>
-                <div>+<span class="w">Colt Keith</span><span style="color:var(--text3);"> DET</span></div>
-                <div>-<span class="l">Jonathan Loáisiga</span><span style="color:var(--text3);"> AZ</span></div>
-              </div>
-          <div class="txn-row">
-                <span style="color:var(--text3);">4. 1.</span>
-                <div>+<span class="w">Daylen Lile</span><span style="color:var(--text3);"> WSH</span></div>
-                <div>-<span class="l">Michael Harris II</span><span style="color:var(--text3);"> ATL</span></div>
-              </div>
-          <div class="txn-row">
-                <span style="color:var(--text3);">4. 1.</span>
-                <div>+<span class="w">Kumar Rocker</span><span style="color:var(--text3);"> TEX</span></div>
-                <div>-<span class="l">Cody Ponce</span><span style="color:var(--text3);"> TOR</span></div>
-              </div>
-          <div class="txn-row">
-                <span style="color:var(--text3);">4. 1.</span>
-                <div>+<span class="w">Andrew Painter</span><span style="color:var(--text3);"> PHI</span></div>
-                <div>-<span class="l">Drew Anderson</span><span style="color:var(--text3);"> DET</span></div>
-              </div>
-          <div class="txn-row">
-                <span style="color:var(--text3);">4. 1.</span>
-                <div>+<span class="w">Owen Caissie</span><span style="color:var(--text3);"> MIA</span></div>
-                <div>-<span class="l">Coby Mayo</span><span style="color:var(--text3);"> BAL</span></div>
-              </div>
-          <div class="txn-row">
-                <span style="color:var(--text3);">3. 31.</span>
-                <div>+<span class="w">Andrés Giménez</span><span style="color:var(--text3);"> TOR</span></div>
-                <div>-<span class="l">Dominic Canzone</span><span style="color:var(--text3);"> SEA</span></div>
-              </div>
-          <div class="txn-row">
-                <span style="color:var(--text3);">3. 31.</span>
-                <div>+<span class="w">Lance McCullers Jr.</span><span style="color:var(--text3);"> HOU</span></div>
-                <div>-<span class="l">Justin Crawford</span><span style="color:var(--text3);"> PHI</span></div>
-              </div>
-          <div class="txn-row">
-                <span style="color:var(--text3);">3. 31.</span>
-                <div></div>
-                <div></div>
-              </div>
-          <div class="txn-row">
-                <span style="color:var(--text3);">3. 31.</span>
-                <div>+<span class="w">Konnor Griffin</span><span style="color:var(--text3);"> PIT</span></div>
-                <div>-<span class="l">Gleyber Torres</span><span style="color:var(--text3);"> DET</span></div>
-              </div>
-          <div class="txn-row">
-                <span style="color:var(--text3);">3. 31.</span>
-                <div>+<span class="w">Jake Burger</span><span style="color:var(--text3);"> TEX</span></div>
-                <div>-<span class="l">Caleb Thielbar</span><span style="color:var(--text3);"> CHC</span></div>
-              </div>
-          <div class="txn-row">
-                <span style="color:var(--text3);">3. 31.</span>
-                <div>+<span class="w">Parker Messick</span><span style="color:var(--text3);"> CLE</span></div>
-                <div>-<span class="l">Josh Naylor</span><span style="color:var(--text3);"> SEA</span></div>
-              </div>
-          <div class="txn-row">
-                <span style="color:var(--text3);">3. 31.</span>
-                <div>+<span class="w">Nolan Schanuel</span><span style="color:var(--text3);"> LAA</span></div>
-                <div>-<span class="l">Willson Contreras</span><span style="color:var(--text3);"> BOS</span></div>
-              </div>
-          <div class="txn-row">
-                <span style="color:var(--text3);">3. 31.</span>
-                <div>+<span class="w">Lucas Erceg</span><span style="color:var(--text3);"> KC</span></div>
-                <div>-<span class="l">Clay Holmes</span><span style="color:var(--text3);"> NYM</span></div>
-              </div>
-          <div class="txn-row">
-                <span style="color:var(--text3);">3. 30.</span>
-                <div>+<span class="w">Jake Bird</span><span style="color:var(--text3);"> NYY</span></div>
-                <div>-<span class="l">Chris Bassitt</span><span style="color:var(--text3);"> BAL</span></div>
-              </div>
-          <div class="txn-row">
-                <span style="color:var(--text3);">3. 30.</span>
-                <div>+<span class="w">Joey Wiemer</span><span style="color:var(--text3);"> WSH</span></div>
-                <div>-<span class="l">Alec Burleson</span><span style="color:var(--text3);"> STL</span></div>
-              </div>
-          <div class="txn-row">
-                <span style="color:var(--text3);">3. 30.</span>
-                <div>+<span class="w">Aaron Ashby</span><span style="color:var(--text3);"> MIL</span></div>
-                <div>-<span class="l">Grant Holmes</span><span style="color:var(--text3);"> ATL</span></div>
-              </div>
-          <div class="txn-row">
-                <span style="color:var(--text3);">3. 30.</span>
-                <div>+<span class="w">Hunter Gaddis</span><span style="color:var(--text3);"> CLE</span></div>
-                <div></div>
-              </div>
-          <div class="txn-row">
-                <span style="color:var(--text3);">3. 30.</span>
-                <div>+<span class="w">Ryan O'Hearn</span><span style="color:var(--text3);"> PIT</span></div>
-                <div>-<span class="l">Teoscar Hernández</span><span style="color:var(--text3);"> LAD</span></div>
-              </div>
-          <div class="txn-row">
-                <span style="color:var(--text3);">3. 30.</span>
-                <div>+<span class="w">Dennis Santana</span><span style="color:var(--text3);"> PIT</span></div>
-                <div>-<span class="l">Will Vest</span><span style="color:var(--text3);"> DET</span></div>
-              </div>
-          <div class="txn-row">
-                <span style="color:var(--text3);">3. 30.</span>
-                <div>+<span class="w">Emilio Pagán</span><span style="color:var(--text3);"> CIN</span></div>
-                <div>-<span class="l">Jordan Romano</span><span style="color:var(--text3);"> LAA</span></div>
-              </div>
-          <div class="txn-row">
-                <span style="color:var(--text3);">3. 30.</span>
-                <div>+<span class="w">Jordan Walker</span><span style="color:var(--text3);"> STL</span></div>
-                <div>-<span class="l">Max Meyer</span><span style="color:var(--text3);"> MIA</span></div>
-              </div>
-          <div class="txn-row">
-                <span style="color:var(--text3);">3. 30.</span>
-                <div>+<span class="w">Tim Hill</span><span style="color:var(--text3);"> NYY</span></div>
-                <div>-<span class="l">Oneil Cruz</span><span style="color:var(--text3);"> PIT</span></div>
-              </div>
-          <div class="txn-row">
-                <span style="color:var(--text3);">3. 30.</span>
-                <div>+<span class="w">Emerson Hancock</span><span style="color:var(--text3);"> SEA</span></div>
-                <div>-<span class="l">Carmen Mlodzinski</span><span style="color:var(--text3);"> PIT</span></div>
-              </div>
-          <div class="txn-row">
-                <span style="color:var(--text3);">3. 30.</span>
-                <div>+<span class="w">Kyle Harrison</span><span style="color:var(--text3);"> MIL</span></div>
-                <div>-<span class="l">Dustin May</span><span style="color:var(--text3);"> STL</span></div>
-              </div>
-          <div class="txn-row">
-                <span style="color:var(--text3);">3. 30.</span>
-                <div>+<span class="w">Jason Adam</span><span style="color:var(--text3);"> SD</span></div>
-                <div></div>
-              </div>
-          <div class="txn-row">
-                <span style="color:var(--text3);">3. 30.</span>
-                <div>+<span class="w">Chris Bassitt</span><span style="color:var(--text3);"> BAL</span></div>
-                <div>-<span class="l">Slade Cecconi</span><span style="color:var(--text3);"> CLE</span></div>
-              </div>
-          <div class="txn-row">
-                <span style="color:var(--text3);">3. 30.</span>
-                <div>+<span class="w">Randy Vásquez</span><span style="color:var(--text3);"> SD</span></div>
-                <div></div>
-              </div>
-          <div class="txn-row">
-                <span style="color:var(--text3);">3. 29.</span>
-                <div></div>
-                <div>-<span class="l">Bryan Abreu</span><span style="color:var(--text3);"> HOU</span></div>
-              </div>
-          <div class="txn-row">
-                <span style="color:var(--text3);">3. 29.</span>
-                <div>+<span class="w">Jonathan Loáisiga</span><span style="color:var(--text3);"> AZ</span></div>
-                <div>-<span class="l">Noelvi Marte</span><span style="color:var(--text3);"> CIN</span></div>
-              </div>
-          <div class="txn-row">
-                <span style="color:var(--text3);">3. 29.</span>
-                <div>+<span class="w">Erik Sabrowski</span><span style="color:var(--text3);"> CLE</span></div>
-                <div>-<span class="l">Ezequiel Tovar</span><span style="color:var(--text3);"> COL</span></div>
-              </div>
-        </div>
+    <!-- ═══ TAB: Activity ═══ -->
+    <div id="tab-activity" class="main-tab">
+
+    <div class="card fade-in" style="padding:16px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <div class="text-xs fw-600" style="color:var(--text3);text-transform:uppercase;letter-spacing:1px;">Transactions</div>
+        <span class="mono text-xs" style="color:var(--text3);">78건</span>
       </div>
+      <div class="scroll-y" style="max-height:600px;">
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">4. 1.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">UTU_무네타카 무라콴호</span>
+              <div>+<span class="w">Colt Keith</span> <span style="color:var(--text3);">DET 1B,2B,3B</span></div>
+              <div>-<span class="l">Jonathan Loáisiga</span> <span style="color:var(--text3);">AZ RP</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">4. 1.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">커츠 나의어둠 나의삶</span>
+              <div>+<span class="w">Daylen Lile</span> <span style="color:var(--text3);">WSH OF</span></div>
+              <div>-<span class="l">Michael Harris II</span> <span style="color:var(--text3);">ATL OF</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">4. 1.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">2026 MVP Mike Trout</span>
+              <div>+<span class="w">Kumar Rocker</span> <span style="color:var(--text3);">TEX SP</span></div>
+              <div>-<span class="l">Cody Ponce</span> <span style="color:var(--text3);">TOR SP</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">4. 1.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">JJ yoogwanholt</span>
+              <div>+<span class="w">Andrew Painter</span> <span style="color:var(--text3);">PHI SP</span></div>
+              <div>-<span class="l">Drew Anderson</span> <span style="color:var(--text3);">DET RP</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">4. 1.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">💥 JeongWoo's Shockers</span>
+              <div>+<span class="w">Owen Caissie</span> <span style="color:var(--text3);">MIA OF</span></div>
+              <div>-<span class="l">Coby Mayo</span> <span style="color:var(--text3);">BAL 1B</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">4. 1.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">🏆 ProfeSuh</span>
+              <div>+<span class="w">Andrés Giménez</span> <span style="color:var(--text3);">TOR 2B,SS</span></div>
+              <div>-<span class="l">Dominic Canzone</span> <span style="color:var(--text3);">SEA OF</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 31.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">독후감 신속히 제출해주세요.</span>
+              <div>+<span class="w">Lance McCullers Jr.</span> <span style="color:var(--text3);">HOU SP</span></div>
+              <div>-<span class="l">Justin Crawford</span> <span style="color:var(--text3);">PHI OF</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 31.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">?</span>
+              <div></div>
+              <div></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 31.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">JJ yoogwanholt</span>
+              <div>+<span class="w">Konnor Griffin</span> <span style="color:var(--text3);">PIT SS,OF</span></div>
+              <div>-<span class="l">Gleyber Torres</span> <span style="color:var(--text3);">DET 2B</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 31.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">응노</span>
+              <div>+<span class="w">Jake Burger</span> <span style="color:var(--text3);">TEX 1B</span></div>
+              <div>-<span class="l">Caleb Thielbar</span> <span style="color:var(--text3);">CHC RP</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 31.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">응노</span>
+              <div>+<span class="w">Parker Messick</span> <span style="color:var(--text3);">CLE SP</span></div>
+              <div>-<span class="l">Josh Naylor</span> <span style="color:var(--text3);">SEA 1B</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 31.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">TRUCK</span>
+              <div>+<span class="w">Nolan Schanuel</span> <span style="color:var(--text3);">LAA 1B</span></div>
+              <div>-<span class="l">Willson Contreras</span> <span style="color:var(--text3);">BOS 1B</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 31.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">💥 JongHun's Busters</span>
+              <div>+<span class="w">Lucas Erceg</span> <span style="color:var(--text3);">KC RP</span></div>
+              <div>-<span class="l">Clay Holmes</span> <span style="color:var(--text3);">NYM SP</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 31.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">xXXXxAIxXXXx</span>
+              <div>+<span class="w">Jake Bird</span> <span style="color:var(--text3);">NYY RP</span></div>
+              <div>-<span class="l">Chris Bassitt</span> <span style="color:var(--text3);">BAL SP</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 31.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">🏆 ProfeSuh</span>
+              <div>+<span class="w">Joey Wiemer</span> <span style="color:var(--text3);">WSH OF</span></div>
+              <div>-<span class="l">Alec Burleson</span> <span style="color:var(--text3);">STL 1B,OF</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 30.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">커츠 나의어둠 나의삶</span>
+              <div>+<span class="w">Aaron Ashby</span> <span style="color:var(--text3);">MIL RP</span></div>
+              <div>-<span class="l">Grant Holmes</span> <span style="color:var(--text3);">ATL SP</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 30.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">커츠 나의어둠 나의삶</span>
+              <div>+<span class="w">Hunter Gaddis</span> <span style="color:var(--text3);">CLE RP</span></div>
+              <div></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 30.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">xXXXxAIxXXXx</span>
+              <div>+<span class="w">Ryan O'Hearn</span> <span style="color:var(--text3);">PIT 1B,OF</span></div>
+              <div>-<span class="l">Teoscar Hernández</span> <span style="color:var(--text3);">LAD OF</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 30.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">UTU_무네타카 무라콴호</span>
+              <div>+<span class="w">Dennis Santana</span> <span style="color:var(--text3);">PIT RP</span></div>
+              <div>-<span class="l">Will Vest</span> <span style="color:var(--text3);">DET RP</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 30.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">UTU_무네타카 무라콴호</span>
+              <div>+<span class="w">Emilio Pagán</span> <span style="color:var(--text3);">CIN RP</span></div>
+              <div>-<span class="l">Jordan Romano</span> <span style="color:var(--text3);">LAA RP</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 30.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">2026 MVP Mike Trout</span>
+              <div>+<span class="w">Jordan Walker</span> <span style="color:var(--text3);">STL OF</span></div>
+              <div>-<span class="l">Max Meyer</span> <span style="color:var(--text3);">MIA SP</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 30.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">✌️ Yeonwoo's Double Play</span>
+              <div>+<span class="w">Tim Hill</span> <span style="color:var(--text3);">NYY RP</span></div>
+              <div>-<span class="l">Oneil Cruz</span> <span style="color:var(--text3);">PIT OF</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 30.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">2026 MVP Mike Trout</span>
+              <div>+<span class="w">Emerson Hancock</span> <span style="color:var(--text3);">SEA SP,RP</span></div>
+              <div>-<span class="l">Carmen Mlodzinski</span> <span style="color:var(--text3);">PIT SP,RP</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 30.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">응노</span>
+              <div>+<span class="w">Kyle Harrison</span> <span style="color:var(--text3);">MIL SP,RP</span></div>
+              <div>-<span class="l">Dustin May</span> <span style="color:var(--text3);">STL SP</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 30.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">응노</span>
+              <div>+<span class="w">Jason Adam</span> <span style="color:var(--text3);">SD RP</span></div>
+              <div></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 30.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">xXXXxAIxXXXx</span>
+              <div>+<span class="w">Chris Bassitt</span> <span style="color:var(--text3);">BAL SP</span></div>
+              <div>-<span class="l">Slade Cecconi</span> <span style="color:var(--text3);">CLE SP</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 30.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">🏆 ProfeSuh</span>
+              <div>+<span class="w">Randy Vásquez</span> <span style="color:var(--text3);">SD SP</span></div>
+              <div></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 30.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">🏆 ProfeSuh</span>
+              <div></div>
+              <div>-<span class="l">Bryan Abreu</span> <span style="color:var(--text3);">HOU RP</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 30.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">UTU_무네타카 무라콴호</span>
+              <div>+<span class="w">Jonathan Loáisiga</span> <span style="color:var(--text3);">AZ RP</span></div>
+              <div>-<span class="l">Noelvi Marte</span> <span style="color:var(--text3);">CIN 3B,OF</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 29.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">UTU_무네타카 무라콴호</span>
+              <div>+<span class="w">Erik Sabrowski</span> <span style="color:var(--text3);">CLE RP</span></div>
+              <div>-<span class="l">Ezequiel Tovar</span> <span style="color:var(--text3);">COL SS</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 29.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">2026 MVP Mike Trout</span>
+              <div>+<span class="w">Francisco Alvarez</span> <span style="color:var(--text3);">NYM C</span></div>
+              <div>-<span class="l">Samuel Basallo</span> <span style="color:var(--text3);">BAL C</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 29.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">커츠 나의어둠 나의삶</span>
+              <div>+<span class="w">Camilo Doval</span> <span style="color:var(--text3);">NYY RP</span></div>
+              <div>-<span class="l">Brandon Sproat</span> <span style="color:var(--text3);">MIL SP</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 29.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">응노</span>
+              <div>+<span class="w">Dustin May</span> <span style="color:var(--text3);">STL SP</span></div>
+              <div>-<span class="l">Reid Detmers</span> <span style="color:var(--text3);">LAA RP</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 29.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">UTU_무네타카 무라콴호</span>
+              <div>+<span class="w">Ezequiel Tovar</span> <span style="color:var(--text3);">COL SS</span></div>
+              <div>-<span class="l">Bryan King</span> <span style="color:var(--text3);">HOU RP</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 29.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">UTU_무네타카 무라콴호</span>
+              <div>+<span class="w">Jordan Romano</span> <span style="color:var(--text3);">LAA RP</span></div>
+              <div>-<span class="l">Adrian Morejon</span> <span style="color:var(--text3);">SD RP</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 29.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">xXXXxAIxXXXx</span>
+              <div>+<span class="w">Jonathan Aranda</span> <span style="color:var(--text3);">TB 1B</span></div>
+              <div>-<span class="l">Andy Pages</span> <span style="color:var(--text3);">LAD OF</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 29.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">xXXXxAIxXXXx</span>
+              <div>+<span class="w">Slade Cecconi</span> <span style="color:var(--text3);">CLE SP</span></div>
+              <div>-<span class="l">Will Warren</span> <span style="color:var(--text3);">NYY SP</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 29.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">💥 JongHun's Busters</span>
+              <div>+<span class="w">Clay Holmes</span> <span style="color:var(--text3);">NYM SP</span></div>
+              <div>-<span class="l">Matthew Liberatore</span> <span style="color:var(--text3);">STL SP</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 29.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">💥 JongHun's Busters</span>
+              <div>+<span class="w">Seth Lugo</span> <span style="color:var(--text3);">KC SP</span></div>
+              <div></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 29.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">💥 JongHun's Busters</span>
+              <div></div>
+              <div>-<span class="l">David Peterson</span> <span style="color:var(--text3);">NYM SP</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 29.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">커츠 나의어둠 나의삶</span>
+              <div>+<span class="w">Grant Holmes</span> <span style="color:var(--text3);">ATL SP</span></div>
+              <div>-<span class="l">Chad Patrick</span> <span style="color:var(--text3);">MIL SP</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 29.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">💥 JeongWoo's Shockers</span>
+              <div>+<span class="w">Max Scherzer</span> <span style="color:var(--text3);">TOR SP</span></div>
+              <div>-<span class="l">Konnor Griffin</span> <span style="color:var(--text3);">PIT SS,OF</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 29.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">2026 MVP Mike Trout</span>
+              <div>+<span class="w">Carmen Mlodzinski</span> <span style="color:var(--text3);">PIT SP,RP</span></div>
+              <div>-<span class="l">Jung Hoo Lee</span> <span style="color:var(--text3);">SF OF</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 28.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">🏆 ProfeSuh</span>
+              <div>+<span class="w">Dominic Canzone</span> <span style="color:var(--text3);">SEA OF</span></div>
+              <div>-<span class="l">Brayan Bello</span> <span style="color:var(--text3);">BOS SP</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 28.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">커츠 나의어둠 나의삶</span>
+              <div>+<span class="w">Brandon Sproat</span> <span style="color:var(--text3);">MIL SP</span></div>
+              <div>-<span class="l">Cristian Javier</span> <span style="color:var(--text3);">HOU SP</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 28.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">커츠 나의어둠 나의삶</span>
+              <div>+<span class="w">Chad Patrick</span> <span style="color:var(--text3);">MIL SP</span></div>
+              <div>-<span class="l">Jeremiah Estrada</span> <span style="color:var(--text3);">SD RP</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 28.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">커츠 나의어둠 나의삶</span>
+              <div>+<span class="w">Cristian Javier</span> <span style="color:var(--text3);">HOU SP</span></div>
+              <div>-<span class="l">Emilio Pagán</span> <span style="color:var(--text3);">CIN RP</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 28.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">xXXXxAIxXXXx</span>
+              <div>+<span class="w">Mitch Keller</span> <span style="color:var(--text3);">PIT SP</span></div>
+              <div>-<span class="l">Zack Littell</span> <span style="color:var(--text3);">WSH SP</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 28.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">응노</span>
+              <div>+<span class="w">Reid Detmers</span> <span style="color:var(--text3);">LAA RP</span></div>
+              <div>-<span class="l">Parker Messick</span> <span style="color:var(--text3);">CLE SP</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 28.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">💥 JeongWoo's Shockers</span>
+              <div>+<span class="w">Sal Frelick</span> <span style="color:var(--text3);">MIL OF</span></div>
+              <div>-<span class="l">Angel Martínez</span> <span style="color:var(--text3);">CLE 2B,OF</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 28.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">독후감 신속히 제출해주세요.</span>
+              <div>+<span class="w">Chase Meidroth</span> <span style="color:var(--text3);">CWS 2B,3B,SS</span></div>
+              <div>-<span class="l">Lawrence Butler</span> <span style="color:var(--text3);">ATH OF</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 28.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">🏆 ProfeSuh</span>
+              <div>+<span class="w">Alec Burleson</span> <span style="color:var(--text3);">STL 1B,OF</span></div>
+              <div>-<span class="l">Matt Wallner</span> <span style="color:var(--text3);">MIN OF</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 28.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">JJ yoogwanholt</span>
+              <div>+<span class="w">Jorge Polanco</span> <span style="color:var(--text3);">NYM 2B,3B</span></div>
+              <div></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 27.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">커츠 나의어둠 나의삶</span>
+              <div>+<span class="w">Luis Robert Jr.</span> <span style="color:var(--text3);">NYM OF</span></div>
+              <div>-<span class="l">Roki Sasaki</span> <span style="color:var(--text3);">LAD SP</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 27.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">커츠 나의어둠 나의삶</span>
+              <div>+<span class="w">Jeremiah Estrada</span> <span style="color:var(--text3);">SD RP</span></div>
+              <div>-<span class="l">Dennis Santana</span> <span style="color:var(--text3);">PIT RP</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 27.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">💥 JongHun's Busters</span>
+              <div>+<span class="w">David Peterson</span> <span style="color:var(--text3);">NYM SP</span></div>
+              <div></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 27.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">💥 JongHun's Busters</span>
+              <div></div>
+              <div>-<span class="l">Hunter Gaddis</span> <span style="color:var(--text3);">CLE RP</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 27.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">xXXXxAIxXXXx</span>
+              <div>+<span class="w">Alec Bohm</span> <span style="color:var(--text3);">PHI 1B,3B</span></div>
+              <div>-<span class="l">Isaac Paredes</span> <span style="color:var(--text3);">HOU 3B</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 27.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">🏆 ProfeSuh</span>
+              <div>+<span class="w">Kazuma Okamoto</span> <span style="color:var(--text3);">TOR 1B,3B</span></div>
+              <div>-<span class="l">Josh Jung</span> <span style="color:var(--text3);">TEX 3B</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 27.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">TRUCK</span>
+              <div>+<span class="w">Josh Smith</span> <span style="color:var(--text3);">TEX 1B,3B,SS,OF</span></div>
+              <div></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 26.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">TRUCK</span>
+              <div>+<span class="w">Ryne Nelson</span> <span style="color:var(--text3);">AZ SP,RP</span></div>
+              <div>-<span class="l">Camilo Doval</span> <span style="color:var(--text3);">NYY RP</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 26.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">💥 JeongWoo's Shockers</span>
+              <div>+<span class="w">Matt Strahm</span> <span style="color:var(--text3);">KC RP</span></div>
+              <div>-<span class="l">Carlos Lagrange</span> <span style="color:var(--text3);">NYY SP</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 26.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">✌️ Yeonwoo's Double Play</span>
+              <div>+<span class="w">Jose A. Ferrer</span> <span style="color:var(--text3);">SEA RP</span></div>
+              <div></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 26.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">응노</span>
+              <div>+<span class="w">Parker Messick</span> <span style="color:var(--text3);">CLE SP</span></div>
+              <div></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 26.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">UTU_무네타카 무라콴호</span>
+              <div>+<span class="w">Noelvi Marte</span> <span style="color:var(--text3);">CIN 3B,OF</span></div>
+              <div></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 26.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">2026 MVP Mike Trout</span>
+              <div>+<span class="w">Jung Hoo Lee</span> <span style="color:var(--text3);">SF OF</span></div>
+              <div></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 26.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">2026 MVP Mike Trout</span>
+              <div>+<span class="w">Connelly Early</span> <span style="color:var(--text3);">BOS SP</span></div>
+              <div></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 26.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">💥 JeongWoo's Shockers</span>
+              <div>+<span class="w">Cole Young</span> <span style="color:var(--text3);">SEA 2B</span></div>
+              <div>-<span class="l">Francisco Alvarez</span> <span style="color:var(--text3);">NYM C</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 26.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">독후감 신속히 제출해주세요.</span>
+              <div>+<span class="w">Robert Garcia</span> <span style="color:var(--text3);">TEX RP</span></div>
+              <div></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 26.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">💥 JongHun's Busters</span>
+              <div>+<span class="w">José Soriano</span> <span style="color:var(--text3);">LAA SP</span></div>
+              <div></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 26.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">💥 JongHun's Busters</span>
+              <div>+<span class="w">Matthew Liberatore</span> <span style="color:var(--text3);">STL SP</span></div>
+              <div></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 26.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">✌️ Yeonwoo's Double Play</span>
+              <div>+<span class="w">Jordan Westburg</span> <span style="color:var(--text3);">BAL 2B,3B</span></div>
+              <div></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 26.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">xXXXxAIxXXXx</span>
+              <div>+<span class="w">Eric Lauer</span> <span style="color:var(--text3);">TOR SP,RP</span></div>
+              <div></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 26.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">💥 JeongWoo's Shockers</span>
+              <div>+<span class="w">Francisco Alvarez</span> <span style="color:var(--text3);">NYM C</span></div>
+              <div></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 26.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">🏆 ProfeSuh</span>
+              <div>+<span class="w">Giancarlo Stanton</span> <span style="color:var(--text3);">NYY OF</span></div>
+              <div></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 26.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">💥 JeongWoo's Shockers</span>
+              <div>+<span class="w">Paul Sewald</span> <span style="color:var(--text3);">AZ RP</span></div>
+              <div></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 25.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">xXXXxAIxXXXx</span>
+              <div>+<span class="w">Will Warren</span> <span style="color:var(--text3);">NYY SP</span></div>
+              <div>-<span class="l">Dominic Canzone</span> <span style="color:var(--text3);">SEA OF</span></div>
+            </div>
+          <div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">3. 25.</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">JJ yoogwanholt</span>
+              <div>+<span class="w">Carson Benge</span> <span style="color:var(--text3);">NYM OF</span></div>
+              <div>-<span class="l">Trent Grisham</span> <span style="color:var(--text3);">NYY OF</span></div>
+            </div>
+        </div>
     </div>
+
+    </div><!-- /tab-activity -->
 
   </main>
 
   <script>
     // Data
-    var MATCHUPS = [{"idx":0,"t1Name":"2026 MVP Mike Trout","t1Key":"469.l.18247.t.1","t2Name":"TRUCK","t2Key":"469.l.18247.t.3","t1Wins":9,"t2Wins":12,"ties":4,"cats":[{"abbr":"AVG","statId":"3","group":"batting","t1Val":".089","t2Val":".200","winner":"t2"},{"abbr":"OBP","statId":"4","group":"batting","t1Val":".212","t2Val":".288","winner":"t2"},{"abbr":"SLG","statId":"5","group":"batting","t1Val":".161","t2Val":".338","winner":"t2"},{"abbr":"R","statId":"7","group":"batting","t1Val":4,"t2Val":6,"winner":"t2"},{"abbr":"H","statId":"8","group":"batting","t1Val":5,"t2Val":13,"winner":"t2"},{"abbr":"HR","statId":"12","group":"batting","t1Val":1,"t2Val":2,"winner":"t2"},{"abbr":"RBI","statId":"13","group":"batting","t1Val":2,"t2Val":8,"winner":"t2"},{"abbr":"BB","statId":"18","group":"batting","t1Val":9,"t2Val":8,"winner":"t1"},{"abbr":"K","statId":"21","group":"batting","t1Val":16,"t2Val":16,"winner":"tie"},{"abbr":"TB","statId":"23","group":"batting","t1Val":9,"t2Val":22,"winner":"t2"},{"abbr":"ERA","statId":"26","group":"pitching","t1Val":"3.95","t2Val":"9.00","winner":"t1"},{"abbr":"WHIP","statId":"27","group":"pitching","t1Val":"1.02","t2Val":"2.00","winner":"t1"},{"abbr":"W","statId":"28","group":"pitching","t1Val":1,"t2Val":0,"winner":"t1"},{"abbr":"L","statId":"29","group":"pitching","t1Val":1,"t2Val":0,"winner":"t2"},{"abbr":"CG","statId":"30","group":"pitching","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"K(P)","statId":"42","group":"pitching","t1Val":14,"t2Val":2,"winner":"t1"},{"abbr":"GIDP","statId":"46","group":"pitching","t1Val":3,"t2Val":0,"winner":"t1"},{"abbr":"TB(P)","statId":"49","group":"pitching","t1Val":13,"t2Val":1,"winner":"t2"},{"abbr":"A","statId":"52","group":"batting","t1Val":11,"t2Val":22,"winner":"t2"},{"abbr":"K/BB","statId":"56","group":"pitching","t1Val":"2.80","t2Val":"2.00","winner":"t1"},{"abbr":"NSB","statId":"62","group":"batting","t1Val":2,"t2Val":1,"winner":"t1"},{"abbr":"SLAM","statId":"66","group":"batting","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"RAPP","statId":"73","group":"pitching","t1Val":0,"t2Val":1,"winner":"t2"},{"abbr":"QS","statId":"83","group":"pitching","t1Val":1,"t2Val":0,"winner":"t1"},{"abbr":"NSVH","statId":"90","group":"pitching","t1Val":0,"t2Val":0,"winner":"tie"}]},{"idx":1,"t1Name":"xXXXxAIxXXXx","t1Key":"469.l.18247.t.2","t2Name":"커츠 나의어둠 나의삶","t2Key":"469.l.18247.t.7","t1Wins":8,"t2Wins":11,"ties":6,"cats":[{"abbr":"AVG","statId":"3","group":"batting","t1Val":".154","t2Val":".164","winner":"t2"},{"abbr":"OBP","statId":"4","group":"batting","t1Val":".222","t2Val":".227","winner":"t2"},{"abbr":"SLG","statId":"5","group":"batting","t1Val":".262","t2Val":".230","winner":"t1"},{"abbr":"R","statId":"7","group":"batting","t1Val":5,"t2Val":5,"winner":"tie"},{"abbr":"H","statId":"8","group":"batting","t1Val":10,"t2Val":10,"winner":"tie"},{"abbr":"HR","statId":"12","group":"batting","t1Val":2,"t2Val":1,"winner":"t1"},{"abbr":"RBI","statId":"13","group":"batting","t1Val":5,"t2Val":3,"winner":"t1"},{"abbr":"BB","statId":"18","group":"batting","t1Val":5,"t2Val":5,"winner":"tie"},{"abbr":"K","statId":"21","group":"batting","t1Val":15,"t2Val":10,"winner":"t2"},{"abbr":"TB","statId":"23","group":"batting","t1Val":17,"t2Val":14,"winner":"t1"},{"abbr":"ERA","statId":"26","group":"pitching","t1Val":"4.91","t2Val":"1.59","winner":"t2"},{"abbr":"WHIP","statId":"27","group":"pitching","t1Val":"1.77","t2Val":"1.10","winner":"t2"},{"abbr":"W","statId":"28","group":"pitching","t1Val":0,"t2Val":3,"winner":"t2"},{"abbr":"L","statId":"29","group":"pitching","t1Val":1,"t2Val":1,"winner":"tie"},{"abbr":"CG","statId":"30","group":"pitching","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"K(P)","statId":"42","group":"pitching","t1Val":4,"t2Val":25,"winner":"t2"},{"abbr":"GIDP","statId":"46","group":"pitching","t1Val":1,"t2Val":0,"winner":"t1"},{"abbr":"TB(P)","statId":"49","group":"pitching","t1Val":9,"t2Val":18,"winner":"t1"},{"abbr":"A","statId":"52","group":"batting","t1Val":8,"t2Val":11,"winner":"t2"},{"abbr":"K/BB","statId":"56","group":"pitching","t1Val":"0.80","t2Val":"1.79","winner":"t2"},{"abbr":"NSB","statId":"62","group":"batting","t1Val":0,"t2Val":1,"winner":"t2"},{"abbr":"SLAM","statId":"66","group":"batting","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"RAPP","statId":"73","group":"pitching","t1Val":3,"t2Val":2,"winner":"t1"},{"abbr":"QS","statId":"83","group":"pitching","t1Val":0,"t2Val":2,"winner":"t2"},{"abbr":"NSVH","statId":"90","group":"pitching","t1Val":3,"t2Val":0,"winner":"t1"}]},{"idx":2,"t1Name":"UTU_무네타카 무라콴호","t1Key":"469.l.18247.t.4","t2Name":"JJ yoogwanholt","t2Key":"469.l.18247.t.9","t1Wins":13,"t2Wins":8,"ties":4,"cats":[{"abbr":"AVG","statId":"3","group":"batting","t1Val":".286","t2Val":".229","winner":"t1"},{"abbr":"OBP","statId":"4","group":"batting","t1Val":".352","t2Val":".308","winner":"t1"},{"abbr":"SLG","statId":"5","group":"batting","t1Val":".492","t2Val":".329","winner":"t1"},{"abbr":"R","statId":"7","group":"batting","t1Val":12,"t2Val":10,"winner":"t1"},{"abbr":"H","statId":"8","group":"batting","t1Val":18,"t2Val":16,"winner":"t1"},{"abbr":"HR","statId":"12","group":"batting","t1Val":3,"t2Val":1,"winner":"t1"},{"abbr":"RBI","statId":"13","group":"batting","t1Val":9,"t2Val":8,"winner":"t1"},{"abbr":"BB","statId":"18","group":"batting","t1Val":7,"t2Val":8,"winner":"t2"},{"abbr":"K","statId":"21","group":"batting","t1Val":17,"t2Val":23,"winner":"t1"},{"abbr":"TB","statId":"23","group":"batting","t1Val":31,"t2Val":23,"winner":"t1"},{"abbr":"ERA","statId":"26","group":"pitching","t1Val":"2.65","t2Val":"2.25","winner":"t2"},{"abbr":"WHIP","statId":"27","group":"pitching","t1Val":"0.94","t2Val":"0.75","winner":"t2"},{"abbr":"W","statId":"28","group":"pitching","t1Val":1,"t2Val":0,"winner":"t1"},{"abbr":"L","statId":"29","group":"pitching","t1Val":2,"t2Val":0,"winner":"t2"},{"abbr":"CG","statId":"30","group":"pitching","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"K(P)","statId":"42","group":"pitching","t1Val":15,"t2Val":12,"winner":"t1"},{"abbr":"GIDP","statId":"46","group":"pitching","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"TB(P)","statId":"49","group":"pitching","t1Val":17,"t2Val":5,"winner":"t2"},{"abbr":"A","statId":"52","group":"batting","t1Val":14,"t2Val":22,"winner":"t2"},{"abbr":"K/BB","statId":"56","group":"pitching","t1Val":"3.00","t2Val":"6.00","winner":"t2"},{"abbr":"NSB","statId":"62","group":"batting","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"SLAM","statId":"66","group":"batting","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"RAPP","statId":"73","group":"pitching","t1Val":3,"t2Val":2,"winner":"t1"},{"abbr":"QS","statId":"83","group":"pitching","t1Val":0,"t2Val":1,"winner":"t2"},{"abbr":"NSVH","statId":"90","group":"pitching","t1Val":3,"t2Val":0,"winner":"t1"}]},{"idx":3,"t1Name":"✌️ Yeonwoo's Double Play","t1Key":"469.l.18247.t.5","t2Name":"응노","t2Key":"469.l.18247.t.8","t1Wins":15,"t2Wins":2,"ties":8,"cats":[{"abbr":"AVG","statId":"3","group":"batting","t1Val":".344","t2Val":".206","winner":"t1"},{"abbr":"OBP","statId":"4","group":"batting","t1Val":".468","t2Val":".333","winner":"t1"},{"abbr":"SLG","statId":"5","group":"batting","t1Val":".641","t2Val":".365","winner":"t1"},{"abbr":"R","statId":"7","group":"batting","t1Val":13,"t2Val":8,"winner":"t1"},{"abbr":"H","statId":"8","group":"batting","t1Val":22,"t2Val":13,"winner":"t1"},{"abbr":"HR","statId":"12","group":"batting","t1Val":5,"t2Val":2,"winner":"t1"},{"abbr":"RBI","statId":"13","group":"batting","t1Val":11,"t2Val":9,"winner":"t1"},{"abbr":"BB","statId":"18","group":"batting","t1Val":15,"t2Val":12,"winner":"t1"},{"abbr":"K","statId":"21","group":"batting","t1Val":13,"t2Val":17,"winner":"t1"},{"abbr":"TB","statId":"23","group":"batting","t1Val":41,"t2Val":23,"winner":"t1"},{"abbr":"ERA","statId":"26","group":"pitching","t1Val":"2.35","t2Val":"2.40","winner":"t1"},{"abbr":"WHIP","statId":"27","group":"pitching","t1Val":"0.72","t2Val":"1.00","winner":"t1"},{"abbr":"W","statId":"28","group":"pitching","t1Val":2,"t2Val":1,"winner":"t1"},{"abbr":"L","statId":"29","group":"pitching","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"CG","statId":"30","group":"pitching","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"K(P)","statId":"42","group":"pitching","t1Val":15,"t2Val":15,"winner":"tie"},{"abbr":"GIDP","statId":"46","group":"pitching","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"TB(P)","statId":"49","group":"pitching","t1Val":7,"t2Val":18,"winner":"t1"},{"abbr":"A","statId":"52","group":"batting","t1Val":17,"t2Val":18,"winner":"t2"},{"abbr":"K/BB","statId":"56","group":"pitching","t1Val":"2.50","t2Val":"3.00","winner":"t2"},{"abbr":"NSB","statId":"62","group":"batting","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"SLAM","statId":"66","group":"batting","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"RAPP","statId":"73","group":"pitching","t1Val":4,"t2Val":4,"winner":"tie"},{"abbr":"QS","statId":"83","group":"pitching","t1Val":2,"t2Val":1,"winner":"t1"},{"abbr":"NSVH","statId":"90","group":"pitching","t1Val":2,"t2Val":2,"winner":"tie"}]},{"idx":4,"t1Name":"독후감 신속히 제출해주세요.","t1Key":"469.l.18247.t.6","t2Name":"🏆 ProfeSuh","t2Key":"469.l.18247.t.10","t1Wins":7,"t2Wins":15,"ties":3,"cats":[{"abbr":"AVG","statId":"3","group":"batting","t1Val":".212","t2Val":".297","winner":"t2"},{"abbr":"OBP","statId":"4","group":"batting","t1Val":".297","t2Val":".375","winner":"t2"},{"abbr":"SLG","statId":"5","group":"batting","t1Val":".379","t2Val":".422","winner":"t2"},{"abbr":"R","statId":"7","group":"batting","t1Val":10,"t2Val":3,"winner":"t1"},{"abbr":"H","statId":"8","group":"batting","t1Val":14,"t2Val":19,"winner":"t2"},{"abbr":"HR","statId":"12","group":"batting","t1Val":2,"t2Val":1,"winner":"t1"},{"abbr":"RBI","statId":"13","group":"batting","t1Val":10,"t2Val":8,"winner":"t1"},{"abbr":"BB","statId":"18","group":"batting","t1Val":7,"t2Val":8,"winner":"t2"},{"abbr":"K","statId":"21","group":"batting","t1Val":10,"t2Val":19,"winner":"t1"},{"abbr":"TB","statId":"23","group":"batting","t1Val":25,"t2Val":27,"winner":"t2"},{"abbr":"ERA","statId":"26","group":"pitching","t1Val":"9.39","t2Val":"0.82","winner":"t2"},{"abbr":"WHIP","statId":"27","group":"pitching","t1Val":"1.70","t2Val":"0.77","winner":"t2"},{"abbr":"W","statId":"28","group":"pitching","t1Val":0,"t2Val":2,"winner":"t2"},{"abbr":"L","statId":"29","group":"pitching","t1Val":2,"t2Val":1,"winner":"t2"},{"abbr":"CG","statId":"30","group":"pitching","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"K(P)","statId":"42","group":"pitching","t1Val":7,"t2Val":26,"winner":"t2"},{"abbr":"GIDP","statId":"46","group":"pitching","t1Val":1,"t2Val":1,"winner":"tie"},{"abbr":"TB(P)","statId":"49","group":"pitching","t1Val":23,"t2Val":13,"winner":"t2"},{"abbr":"A","statId":"52","group":"batting","t1Val":21,"t2Val":9,"winner":"t1"},{"abbr":"K/BB","statId":"56","group":"pitching","t1Val":"2.33","t2Val":"3.71","winner":"t2"},{"abbr":"NSB","statId":"62","group":"batting","t1Val":0,"t2Val":-1,"winner":"t1"},{"abbr":"SLAM","statId":"66","group":"batting","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"RAPP","statId":"73","group":"pitching","t1Val":4,"t2Val":3,"winner":"t1"},{"abbr":"QS","statId":"83","group":"pitching","t1Val":0,"t2Val":3,"winner":"t2"},{"abbr":"NSVH","statId":"90","group":"pitching","t1Val":0,"t2Val":1,"winner":"t2"}]},{"idx":5,"t1Name":"💥 JeongWoo's Shockers","t1Key":"469.l.18247.t.11","t2Name":"💥 JongHun's Busters","t2Key":"469.l.18247.t.12","t1Wins":4,"t2Wins":13,"ties":8,"cats":[{"abbr":"AVG","statId":"3","group":"batting","t1Val":".185","t2Val":".313","winner":"t2"},{"abbr":"OBP","statId":"4","group":"batting","t1Val":".260","t2Val":".382","winner":"t2"},{"abbr":"SLG","statId":"5","group":"batting","t1Val":".323","t2Val":".433","winner":"t2"},{"abbr":"R","statId":"7","group":"batting","t1Val":5,"t2Val":8,"winner":"t2"},{"abbr":"H","statId":"8","group":"batting","t1Val":12,"t2Val":21,"winner":"t2"},{"abbr":"HR","statId":"12","group":"batting","t1Val":2,"t2Val":2,"winner":"tie"},{"abbr":"RBI","statId":"13","group":"batting","t1Val":4,"t2Val":7,"winner":"t2"},{"abbr":"BB","statId":"18","group":"batting","t1Val":4,"t2Val":8,"winner":"t2"},{"abbr":"K","statId":"21","group":"batting","t1Val":18,"t2Val":15,"winner":"t2"},{"abbr":"TB","statId":"23","group":"batting","t1Val":21,"t2Val":29,"winner":"t2"},{"abbr":"ERA","statId":"26","group":"pitching","t1Val":"2.63","t2Val":"1.32","winner":"t2"},{"abbr":"WHIP","statId":"27","group":"pitching","t1Val":"0.95","t2Val":"0.88","winner":"t2"},{"abbr":"W","statId":"28","group":"pitching","t1Val":2,"t2Val":2,"winner":"tie"},{"abbr":"L","statId":"29","group":"pitching","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"CG","statId":"30","group":"pitching","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"K(P)","statId":"42","group":"pitching","t1Val":17,"t2Val":10,"winner":"t1"},{"abbr":"GIDP","statId":"46","group":"pitching","t1Val":1,"t2Val":4,"winner":"t2"},{"abbr":"TB(P)","statId":"49","group":"pitching","t1Val":17,"t2Val":11,"winner":"t2"},{"abbr":"A","statId":"52","group":"batting","t1Val":16,"t2Val":16,"winner":"tie"},{"abbr":"K/BB","statId":"56","group":"pitching","t1Val":"5.67","t2Val":"2.00","winner":"t1"},{"abbr":"NSB","statId":"62","group":"batting","t1Val":1,"t2Val":1,"winner":"tie"},{"abbr":"SLAM","statId":"66","group":"batting","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"RAPP","statId":"73","group":"pitching","t1Val":3,"t2Val":2,"winner":"t1"},{"abbr":"QS","statId":"83","group":"pitching","t1Val":1,"t2Val":1,"winner":"tie"},{"abbr":"NSVH","statId":"90","group":"pitching","t1Val":2,"t2Val":0,"winner":"t1"}]}];
+    var MATCHUPS = [{"idx":0,"t1Name":"2026 MVP Mike Trout","t1Key":"469.l.18247.t.1","t2Name":"독후감 신속히 제출해주세요.","t2Key":"469.l.18247.t.6","t1Wins":10,"t2Wins":10,"ties":5,"cats":[{"abbr":"AVG","statId":"3","group":"batting","t1Val":".274","t2Val":".288","winner":"t2"},{"abbr":"OBP","statId":"4","group":"batting","t1Val":".381","t2Val":".378","winner":"t1"},{"abbr":"SLG","statId":"5","group":"batting","t1Val":".462","t2Val":".414","winner":"t1"},{"abbr":"R","statId":"7","group":"batting","t1Val":"18","t2Val":"18","winner":"tie"},{"abbr":"H","statId":"8","group":"batting","t1Val":"29","t2Val":"32","winner":"t2"},{"abbr":"HR","statId":"12","group":"batting","t1Val":"4","t2Val":"2","winner":"t1"},{"abbr":"RBI","statId":"13","group":"batting","t1Val":"13","t2Val":"11","winner":"t1"},{"abbr":"BB","statId":"18","group":"batting","t1Val":"19","t2Val":"15","winner":"t1"},{"abbr":"K","statId":"21","group":"batting","t1Val":"26","t2Val":"22","winner":"t2"},{"abbr":"TB","statId":"23","group":"batting","t1Val":"49","t2Val":"46","winner":"t1"},{"abbr":"ERA","statId":"26","group":"pitching","t1Val":"3.82","t2Val":"1.23","winner":"t2"},{"abbr":"WHIP","statId":"27","group":"pitching","t1Val":"1.22","t2Val":"0.86","winner":"t2"},{"abbr":"W","statId":"28","group":"pitching","t1Val":"1","t2Val":"2","winner":"t2"},{"abbr":"L","statId":"29","group":"pitching","t1Val":"0","t2Val":"0","winner":"tie"},{"abbr":"CG","statId":"30","group":"pitching","t1Val":"0","t2Val":"0","winner":"tie"},{"abbr":"K(P)","statId":"42","group":"pitching","t1Val":"47","t2Val":"29","winner":"t1"},{"abbr":"GIDP","statId":"46","group":"pitching","t1Val":"4","t2Val":"1","winner":"t1"},{"abbr":"TB(P)","statId":"49","group":"pitching","t1Val":"52","t2Val":"20","winner":"t2"},{"abbr":"A","statId":"52","group":"batting","t1Val":"22","t2Val":"33","winner":"t2"},{"abbr":"K/BB","statId":"56","group":"pitching","t1Val":"4.70","t2Val":"4.14","winner":"t1"},{"abbr":"NSB","statId":"62","group":"batting","t1Val":"4","t2Val":"0","winner":"t1"},{"abbr":"SLAM","statId":"66","group":"batting","t1Val":"0","t2Val":"0","winner":"tie"},{"abbr":"RAPP","statId":"73","group":"pitching","t1Val":"0","t2Val":"6","winner":"t2"},{"abbr":"QS","statId":"83","group":"pitching","t1Val":"2","t2Val":"2","winner":"tie"},{"abbr":"NSVH","statId":"90","group":"pitching","t1Val":"0","t2Val":"3","winner":"t2"}]},{"idx":1,"t1Name":"xXXXxAIxXXXx","t1Key":"469.l.18247.t.2","t2Name":"TRUCK","t2Key":"469.l.18247.t.3","t1Wins":11,"t2Wins":10,"ties":4,"cats":[{"abbr":"AVG","statId":"3","group":"batting","t1Val":".239","t2Val":".232","winner":"t1"},{"abbr":"OBP","statId":"4","group":"batting","t1Val":".320","t2Val":".345","winner":"t2"},{"abbr":"SLG","statId":"5","group":"batting","t1Val":".358","t2Val":".343","winner":"t1"},{"abbr":"R","statId":"7","group":"batting","t1Val":"15","t2Val":"12","winner":"t1"},{"abbr":"H","statId":"8","group":"batting","t1Val":"26","t2Val":"23","winner":"t1"},{"abbr":"HR","statId":"12","group":"batting","t1Val":"3","t2Val":"1","winner":"t1"},{"abbr":"RBI","statId":"13","group":"batting","t1Val":"14","t2Val":"3","winner":"t1"},{"abbr":"BB","statId":"18","group":"batting","t1Val":"12","t2Val":"16","winner":"t2"},{"abbr":"K","statId":"21","group":"batting","t1Val":"21","t2Val":"33","winner":"t1"},{"abbr":"TB","statId":"23","group":"batting","t1Val":"39","t2Val":"34","winner":"t1"},{"abbr":"ERA","statId":"26","group":"pitching","t1Val":"5.80","t2Val":"3.74","winner":"t2"},{"abbr":"WHIP","statId":"27","group":"pitching","t1Val":"1.39","t2Val":"1.09","winner":"t2"},{"abbr":"W","statId":"28","group":"pitching","t1Val":"2","t2Val":"2","winner":"tie"},{"abbr":"L","statId":"29","group":"pitching","t1Val":"4","t2Val":"3","winner":"t2"},{"abbr":"CG","statId":"30","group":"pitching","t1Val":"0","t2Val":"0","winner":"tie"},{"abbr":"K(P)","statId":"42","group":"pitching","t1Val":"41","t2Val":"48","winner":"t2"},{"abbr":"GIDP","statId":"46","group":"pitching","t1Val":"4","t2Val":"4","winner":"tie"},{"abbr":"TB(P)","statId":"49","group":"pitching","t1Val":"59","t2Val":"47","winner":"t2"},{"abbr":"A","statId":"52","group":"batting","t1Val":"25","t2Val":"33","winner":"t2"},{"abbr":"K/BB","statId":"56","group":"pitching","t1Val":"2.56","t2Val":"2.00","winner":"t1"},{"abbr":"NSB","statId":"62","group":"batting","t1Val":"2","t2Val":"-1","winner":"t1"},{"abbr":"SLAM","statId":"66","group":"batting","t1Val":"0","t2Val":"0","winner":"tie"},{"abbr":"RAPP","statId":"73","group":"pitching","t1Val":"6","t2Val":"7","winner":"t2"},{"abbr":"QS","statId":"83","group":"pitching","t1Val":"2","t2Val":"1","winner":"t1"},{"abbr":"NSVH","statId":"90","group":"pitching","t1Val":"1","t2Val":"3","winner":"t2"}]},{"idx":2,"t1Name":"UTU_무네타카 무라콴호","t1Key":"469.l.18247.t.4","t2Name":"커츠 나의어둠 나의삶","t2Key":"469.l.18247.t.7","t1Wins":15,"t2Wins":5,"ties":5,"cats":[{"abbr":"AVG","statId":"3","group":"batting","t1Val":".218","t2Val":".247","winner":"t2"},{"abbr":"OBP","statId":"4","group":"batting","t1Val":".347","t2Val":".345","winner":"t1"},{"abbr":"SLG","statId":"5","group":"batting","t1Val":".406","t2Val":".371","winner":"t1"},{"abbr":"R","statId":"7","group":"batting","t1Val":"19","t2Val":"13","winner":"t1"},{"abbr":"H","statId":"8","group":"batting","t1Val":"22","t2Val":"24","winner":"t2"},{"abbr":"HR","statId":"12","group":"batting","t1Val":"6","t2Val":"3","winner":"t1"},{"abbr":"RBI","statId":"13","group":"batting","t1Val":"13","t2Val":"13","winner":"tie"},{"abbr":"BB","statId":"18","group":"batting","t1Val":"18","t2Val":"13","winner":"t1"},{"abbr":"K","statId":"21","group":"batting","t1Val":"24","t2Val":"30","winner":"t1"},{"abbr":"TB","statId":"23","group":"batting","t1Val":"41","t2Val":"36","winner":"t1"},{"abbr":"ERA","statId":"26","group":"pitching","t1Val":"1.82","t2Val":"6.50","winner":"t1"},{"abbr":"WHIP","statId":"27","group":"pitching","t1Val":"0.97","t2Val":"1.50","winner":"t1"},{"abbr":"W","statId":"28","group":"pitching","t1Val":"3","t2Val":"1","winner":"t1"},{"abbr":"L","statId":"29","group":"pitching","t1Val":"0","t2Val":"2","winner":"t1"},{"abbr":"CG","statId":"30","group":"pitching","t1Val":"0","t2Val":"0","winner":"tie"},{"abbr":"K(P)","statId":"42","group":"pitching","t1Val":"30","t2Val":"32","winner":"t2"},{"abbr":"GIDP","statId":"46","group":"pitching","t1Val":"4","t2Val":"4","winner":"tie"},{"abbr":"TB(P)","statId":"49","group":"pitching","t1Val":"29","t2Val":"81","winner":"t1"},{"abbr":"A","statId":"52","group":"batting","t1Val":"16","t2Val":"34","winner":"t2"},{"abbr":"K/BB","statId":"56","group":"pitching","t1Val":"3.75","t2Val":"1.88","winner":"t1"},{"abbr":"NSB","statId":"62","group":"batting","t1Val":"4","t2Val":"2","winner":"t1"},{"abbr":"SLAM","statId":"66","group":"batting","t1Val":"0","t2Val":"0","winner":"tie"},{"abbr":"RAPP","statId":"73","group":"pitching","t1Val":"7","t2Val":"2","winner":"t1"},{"abbr":"QS","statId":"83","group":"pitching","t1Val":"1","t2Val":"2","winner":"t2"},{"abbr":"NSVH","statId":"90","group":"pitching","t1Val":"0","t2Val":"0","winner":"tie"}]},{"idx":3,"t1Name":"✌️ Yeonwoo's Double Play","t1Key":"469.l.18247.t.5","t2Name":"💥 JeongWoo's Shockers","t2Key":"469.l.18247.t.11","t1Wins":10,"t2Wins":12,"ties":3,"cats":[{"abbr":"AVG","statId":"3","group":"batting","t1Val":".192","t2Val":".190","winner":"t1"},{"abbr":"OBP","statId":"4","group":"batting","t1Val":".290","t2Val":".277","winner":"t1"},{"abbr":"SLG","statId":"5","group":"batting","t1Val":".312","t2Val":".328","winner":"t2"},{"abbr":"R","statId":"7","group":"batting","t1Val":"15","t2Val":"12","winner":"t1"},{"abbr":"H","statId":"8","group":"batting","t1Val":"24","t2Val":"22","winner":"t1"},{"abbr":"HR","statId":"12","group":"batting","t1Val":"3","t2Val":"4","winner":"t2"},{"abbr":"RBI","statId":"13","group":"batting","t1Val":"14","t2Val":"13","winner":"t1"},{"abbr":"BB","statId":"18","group":"batting","t1Val":"17","t2Val":"12","winner":"t1"},{"abbr":"K","statId":"21","group":"batting","t1Val":"40","t2Val":"33","winner":"t2"},{"abbr":"TB","statId":"23","group":"batting","t1Val":"39","t2Val":"38","winner":"t1"},{"abbr":"ERA","statId":"26","group":"pitching","t1Val":"6.07","t2Val":"5.02","winner":"t2"},{"abbr":"WHIP","statId":"27","group":"pitching","t1Val":"1.69","t2Val":"1.19","winner":"t2"},{"abbr":"W","statId":"28","group":"pitching","t1Val":"0","t2Val":"1","winner":"t2"},{"abbr":"L","statId":"29","group":"pitching","t1Val":"3","t2Val":"1","winner":"t2"},{"abbr":"CG","statId":"30","group":"pitching","t1Val":"0","t2Val":"0","winner":"tie"},{"abbr":"K(P)","statId":"42","group":"pitching","t1Val":"39","t2Val":"15","winner":"t1"},{"abbr":"GIDP","statId":"46","group":"pitching","t1Val":"2","t2Val":"0","winner":"t1"},{"abbr":"TB(P)","statId":"49","group":"pitching","t1Val":"63","t2Val":"22","winner":"t2"},{"abbr":"A","statId":"52","group":"batting","t1Val":"33","t2Val":"31","winner":"t1"},{"abbr":"K/BB","statId":"56","group":"pitching","t1Val":"3.55","t2Val":"5.00","winner":"t2"},{"abbr":"NSB","statId":"62","group":"batting","t1Val":"2","t2Val":"6","winner":"t2"},{"abbr":"SLAM","statId":"66","group":"batting","t1Val":"0","t2Val":"0","winner":"tie"},{"abbr":"RAPP","statId":"73","group":"pitching","t1Val":"5","t2Val":"5","winner":"tie"},{"abbr":"QS","statId":"83","group":"pitching","t1Val":"0","t2Val":"1","winner":"t2"},{"abbr":"NSVH","statId":"90","group":"pitching","t1Val":"0","t2Val":"4","winner":"t2"}]},{"idx":4,"t1Name":"응노","t1Key":"469.l.18247.t.8","t2Name":"JJ yoogwanholt","t2Key":"469.l.18247.t.9","t1Wins":11,"t2Wins":12,"ties":2,"cats":[{"abbr":"AVG","statId":"3","group":"batting","t1Val":".261","t2Val":".248","winner":"t1"},{"abbr":"OBP","statId":"4","group":"batting","t1Val":".313","t2Val":".355","winner":"t2"},{"abbr":"SLG","statId":"5","group":"batting","t1Val":".639","t2Val":".556","winner":"t1"},{"abbr":"R","statId":"7","group":"batting","t1Val":"20","t2Val":"22","winner":"t2"},{"abbr":"H","statId":"8","group":"batting","t1Val":"31","t2Val":"29","winner":"t1"},{"abbr":"HR","statId":"12","group":"batting","t1Val":"14","t2Val":"11","winner":"t1"},{"abbr":"RBI","statId":"13","group":"batting","t1Val":"26","t2Val":"25","winner":"t1"},{"abbr":"BB","statId":"18","group":"batting","t1Val":"10","t2Val":"20","winner":"t2"},{"abbr":"K","statId":"21","group":"batting","t1Val":"33","t2Val":"31","winner":"t2"},{"abbr":"TB","statId":"23","group":"batting","t1Val":"76","t2Val":"65","winner":"t1"},{"abbr":"ERA","statId":"26","group":"pitching","t1Val":"6.37","t2Val":"3.18","winner":"t2"},{"abbr":"WHIP","statId":"27","group":"pitching","t1Val":"1.42","t2Val":"1.27","winner":"t2"},{"abbr":"W","statId":"28","group":"pitching","t1Val":"2","t2Val":"1","winner":"t1"},{"abbr":"L","statId":"29","group":"pitching","t1Val":"4","t2Val":"2","winner":"t2"},{"abbr":"CG","statId":"30","group":"pitching","t1Val":"0","t2Val":"0","winner":"tie"},{"abbr":"K(P)","statId":"42","group":"pitching","t1Val":"44","t2Val":"31","winner":"t1"},{"abbr":"GIDP","statId":"46","group":"pitching","t1Val":"1","t2Val":"2","winner":"t2"},{"abbr":"TB(P)","statId":"49","group":"pitching","t1Val":"62","t2Val":"40","winner":"t2"},{"abbr":"A","statId":"52","group":"batting","t1Val":"32","t2Val":"20","winner":"t1"},{"abbr":"K/BB","statId":"56","group":"pitching","t1Val":"11.00","t2Val":"2.38","winner":"t1"},{"abbr":"NSB","statId":"62","group":"batting","t1Val":"1","t2Val":"3","winner":"t2"},{"abbr":"SLAM","statId":"66","group":"batting","t1Val":"1","t2Val":"1","winner":"tie"},{"abbr":"RAPP","statId":"73","group":"pitching","t1Val":"6","t2Val":"5","winner":"t1"},{"abbr":"QS","statId":"83","group":"pitching","t1Val":"1","t2Val":"2","winner":"t2"},{"abbr":"NSVH","statId":"90","group":"pitching","t1Val":"0","t2Val":"3","winner":"t2"}]},{"idx":5,"t1Name":"🏆 ProfeSuh","t1Key":"469.l.18247.t.10","t2Name":"💥 JongHun's Busters","t2Key":"469.l.18247.t.12","t1Wins":13,"t2Wins":10,"ties":2,"cats":[{"abbr":"AVG","statId":"3","group":"batting","t1Val":".294","t2Val":".200","winner":"t1"},{"abbr":"OBP","statId":"4","group":"batting","t1Val":".375","t2Val":".322","winner":"t1"},{"abbr":"SLG","statId":"5","group":"batting","t1Val":".471","t2Val":".240","winner":"t1"},{"abbr":"R","statId":"7","group":"batting","t1Val":"15","t2Val":"11","winner":"t1"},{"abbr":"H","statId":"8","group":"batting","t1Val":"35","t2Val":"20","winner":"t1"},{"abbr":"HR","statId":"12","group":"batting","t1Val":"5","t2Val":"1","winner":"t1"},{"abbr":"RBI","statId":"13","group":"batting","t1Val":"15","t2Val":"12","winner":"t1"},{"abbr":"BB","statId":"18","group":"batting","t1Val":"12","t2Val":"17","winner":"t2"},{"abbr":"K","statId":"21","group":"batting","t1Val":"35","t2Val":"27","winner":"t2"},{"abbr":"TB","statId":"23","group":"batting","t1Val":"56","t2Val":"24","winner":"t1"},{"abbr":"ERA","statId":"26","group":"pitching","t1Val":"2.49","t2Val":"1.51","winner":"t2"},{"abbr":"WHIP","statId":"27","group":"pitching","t1Val":"0.75","t2Val":"1.07","winner":"t1"},{"abbr":"W","statId":"28","group":"pitching","t1Val":"2","t2Val":"3","winner":"t2"},{"abbr":"L","statId":"29","group":"pitching","t1Val":"2","t2Val":"0","winner":"t2"},{"abbr":"CG","statId":"30","group":"pitching","t1Val":"0","t2Val":"0","winner":"tie"},{"abbr":"K(P)","statId":"42","group":"pitching","t1Val":"31","t2Val":"47","winner":"t2"},{"abbr":"GIDP","statId":"46","group":"pitching","t1Val":"0","t2Val":"2","winner":"t2"},{"abbr":"TB(P)","statId":"49","group":"pitching","t1Val":"18","t2Val":"63","winner":"t1"},{"abbr":"A","statId":"52","group":"batting","t1Val":"24","t2Val":"25","winner":"t2"},{"abbr":"K/BB","statId":"56","group":"pitching","t1Val":"3.88","t2Val":"4.70","winner":"t2"},{"abbr":"NSB","statId":"62","group":"batting","t1Val":"2","t2Val":"1","winner":"t1"},{"abbr":"SLAM","statId":"66","group":"batting","t1Val":"0","t2Val":"0","winner":"tie"},{"abbr":"RAPP","statId":"73","group":"pitching","t1Val":"10","t2Val":"4","winner":"t1"},{"abbr":"QS","statId":"83","group":"pitching","t1Val":"1","t2Val":"4","winner":"t2"},{"abbr":"NSVH","statId":"90","group":"pitching","t1Val":"3","t2Val":"1","winner":"t1"}]}];
     var TEAMS = [{"key":"469.l.18247.t.4","name":"UTU_무네타카 무라콴호"},{"key":"469.l.18247.t.10","name":"🏆 ProfeSuh"},{"key":"469.l.18247.t.11","name":"💥 JeongWoo's Shockers"},{"key":"469.l.18247.t.2","name":"xXXXxAIxXXXx"},{"key":"469.l.18247.t.9","name":"JJ yoogwanholt"},{"key":"469.l.18247.t.1","name":"2026 MVP Mike Trout"},{"key":"469.l.18247.t.6","name":"독후감 신속히 제출해주세요."},{"key":"469.l.18247.t.3","name":"TRUCK"},{"key":"469.l.18247.t.8","name":"응노"},{"key":"469.l.18247.t.5","name":"✌️ Yeonwoo's Double Play"},{"key":"469.l.18247.t.12","name":"💥 JongHun's Busters"},{"key":"469.l.18247.t.7","name":"커츠 나의어둠 나의삶"}];
     var MY_KEY = "469.l.18247.t.10";
     var CAT_RANKINGS = {"3":[{"teamName":"🏆 ProfeSuh","value":".302","rank":1},{"teamName":"독후감 신속히 제출해주세요.","value":".267","rank":2},{"teamName":"응노","value":".252","rank":3},{"teamName":"JJ yoogwanholt","value":".245","rank":4},{"teamName":"💥 JongHun's Busters","value":".241","rank":5},{"teamName":"UTU_무네타카 무라콴호","value":".237","rank":6},{"teamName":"2026 MVP Mike Trout","value":".234","rank":7},{"teamName":"커츠 나의어둠 나의삶","value":".228","rank":8},{"teamName":"✌️ Yeonwoo's Double Play","value":".226","rank":9},{"teamName":"TRUCK","value":".212","rank":10},{"teamName":"xXXXxAIxXXXx","value":".207","rank":11},{"teamName":"💥 JeongWoo's Shockers","value":".185","rank":12}],"4":[{"teamName":"🏆 ProfeSuh","value":".390","rank":1},{"teamName":"UTU_무네타카 무라콴호","value":".356","rank":2},{"teamName":"독후감 신속히 제출해주세요.","value":".348","rank":3},{"teamName":"JJ yoogwanholt","value":".347","rank":4},{"teamName":"💥 JongHun's Busters","value":".342","rank":5},{"teamName":"2026 MVP Mike Trout","value":".340","rank":6},{"teamName":"응노","value":".327","rank":7},{"teamName":"TRUCK","value":".325","rank":8},{"teamName":"✌️ Yeonwoo's Double Play","value":".324","rank":9},{"teamName":"커츠 나의어둠 나의삶","value":".322","rank":10},{"teamName":"xXXXxAIxXXXx","value":".288","rank":11},{"teamName":"💥 JeongWoo's Shockers","value":".272","rank":12}],"5":[{"teamName":"응노","value":".583","rank":1},{"teamName":"JJ yoogwanholt","value":".497","rank":2},{"teamName":"🏆 ProfeSuh","value":".483","rank":3},{"teamName":"독후감 신속히 제출해주세요.","value":".425","rank":4},{"teamName":"UTU_무네타카 무라콴호","value":".422","rank":5},{"teamName":"2026 MVP Mike Trout","value":".409","rank":6},{"teamName":"✌️ Yeonwoo's Double Play","value":".377","rank":7},{"teamName":"커츠 나의어둠 나의삶","value":".331","rank":8},{"teamName":"💥 JeongWoo's Shockers","value":".311","rank":9.5},{"teamName":"TRUCK","value":".311","rank":9.5},{"teamName":"xXXXxAIxXXXx","value":".307","rank":11},{"teamName":"💥 JongHun's Busters","value":".293","rank":12}],"7":[{"teamName":"JJ yoogwanholt","value":"28","rank":1},{"teamName":"UTU_무네타카 무라콴호","value":"26","rank":2},{"teamName":"응노","value":"23","rank":3.5},{"teamName":"✌️ Yeonwoo's Double Play","value":"23","rank":3.5},{"teamName":"2026 MVP Mike Trout","value":"22","rank":5.5},{"teamName":"독후감 신속히 제출해주세요.","value":"22","rank":5.5},{"teamName":"🏆 ProfeSuh","value":"17","rank":7},{"teamName":"xXXXxAIxXXXx","value":"16","rank":8},{"teamName":"TRUCK","value":"15","rank":9.5},{"teamName":"커츠 나의어둠 나의삶","value":"15","rank":9.5},{"teamName":"💥 JeongWoo's Shockers","value":"14","rank":11.5},{"teamName":"💥 JongHun's Busters","value":"14","rank":11.5}],"8":[{"teamName":"🏆 ProfeSuh","value":"45","rank":1},{"teamName":"독후감 신속히 제출해주세요.","value":"39","rank":2},{"teamName":"응노","value":"38","rank":3},{"teamName":"JJ yoogwanholt","value":"37","rank":4},{"teamName":"✌️ Yeonwoo's Double Play","value":"36","rank":5},{"teamName":"UTU_무네타카 무라콴호","value":"32","rank":7},{"teamName":"2026 MVP Mike Trout","value":"32","rank":7},{"teamName":"💥 JongHun's Busters","value":"32","rank":7},{"teamName":"xXXXxAIxXXXx","value":"29","rank":9.5},{"teamName":"커츠 나의어둠 나의삶","value":"29","rank":9.5},{"teamName":"💥 JeongWoo's Shockers","value":"28","rank":11.5},{"teamName":"TRUCK","value":"28","rank":11.5}],"12":[{"teamName":"응노","value":"15","rank":1},{"teamName":"JJ yoogwanholt","value":"11","rank":2},{"teamName":"UTU_무네타카 무라콴호","value":"7","rank":3},{"teamName":"🏆 ProfeSuh","value":"6","rank":4.5},{"teamName":"✌️ Yeonwoo's Double Play","value":"6","rank":4.5},{"teamName":"2026 MVP Mike Trout","value":"5","rank":6},{"teamName":"💥 JeongWoo's Shockers","value":"4","rank":7.5},{"teamName":"독후감 신속히 제출해주세요.","value":"4","rank":7.5},{"teamName":"xXXXxAIxXXXx","value":"3","rank":9.5},{"teamName":"커츠 나의어둠 나의삶","value":"3","rank":9.5},{"teamName":"💥 JongHun's Busters","value":"2","rank":11},{"teamName":"TRUCK","value":"1","rank":12}],"13":[{"teamName":"응노","value":"30","rank":1},{"teamName":"JJ yoogwanholt","value":"28","rank":2},{"teamName":"🏆 ProfeSuh","value":"20","rank":3},{"teamName":"✌️ Yeonwoo's Double Play","value":"19","rank":4},{"teamName":"UTU_무네타카 무라콴호","value":"16","rank":6},{"teamName":"독후감 신속히 제출해주세요.","value":"16","rank":6},{"teamName":"💥 JongHun's Busters","value":"16","rank":6},{"teamName":"2026 MVP Mike Trout","value":"15","rank":8},{"teamName":"💥 JeongWoo's Shockers","value":"14","rank":9.5},{"teamName":"xXXXxAIxXXXx","value":"14","rank":9.5},{"teamName":"커츠 나의어둠 나의삶","value":"13","rank":11},{"teamName":"TRUCK","value":"5","rank":12}],"18":[{"teamName":"JJ yoogwanholt","value":"24","rank":1},{"teamName":"UTU_무네타카 무라콴호","value":"23","rank":3},{"teamName":"2026 MVP Mike Trout","value":"23","rank":3},{"teamName":"✌️ Yeonwoo's Double Play","value":"23","rank":3},{"teamName":"TRUCK","value":"21","rank":5},{"teamName":"💥 JongHun's Busters","value":"20","rank":6},{"teamName":"🏆 ProfeSuh","value":"18","rank":7.5},{"teamName":"응노","value":"18","rank":7.5},{"teamName":"독후감 신속히 제출해주세요.","value":"16","rank":9.5},{"teamName":"커츠 나의어둠 나의삶","value":"16","rank":9.5},{"teamName":"xXXXxAIxXXXx","value":"15","rank":11},{"teamName":"💥 JeongWoo's Shockers","value":"14","rank":12}],"21":[{"teamName":"독후감 신속히 제출해주세요.","value":"27","rank":1},{"teamName":"xXXXxAIxXXXx","value":"30","rank":2.5},{"teamName":"💥 JongHun's Busters","value":"30","rank":2.5},{"teamName":"UTU_무네타카 무라콴호","value":"32","rank":4},{"teamName":"커츠 나의어둠 나의삶","value":"33","rank":5},{"teamName":"2026 MVP Mike Trout","value":"34","rank":6},{"teamName":"응노","value":"40","rank":7},{"teamName":"JJ yoogwanholt","value":"42","rank":8},{"teamName":"🏆 ProfeSuh","value":"43","rank":9},{"teamName":"💥 JeongWoo's Shockers","value":"44","rank":10.5},{"teamName":"TRUCK","value":"44","rank":10.5},{"teamName":"✌️ Yeonwoo's Double Play","value":"45","rank":12}],"23":[{"teamName":"응노","value":"88","rank":1},{"teamName":"JJ yoogwanholt","value":"75","rank":2},{"teamName":"🏆 ProfeSuh","value":"72","rank":3},{"teamName":"독후감 신속히 제출해주세요.","value":"62","rank":4},{"teamName":"✌️ Yeonwoo's Double Play","value":"60","rank":5},{"teamName":"UTU_무네타카 무라콴호","value":"57","rank":6},{"teamName":"2026 MVP Mike Trout","value":"56","rank":7},{"teamName":"💥 JeongWoo's Shockers","value":"47","rank":8},{"teamName":"xXXXxAIxXXXx","value":"43","rank":9},{"teamName":"커츠 나의어둠 나의삶","value":"42","rank":10},{"teamName":"TRUCK","value":"41","rank":11},{"teamName":"💥 JongHun's Busters","value":"39","rank":12}],"26":[{"teamName":"💥 JongHun's Busters","value":"1.66","rank":1},{"teamName":"UTU_무네타카 무라콴호","value":"1.73","rank":2},{"teamName":"🏆 ProfeSuh","value":"2.30","rank":3},{"teamName":"JJ yoogwanholt","value":"2.62","rank":4},{"teamName":"독후감 신속히 제출해주세요.","value":"3.18","rank":5},{"teamName":"2026 MVP Mike Trout","value":"3.30","rank":6},{"teamName":"TRUCK","value":"3.74","rank":7},{"teamName":"💥 JeongWoo's Shockers","value":"4.41","rank":8},{"teamName":"커츠 나의어둠 나의삶","value":"4.97","rank":9},{"teamName":"응노","value":"5.27","rank":10},{"teamName":"✌️ Yeonwoo's Double Play","value":"5.63","rank":11},{"teamName":"xXXXxAIxXXXx","value":"5.91","rank":12}],"27":[{"teamName":"🏆 ProfeSuh","value":"0.73","rank":1},{"teamName":"UTU_무네타카 무라콴호","value":"0.92","rank":2},{"teamName":"💥 JongHun's Busters","value":"1.07","rank":3},{"teamName":"2026 MVP Mike Trout","value":"1.08","rank":4},{"teamName":"독후감 신속히 제출해주세요.","value":"1.09","rank":5.5},{"teamName":"TRUCK","value":"1.09","rank":5.5},{"teamName":"💥 JeongWoo's Shockers","value":"1.16","rank":7},{"teamName":"JJ yoogwanholt","value":"1.17","rank":8},{"teamName":"응노","value":"1.29","rank":9},{"teamName":"커츠 나의어둠 나의삶","value":"1.34","rank":10},{"teamName":"xXXXxAIxXXXx","value":"1.47","rank":11},{"teamName":"✌️ Yeonwoo's Double Play","value":"1.59","rank":12}],"28":[{"teamName":"💥 JongHun's Busters","value":"4","rank":1.5},{"teamName":"커츠 나의어둠 나의삶","value":"4","rank":1.5},{"teamName":"UTU_무네타카 무라콴호","value":"3","rank":3.5},{"teamName":"응노","value":"3","rank":3.5},{"teamName":"🏆 ProfeSuh","value":"2","rank":7.5},{"teamName":"💥 JeongWoo's Shockers","value":"2","rank":7.5},{"teamName":"xXXXxAIxXXXx","value":"2","rank":7.5},{"teamName":"2026 MVP Mike Trout","value":"2","rank":7.5},{"teamName":"독후감 신속히 제출해주세요.","value":"2","rank":7.5},{"teamName":"TRUCK","value":"2","rank":7.5},{"teamName":"JJ yoogwanholt","value":"1","rank":11},{"teamName":"✌️ Yeonwoo's Double Play","value":"0","rank":12}],"29":[{"teamName":"UTU_무네타카 무라콴호","value":"0","rank":2},{"teamName":"2026 MVP Mike Trout","value":"0","rank":2},{"teamName":"💥 JongHun's Busters","value":"0","rank":2},{"teamName":"💥 JeongWoo's Shockers","value":"1","rank":4},{"teamName":"🏆 ProfeSuh","value":"2","rank":6},{"teamName":"JJ yoogwanholt","value":"2","rank":6},{"teamName":"독후감 신속히 제출해주세요.","value":"2","rank":6},{"teamName":"TRUCK","value":"3","rank":9},{"teamName":"✌️ Yeonwoo's Double Play","value":"3","rank":9},{"teamName":"커츠 나의어둠 나의삶","value":"3","rank":9},{"teamName":"응노","value":"4","rank":11},{"teamName":"xXXXxAIxXXXx","value":"5","rank":12}],"30":[{"teamName":"UTU_무네타카 무라콴호","value":"0","rank":6.5},{"teamName":"🏆 ProfeSuh","value":"0","rank":6.5},{"teamName":"💥 JeongWoo's Shockers","value":"0","rank":6.5},{"teamName":"xXXXxAIxXXXx","value":"0","rank":6.5},{"teamName":"JJ yoogwanholt","value":"0","rank":6.5},{"teamName":"2026 MVP Mike Trout","value":"0","rank":6.5},{"teamName":"독후감 신속히 제출해주세요.","value":"0","rank":6.5},{"teamName":"TRUCK","value":"0","rank":6.5},{"teamName":"응노","value":"0","rank":6.5},{"teamName":"✌️ Yeonwoo's Double Play","value":"0","rank":6.5},{"teamName":"💥 JongHun's Busters","value":"0","rank":6.5},{"teamName":"커츠 나의어둠 나의삶","value":"0","rank":6.5}],"42":[{"teamName":"응노","value":"58","rank":1},{"teamName":"2026 MVP Mike Trout","value":"55","rank":2},{"teamName":"💥 JongHun's Busters","value":"52","rank":3},{"teamName":"커츠 나의어둠 나의삶","value":"51","rank":4},{"teamName":"TRUCK","value":"48","rank":5},{"teamName":"xXXXxAIxXXXx","value":"44","rank":6},{"teamName":"✌️ Yeonwoo's Double Play","value":"41","rank":7},{"teamName":"JJ yoogwanholt","value":"38","rank":8},{"teamName":"🏆 ProfeSuh","value":"34","rank":9.5},{"teamName":"독후감 신속히 제출해주세요.","value":"34","rank":9.5},{"teamName":"UTU_무네타카 무라콴호","value":"31","rank":11},{"teamName":"💥 JeongWoo's Shockers","value":"18","rank":12}],"46":[{"teamName":"xXXXxAIxXXXx","value":"5","rank":1.5},{"teamName":"2026 MVP Mike Trout","value":"5","rank":1.5},{"teamName":"UTU_무네타카 무라콴호","value":"4","rank":4.5},{"teamName":"TRUCK","value":"4","rank":4.5},{"teamName":"💥 JongHun's Busters","value":"4","rank":4.5},{"teamName":"커츠 나의어둠 나의삶","value":"4","rank":4.5},{"teamName":"JJ yoogwanholt","value":"2","rank":8},{"teamName":"독후감 신속히 제출해주세요.","value":"2","rank":8},{"teamName":"✌️ Yeonwoo's Double Play","value":"2","rank":8},{"teamName":"응노","value":"1","rank":10},{"teamName":"🏆 ProfeSuh","value":"0","rank":11.5},{"teamName":"💥 JeongWoo's Shockers","value":"0","rank":11.5}],"49":[{"teamName":"🏆 ProfeSuh","value":"19","rank":1},{"teamName":"💥 JeongWoo's Shockers","value":"22","rank":2},{"teamName":"UTU_무네타카 무라콴호","value":"29","rank":3},{"teamName":"독후감 신속히 제출해주세요.","value":"39","rank":4},{"teamName":"JJ yoogwanholt","value":"42","rank":5},{"teamName":"TRUCK","value":"47","rank":6},{"teamName":"2026 MVP Mike Trout","value":"55","rank":7},{"teamName":"✌️ Yeonwoo's Double Play","value":"64","rank":8},{"teamName":"xXXXxAIxXXXx","value":"67","rank":9},{"teamName":"💥 JongHun's Busters","value":"71","rank":10},{"teamName":"응노","value":"78","rank":11},{"teamName":"커츠 나의어둠 나의삶","value":"99","rank":12}],"52":[{"teamName":"독후감 신속히 제출해주세요.","value":"45","rank":1},{"teamName":"TRUCK","value":"44","rank":2},{"teamName":"응노","value":"42","rank":3},{"teamName":"💥 JeongWoo's Shockers","value":"41","rank":4.5},{"teamName":"✌️ Yeonwoo's Double Play","value":"41","rank":4.5},{"teamName":"커츠 나의어둠 나의삶","value":"40","rank":6},{"teamName":"💥 JongHun's Busters","value":"33","rank":7},{"teamName":"JJ yoogwanholt","value":"32","rank":8},{"teamName":"2026 MVP Mike Trout","value":"31","rank":9},{"teamName":"🏆 ProfeSuh","value":"30","rank":10},{"teamName":"xXXXxAIxXXXx","value":"29","rank":11},{"teamName":"UTU_무네타카 무라콴호","value":"23","rank":12}],"56":[{"teamName":"응노","value":"7.25","rank":1},{"teamName":"2026 MVP Mike Trout","value":"4.58","rank":2},{"teamName":"🏆 ProfeSuh","value":"4.25","rank":3},{"teamName":"💥 JongHun's Busters","value":"4.00","rank":4},{"teamName":"UTU_무네타카 무라콴호","value":"3.88","rank":5},{"teamName":"✌️ Yeonwoo's Double Play","value":"3.73","rank":6},{"teamName":"💥 JeongWoo's Shockers","value":"3.60","rank":7},{"teamName":"독후감 신속히 제출해주세요.","value":"3.40","rank":8},{"teamName":"JJ yoogwanholt","value":"2.53","rank":9},{"teamName":"xXXXxAIxXXXx","value":"2.20","rank":10},{"teamName":"커츠 나의어둠 나의삶","value":"2.04","rank":11},{"teamName":"TRUCK","value":"2.00","rank":12}],"62":[{"teamName":"💥 JeongWoo's Shockers","value":"7","rank":1},{"teamName":"2026 MVP Mike Trout","value":"5","rank":2},{"teamName":"UTU_무네타카 무라콴호","value":"4","rank":3},{"teamName":"JJ yoogwanholt","value":"3","rank":4},{"teamName":"🏆 ProfeSuh","value":"2","rank":6.5},{"teamName":"xXXXxAIxXXXx","value":"2","rank":6.5},{"teamName":"✌️ Yeonwoo's Double Play","value":"2","rank":6.5},{"teamName":"커츠 나의어둠 나의삶","value":"2","rank":6.5},{"teamName":"응노","value":"1","rank":9.5},{"teamName":"💥 JongHun's Busters","value":"1","rank":9.5},{"teamName":"독후감 신속히 제출해주세요.","value":"0","rank":11},{"teamName":"TRUCK","value":"-1","rank":12}],"66":[{"teamName":"JJ yoogwanholt","value":"1","rank":1.5},{"teamName":"응노","value":"1","rank":1.5},{"teamName":"UTU_무네타카 무라콴호","value":"0","rank":7.5},{"teamName":"🏆 ProfeSuh","value":"0","rank":7.5},{"teamName":"💥 JeongWoo's Shockers","value":"0","rank":7.5},{"teamName":"xXXXxAIxXXXx","value":"0","rank":7.5},{"teamName":"2026 MVP Mike Trout","value":"0","rank":7.5},{"teamName":"독후감 신속히 제출해주세요.","value":"0","rank":7.5},{"teamName":"TRUCK","value":"0","rank":7.5},{"teamName":"✌️ Yeonwoo's Double Play","value":"0","rank":7.5},{"teamName":"💥 JongHun's Busters","value":"0","rank":7.5},{"teamName":"커츠 나의어둠 나의삶","value":"0","rank":7.5}],"73":[{"teamName":"🏆 ProfeSuh","value":"12","rank":1},{"teamName":"UTU_무네타카 무라콴호","value":"8","rank":3.5},{"teamName":"독후감 신속히 제출해주세요.","value":"8","rank":3.5},{"teamName":"응노","value":"8","rank":3.5},{"teamName":"✌️ Yeonwoo's Double Play","value":"8","rank":3.5},{"teamName":"💥 JeongWoo's Shockers","value":"7","rank":7},{"teamName":"xXXXxAIxXXXx","value":"7","rank":7},{"teamName":"TRUCK","value":"7","rank":7},{"teamName":"JJ yoogwanholt","value":"5","rank":9.5},{"teamName":"💥 JongHun's Busters","value":"5","rank":9.5},{"teamName":"커츠 나의어둠 나의삶","value":"4","rank":11},{"teamName":"2026 MVP Mike Trout","value":"0","rank":12}],"83":[{"teamName":"💥 JongHun's Busters","value":"4","rank":1.5},{"teamName":"커츠 나의어둠 나의삶","value":"4","rank":1.5},{"teamName":"JJ yoogwanholt","value":"3","rank":3.5},{"teamName":"2026 MVP Mike Trout","value":"3","rank":3.5},{"teamName":"xXXXxAIxXXXx","value":"2","rank":6},{"teamName":"독후감 신속히 제출해주세요.","value":"2","rank":6},{"teamName":"응노","value":"2","rank":6},{"teamName":"UTU_무네타카 무라콴호","value":"1","rank":9.5},{"teamName":"🏆 ProfeSuh","value":"1","rank":9.5},{"teamName":"💥 JeongWoo's Shockers","value":"1","rank":9.5},{"teamName":"TRUCK","value":"1","rank":9.5},{"teamName":"✌️ Yeonwoo's Double Play","value":"0","rank":12}],"90":[{"teamName":"💥 JeongWoo's Shockers","value":"5","rank":1},{"teamName":"독후감 신속히 제출해주세요.","value":"4","rank":2},{"teamName":"🏆 ProfeSuh","value":"3","rank":4},{"teamName":"JJ yoogwanholt","value":"3","rank":4},{"teamName":"TRUCK","value":"3","rank":4},{"teamName":"xXXXxAIxXXXx","value":"2","rank":6.5},{"teamName":"✌️ Yeonwoo's Double Play","value":"2","rank":6.5},{"teamName":"UTU_무네타카 무라콴호","value":"1","rank":8.5},{"teamName":"💥 JongHun's Busters","value":"1","rank":8.5},{"teamName":"2026 MVP Mike Trout","value":"0","rank":11},{"teamName":"응노","value":"0","rank":11},{"teamName":"커츠 나의어둠 나의삶","value":"0","rank":11}]};
@@ -1047,6 +1389,19 @@
           el.style.background = '';
           el.style.border = '';
         }
+      });
+    }
+
+    // Main tab switching
+    var mainTabNames = ['overview','matchup','analysis','activity'];
+    function switchMainTab(tab) {
+      mainTabNames.forEach(function(t) {
+        var el = document.getElementById('tab-' + t);
+        if (el) el.classList.toggle('active', t === tab);
+      });
+      var btns = document.getElementById('main-tabs').querySelectorAll('.tab-btn');
+      mainTabNames.forEach(function(t, i) {
+        btns[i].classList.toggle('active', t === tab);
       });
     }
 
