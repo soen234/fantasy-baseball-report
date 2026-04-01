@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.env
+data/token.json
+data/certs/
+data/history.json
+docs/
+firebase-debug.log
+.claude/

@@ -1,0 +1,70 @@
+name: Daily Fantasy Baseball Report
+
+on:
+  schedule:
+    # 3PM KST = 6AM UTC
+    - cron: '0 6 * * *'
+  workflow_dispatch: # 수동 실행 가능
+
+permissions:
+  contents: write
+
+jobs:
+  generate-report:
+    runs-on: ubuntu-latest
+    env:
+      YAHOO_CLIENT_ID: ${{ secrets.YAHOO_CLIENT_ID }}
+      YAHOO_CLIENT_SECRET: ${{ secrets.YAHOO_CLIENT_SECRET }}
+      YAHOO_REDIRECT_URI: "https://localhost:4000/callback"
+    steps:
+      - name: Checkout main (source code)
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: main
+
+      - name: Checkout gh-pages (deploy target + history)
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: main/package-lock.json
+
+      - name: Install dependencies
+        run: cd main && npm ci
+
+      - name: Restore Yahoo token
+        env:
+          TOKEN_JSON: ${{ secrets.YAHOO_TOKEN_JSON }}
+        run: |
+          mkdir -p main/data
+          echo "$TOKEN_JSON" > main/data/token.json
+
+      - name: Restore history from gh-pages
+        run: |
+          if [ -f gh-pages/docs/history.json ]; then
+            cp gh-pages/docs/history.json main/data/history.json
+          else
+            echo '{"weeks":[]}' > main/data/history.json
+          fi
+
+      - name: Generate report (auto-detect week)
+        run: cd main && npx tsx src/scripts/weekly-report-html.ts auto
+
+      - name: Deploy to gh-pages
+        run: |
+          cp main/docs/*.html gh-pages/docs/
+          cp main/data/history.json gh-pages/docs/history.json
+          cd gh-pages
+          git config user.name "soen234"
+          git config user.email "soen234@gmail.com"
+          git add docs/
+          git diff --cached --quiet && echo "No changes to deploy" && exit 0
+          git commit -m "Daily report $(date -u +%Y-%m-%d)"
+          git push

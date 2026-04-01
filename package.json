@@ -1,0 +1,25 @@
+{
+  "name": "fantasy_baseball",
+  "version": "1.0.0",
+  "description": "Yahoo Fantasy Baseball CLI - 드래프트 기획 및 운영 도구",
+  "type": "module",
+  "bin": {
+    "fb": "./bin/fb.sh"
+  },
+  "scripts": {
+    "fb": "tsx src/cli.ts",
+    "build": "tsc",
+    "expectations": "tsx src/scripts/expectation-report.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^25.4.0",
+    "commander": "^14.0.3",
+    "dotenv": "^17.3.1",
+    "open": "^8.4.2",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}
