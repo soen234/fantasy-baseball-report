@@ -796,6 +796,8 @@ async function generateHtmlReport(week: number) {
     .tab-btn.active { background: var(--accent); color: white; }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
+    .main-tab { display: none; }
+    .main-tab.active { display: block; }
 
     /* Scrollable regions */
     .scroll-y { max-height: 420px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--surface2) transparent; }
@@ -845,18 +847,39 @@ async function generateHtmlReport(week: number) {
 </head>
 <body>
   <!-- Header -->
-  <header style="border-bottom:1px solid var(--border);padding:16px 0;">
-    <div class="container" style="display:flex;align-items:center;justify-content:space-between;">
-      <div style="display:flex;align-items:baseline;gap:12px;">
+  <header style="border-bottom:1px solid var(--border);padding:12px 0;">
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+      <div style="display:flex;align-items:center;gap:12px;">
         <span class="mono fw-700" style="font-size:18px;color:var(--accent);">FB</span>
-        <span class="text-sm" style="color:var(--text2);">Week ${week}</span>
+        <!-- Week navigation -->
+        <div style="display:flex;align-items:center;gap:4px;">
+          ${week > 1 ? `<a href="week${week - 1}.html" style="color:var(--text3);text-decoration:none;padding:4px 6px;border-radius:4px;font-size:12px;" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background=''">&lt;</a>` : `<span style="padding:4px 6px;color:var(--surface2);font-size:12px;">&lt;</span>`}
+          <select id="week-select" onchange="location.href='week'+this.value+'.html'" style="min-width:80px;font-size:12px;padding:4px 24px 4px 8px;">
+            ${Array.from({ length: week }, (_, i) => i + 1)
+              .map(
+                (w) =>
+                  `<option value="${w}" ${w === week ? "selected" : ""}>Week ${w}</option>`,
+              )
+              .join("")}
+          </select>
+          <a href="week${Math.min(week + 1, 26)}.html" style="color:var(--text3);text-decoration:none;padding:4px 6px;border-radius:4px;font-size:12px;" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background=''">&gt;</a>
+        </div>
         <span class="text-xs" style="color:var(--text3);">${new Date().toLocaleDateString("ko-KR")}</span>
       </div>
-      <select id="matchup-select" style="min-width:220px;"></select>
+      <!-- Main tabs -->
+      <div id="main-tabs" class="tab-bar">
+        <button class="tab-btn active" onclick="switchMainTab('overview')">Overview</button>
+        <button class="tab-btn" onclick="switchMainTab('matchup')">Matchup</button>
+        <button class="tab-btn" onclick="switchMainTab('analysis')">Analysis</button>
+        <button class="tab-btn" onclick="switchMainTab('activity')">Activity</button>
+      </div>
     </div>
   </header>
 
-  <main class="container" style="padding-top:24px;padding-bottom:40px;">
+  <main class="container" style="padding-top:20px;padding-bottom:40px;">
+
+    <!-- ═══ TAB: Overview ═══ -->
+    <div id="tab-overview" class="main-tab active">
 
     <!-- Hot Zone: Players + Team -->
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px;" class="hot-grid">
@@ -972,17 +995,13 @@ async function generateHtmlReport(week: number) {
       </div>
     </div>
 
-    <!-- Row 1: Matchup + Standings -->
-    <div class="grid-sidebar fade-in" style="margin-bottom:20px;">
-
-      <!-- Standings -->
-      <div class="card" style="padding:16px;">
+    <!-- Standings (H2H + Roto) -->
+    <div class="row-2col" style="margin-bottom:20px;">
+      <div class="card fade-in" style="padding:16px;">
         <div id="board-tabs" class="tab-bar" style="margin-bottom:10px;">
           <button class="tab-btn active" onclick="switchBoard('h2h')">H2H</button>
           <button class="tab-btn" onclick="switchBoard('roto')">Roto</button>
         </div>
-
-        <!-- H2H Board -->
         <div id="board-h2h" class="tab-content active">
           ${teams
             .map((t, i) => {
@@ -1001,8 +1020,6 @@ async function generateHtmlReport(week: number) {
             })
             .join("\n          ")}
         </div>
-
-        <!-- Roto Board -->
         <div id="board-roto" class="tab-content">
           ${[...teams]
             .map((t) => ({ ...t, roto: rotoByTeam[t.name] || 0 }))
@@ -1028,30 +1045,62 @@ async function generateHtmlReport(week: number) {
         </div>
       </div>
 
-      <!-- Matchup Detail -->
+      <!-- Trend Charts stacked -->
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div class="card fade-in" style="padding:14px;">
+          <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">H2H Rank Trend</div>
+          <div style="position:relative;height:160px;"><canvas id="chartRank"></canvas></div>
+        </div>
+        <div class="card fade-in" style="padding:14px;">
+          <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">Roto Points Trend</div>
+          <div style="position:relative;height:160px;"><canvas id="chartRoto"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    </div><!-- /tab-overview -->
+
+    <!-- ═══ TAB: Matchup ═══ -->
+    <div id="tab-matchup" class="main-tab">
+
+    <!-- Team selector + Matchup Detail -->
+    <div style="margin-bottom:16px;">
+      <select id="matchup-select" style="min-width:240px;"></select>
+    </div>
+    <div class="grid-sidebar fade-in" style="margin-bottom:20px;">
+      <div class="card" style="padding:16px;">
+        <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">All Matchups</div>
+        <div id="matchup-cards">
+          ${matchups
+            .map((m, mi) => {
+              const t1W = m.cats.filter((c) => c.winner === "t1").length;
+              const t2W = m.cats.filter((c) => c.winner === "t2").length;
+              const ties = m.cats.filter((c) => c.winner === "tie").length;
+              const t1Won = t1W > t2W;
+              const draw = t1W === t2W;
+              return `<div class="mg matchup-card" data-idx="${mi}">
+              <div style="text-align:right;" class="text-sm truncate fw-600 ${t1Won ? "w" : draw ? "" : "opacity-50"}">${escapeHtml(m.t1.name)}</div>
+              <div class="mono fw-700 text-sm" style="text-align:center;">
+                <span class="${t1Won ? "w" : ""}">${t1W}</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="${!t1Won && !draw ? "w" : ""}">${t2W}</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="t">${ties}</span>
+              </div>
+              <div class="text-sm truncate fw-600 ${!t1Won && !draw ? "w" : draw ? "" : "opacity-50"}">${escapeHtml(m.t2.name)}</div>
+            </div>`;
+            })
+            .join("\n          ")}
+        </div>
+      </div>
       <div class="card" style="padding:20px;" id="matchup-detail">
         <div id="matchup-header" style="margin-bottom:16px;"></div>
         <div id="matchup-cats" class="grid-2" style="gap:12px;"></div>
       </div>
     </div>
 
-    <!-- Row 2: Trend Charts (H2H Rank + Roto Points) -->
-    <div class="row-2col" style="margin-bottom:20px;">
-      <div class="card fade-in" style="padding:16px;animation-delay:0.08s;">
-        <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">H2H Rank Trend</div>
-        <div style="position:relative;height:220px;">
-          <canvas id="chartRank"></canvas>
-        </div>
-      </div>
-      <div class="card fade-in" style="padding:16px;animation-delay:0.1s;">
-        <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">Roto Points Trend</div>
-        <div style="position:relative;height:220px;">
-          <canvas id="chartRoto"></canvas>
-        </div>
-      </div>
-    </div>
+    </div><!-- /tab-matchup -->
 
-    <!-- Row 3: Radar + Rankings -->
+    <!-- ═══ TAB: Analysis ═══ -->
+    <div id="tab-analysis" class="main-tab">
+
+    <!-- Radar + Rankings -->
     <div class="row-2col" style="margin-bottom:20px;">
       <!-- Radar Charts -->
       <div class="card fade-in" style="padding:16px;animation-delay:0.1s;">
@@ -1180,75 +1229,54 @@ async function generateHtmlReport(week: number) {
     </div>`;
     })()}
 
-    <!-- Row 4: Matchup Cards + Transactions (side by side) -->
-    <div class="row-2col">
-      <!-- All Matchups -->
-      <div class="card fade-in" style="padding:16px;animation-delay:0.2s;">
-        <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">All Matchups</div>
-        <div id="matchup-cards">
-          ${matchups
-            .map((m, mi) => {
-              const t1W = m.cats.filter((c) => c.winner === "t1").length;
-              const t2W = m.cats.filter((c) => c.winner === "t2").length;
-              const ties = m.cats.filter((c) => c.winner === "tie").length;
-              const t1Won = t1W > t2W;
-              const draw = t1W === t2W;
-              return `<div class="mg matchup-card" data-idx="${mi}">
-              <div style="text-align:right;" class="text-sm truncate fw-600 ${t1Won ? "w" : draw ? "" : "opacity-50"}">${escapeHtml(m.t1.name)}</div>
-              <div class="mono fw-700 text-sm" style="text-align:center;">
-                <span class="${t1Won ? "w" : ""}">${t1W}</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="${!t1Won && !draw ? "w" : ""}">${t2W}</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="t">${ties}</span>
-              </div>
-              <div class="text-sm truncate fw-600 ${!t1Won && !draw ? "w" : draw ? "" : "opacity-50"}">${escapeHtml(m.t2.name)}</div>
+    </div><!-- /tab-analysis -->
+
+    <!-- ═══ TAB: Activity ═══ -->
+    <div id="tab-activity" class="main-tab">
+
+    <div class="card fade-in" style="padding:16px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <div class="text-xs fw-600" style="color:var(--text3);text-transform:uppercase;letter-spacing:1px;">Transactions</div>
+        <span class="mono text-xs" style="color:var(--text3);">${weekTxns.length}건</span>
+      </div>
+      ${
+        weekTxns.length === 0
+          ? `<div class="text-sm" style="color:var(--text3);">None</div>`
+          : `<div class="scroll-y" style="max-height:600px;">
+          ${weekTxns
+            .map((txn) => {
+              const date = new Date(txn.timestamp * 1000).toLocaleDateString(
+                "ko-KR",
+                { month: "numeric", day: "numeric" },
+              );
+              const team = txn.adds[0]?.team || txn.drops[0]?.team || "?";
+              const addStr =
+                txn.adds
+                  .map(
+                    (a) =>
+                      `<span class="w">${escapeHtml(a.player)}</span> <span style="color:var(--text3);">${a.mlb} ${a.pos}</span>`,
+                  )
+                  .join(", ") || "";
+              const dropStr =
+                txn.drops
+                  .map(
+                    (d) =>
+                      `<span class="l">${escapeHtml(d.player)}</span> <span style="color:var(--text3);">${d.mlb} ${d.pos}</span>`,
+                  )
+                  .join(", ") || "";
+              return `<div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
+              <span style="color:var(--text3);">${date}</span>
+              <span class="fw-600 truncate" style="color:var(--text2);">${escapeHtml(team)}</span>
+              <div>${addStr ? "+" + addStr : ""}</div>
+              <div>${dropStr ? "-" + dropStr : ""}</div>
             </div>`;
             })
             .join("\n          ")}
-        </div>
-      </div>
-
-      <!-- Transactions (compact, scrollable) -->
-      <div class="card fade-in" style="padding:16px;animation-delay:0.25s;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-          <div class="text-xs fw-600" style="color:var(--text3);text-transform:uppercase;letter-spacing:1px;">Transactions</div>
-          <span class="mono text-xs" style="color:var(--text3);">${weekTxns.length}</span>
-        </div>
-        <div class="scroll-y">
-          ${
-            weekTxns.length === 0
-              ? `<div class="text-sm" style="color:var(--text3);">None</div>`
-              : weekTxns
-                  .slice(0, 30)
-                  .map((txn) => {
-                    const date = new Date(
-                      txn.timestamp * 1000,
-                    ).toLocaleDateString("ko-KR", {
-                      month: "numeric",
-                      day: "numeric",
-                    });
-                    const addStr =
-                      txn.adds
-                        .map(
-                          (a) =>
-                            `<span class="w">${escapeHtml(a.player)}</span><span style="color:var(--text3);"> ${a.mlb}</span>`,
-                        )
-                        .join(", ") || "";
-                    const dropStr =
-                      txn.drops
-                        .map(
-                          (d) =>
-                            `<span class="l">${escapeHtml(d.player)}</span><span style="color:var(--text3);"> ${d.mlb}</span>`,
-                        )
-                        .join(", ") || "";
-                    return `<div class="txn-row">
-                <span style="color:var(--text3);">${date}</span>
-                <div>${addStr ? "+" + addStr : ""}</div>
-                <div>${dropStr ? "-" + dropStr : ""}</div>
-              </div>`;
-                  })
-                  .join("\n          ")
-          }
-        </div>
-      </div>
+        </div>`
+      }
     </div>
+
+    </div><!-- /tab-activity -->
 
   </main>
 
@@ -1616,6 +1644,19 @@ async function generateHtmlReport(week: number) {
           el.style.background = '';
           el.style.border = '';
         }
+      });
+    }
+
+    // Main tab switching
+    var mainTabNames = ['overview','matchup','analysis','activity'];
+    function switchMainTab(tab) {
+      mainTabNames.forEach(function(t) {
+        var el = document.getElementById('tab-' + t);
+        if (el) el.classList.toggle('active', t === tab);
+      });
+      var btns = document.getElementById('main-tabs').querySelectorAll('.tab-btn');
+      mainTabNames.forEach(function(t, i) {
+        btns[i].classList.toggle('active', t === tab);
       });
     }
 
