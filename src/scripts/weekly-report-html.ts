@@ -853,16 +853,26 @@ async function generateHtmlReport(week: number) {
         <span class="mono fw-700" style="font-size:18px;color:var(--accent);">FB</span>
         <!-- Week navigation -->
         <div style="display:flex;align-items:center;gap:4px;">
-          ${week > 1 ? `<a href="week${week - 1}.html" style="color:var(--text3);text-decoration:none;padding:4px 6px;border-radius:4px;font-size:12px;" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background=''">&lt;</a>` : `<span style="padding:4px 6px;color:var(--surface2);font-size:12px;">&lt;</span>`}
+          ${(() => {
+            const maxWeek = Math.max(week, ...history.weeks.map((w) => w.week));
+            const prevDisabled = week <= 1;
+            const nextDisabled = week >= maxWeek;
+            return `${!prevDisabled ? `<a href="week${week - 1}.html" style="color:var(--text3);text-decoration:none;padding:4px 6px;border-radius:4px;font-size:12px;" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background=''">&lt;</a>` : `<span style="padding:4px 6px;color:var(--surface2);font-size:12px;">&lt;</span>`}
           <select id="week-select" onchange="location.href='week'+this.value+'.html'" style="min-width:80px;font-size:12px;padding:4px 24px 4px 8px;">
-            ${Array.from({ length: week }, (_, i) => i + 1)
+            ${Array.from({ length: maxWeek }, (_, i) => i + 1)
               .map(
                 (w) =>
                   `<option value="${w}" ${w === week ? "selected" : ""}>Week ${w}</option>`,
               )
-              .join("")}
+              .join("")}`;
+          })()}
           </select>
-          <a href="week${Math.min(week + 1, 26)}.html" style="color:var(--text3);text-decoration:none;padding:4px 6px;border-radius:4px;font-size:12px;" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background=''">&gt;</a>
+          ${(() => {
+            const maxW = Math.max(week, ...history.weeks.map((w) => w.week));
+            return week < maxW
+              ? `<a href="week${week + 1}.html" style="color:var(--text3);text-decoration:none;padding:4px 6px;border-radius:4px;font-size:12px;" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background=''">&gt;</a>`
+              : `<span style="padding:4px 6px;color:var(--surface2);font-size:12px;">&gt;</span>`;
+          })()}
         </div>
         <span class="text-xs" style="color:var(--text3);">${new Date().toLocaleDateString("ko-KR")}</span>
       </div>
