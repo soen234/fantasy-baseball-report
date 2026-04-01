@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 2 — Fantasy Baseball 2026</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0e17; --surface: #111827; --surface2: #1a2236;
+      --border: rgba(255,255,255,0.06); --border-active: rgba(255,255,255,0.15);
+      --text: #e2e8f0; --text2: #94a3b8; --text3: #475569;
+      --accent: #3b82f6; --green: #22c55e; --red: #ef4444; --amber: #f59e0b;
+      --font: 'DM Sans', system-ui, sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+    body { background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    .mono { font-family: var(--mono); }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    /* Cards */
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
+    .card-flush { background: transparent; border: 1px solid var(--border); border-radius: 12px; }
+
+    /* Grid system */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+    .grid-sidebar { display: grid; grid-template-columns: 320px 1fr; gap: 20px; }
+    /* Row layouts */
+    .row-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+    @media (max-width: 768px) {
+      .grid-2, .grid-3, .grid-sidebar, .row-2col, .hot-grid { grid-template-columns: 1fr !important; }
+      .container { padding: 0 10px; }
+      header .container { flex-direction: column; gap: 8px; align-items: flex-start; }
+      .mg { grid-template-columns: 1fr 56px 1fr; padding: 7px 8px; font-size: 12px; }
+      .cat-row { grid-template-columns: 40px 1fr auto 1fr 40px; font-size: 11px; padding: 4px 6px; }
+      .rank-pill { font-size: 10px; padding: 2px 6px; }
+      .ct-inner { min-width: 140px; padding: 8px 10px; }
+      select { min-width: 0 !important; width: 100%; font-size: 12px; }
+      .card { border-radius: 8px; }
+      .scroll-y { max-height: 300px; }
+      .txn-row { grid-template-columns: 40px 1fr 1fr; font-size: 11px; gap: 4px; }
+    }
+
+    /* Matchup grid */
+    .mg { display: grid; grid-template-columns: 1fr 80px 1fr; align-items: center; gap: 4px; padding: 10px 14px; border-radius: 8px; cursor: pointer; transition: background 0.15s; }
+    .mg:hover { background: var(--surface2); }
+    .mg.active { background: var(--surface2); border: 1px solid var(--accent); }
+
+    /* Category row */
+    .cat-row { display: grid; grid-template-columns: 52px 1fr auto 1fr 52px; align-items: center; gap: 0; padding: 6px 10px; border-radius: 6px; font-size: 13px; }
+    .cat-row:nth-child(odd) { background: rgba(255,255,255,0.02); }
+
+    /* Rank bar */
+    .rank-pill { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; font-family: var(--mono); }
+    .rank-pill.top { background: rgba(34,197,94,0.12); color: var(--green); }
+    .rank-pill.mid { background: rgba(148,163,184,0.1); color: var(--text2); }
+    .rank-pill.bot { background: rgba(239,68,68,0.1); color: var(--red); }
+
+    /* Tabs */
+    .tab-bar { display: flex; gap: 2px; background: var(--surface); border-radius: 8px; padding: 3px; border: 1px solid var(--border); }
+    .tab-btn { padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; color: var(--text3); cursor: pointer; border: none; background: none; transition: all 0.15s; white-space: nowrap; }
+    .tab-btn:hover { color: var(--text2); }
+    .tab-btn.active { background: var(--accent); color: white; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* Scrollable regions */
+    .scroll-y { max-height: 420px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--surface2) transparent; }
+    .scroll-y::-webkit-scrollbar { width: 4px; }
+    .scroll-y::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 2px; }
+
+    /* Transaction compact */
+    .txn-row { display: grid; grid-template-columns: 52px 1fr 1fr; gap: 8px; padding: 5px 10px; font-size: 12px; border-bottom: 1px solid var(--border); }
+    .txn-row:last-child { border-bottom: none; }
+
+    /* Custom tooltip */
+    .ct { position: absolute; pointer-events: none; z-index: 50; opacity: 0; transition: opacity 0.15s ease, transform 0.15s ease; transform: translateY(4px); }
+    .ct.show { opacity: 1; transform: translateY(0); }
+    .ct-inner { background: #1e293b; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 10px 14px; box-shadow: 0 8px 32px rgba(0,0,0,0.5); min-width: 180px; }
+    .ct-title { font-family: var(--mono); font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+    .ct-row { display: flex; align-items: center; gap: 8px; padding: 3px 0; }
+    .ct-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .ct-name { font-size: 12px; color: var(--text2); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ct-val { font-family: var(--mono); font-size: 12px; font-weight: 700; }
+    .ct-row.highlight .ct-name { color: var(--text); }
+
+    /* Animations */
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { animation: fadeIn 0.35s ease-out both; }
+
+    /* Heatmap table */
+    .heatmap { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 11px; white-space: nowrap; }
+    .heatmap th { padding: 6px 5px; color: var(--text3); font-weight: 600; text-align: center; border-bottom: 1px solid var(--border); font-size: 10px; line-height: 1.3; }
+    .heatmap td { padding: 5px 4px; text-align: center; color: #fff; font-weight: 600; border-bottom: 1px solid rgba(255,255,255,0.03); }
+    .heatmap tr:hover td { filter: brightness(1.3); }
+    .hm-team { text-align: left !important; padding-left: 8px !important; color: var(--text) !important; background: var(--surface) !important; font-family: var(--font); font-size: 12px; max-width: 160px; overflow: hidden; text-overflow: ellipsis; position: sticky; left: 0; z-index: 1; }
+    .heatmap thead th:first-child { position: sticky; left: 0; z-index: 2; background: var(--surface); }
+    .hm-avg { font-size: 11px; min-width: 44px; }
+    .hm-cat { min-width: 34px; font-size: 11px; }
+
+    /* Select */
+    select { appearance: none; background: var(--surface2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2394a3b8' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E") no-repeat right 10px center; border: 1px solid var(--border); color: var(--text); font-family: var(--font); font-size: 13px; padding: 7px 30px 7px 12px; border-radius: 8px; cursor: pointer; }
+    select:focus { outline: none; border-color: var(--accent); }
+
+    /* Utility */
+    .w { color: var(--green); } .l { color: var(--red); } .t { color: var(--text3); }
+    .text-xs { font-size: 11px; } .text-sm { font-size: 13px; } .text-base { font-size: 14px; }
+    .fw-600 { font-weight: 600; } .fw-700 { font-weight: 700; }
+    .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .opacity-50 { opacity: 0.5; }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header style="border-bottom:1px solid var(--border);padding:16px 0;">
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between;">
+      <div style="display:flex;align-items:baseline;gap:12px;">
+        <span class="mono fw-700" style="font-size:18px;color:var(--accent);">FB</span>
+        <span class="text-sm" style="color:var(--text2);">Week 2</span>
+        <span class="text-xs" style="color:var(--text3);">2026. 4. 1.</span>
+      </div>
+      <select id="matchup-select" style="min-width:220px;"></select>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top:24px;padding-bottom:40px;">
+
+    <!-- Hot Zone: Players + Team -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px;" class="hot-grid">
+      <!-- Hot Batters -->
+      <div class="card fade-in" style="padding:14px;">
+        <div class="text-xs fw-600" style="color:var(--amber);margin-bottom:10px;letter-spacing:1px;">🔥 HOT BATTERS <span style="color:var(--text3);font-weight:400;">Last 7d</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.15);">
+            <span style="font-size:18px;">🥇</span>
+            <div style="flex:1;min-width:0;">
+              <div class="text-sm fw-700 truncate">Joey Wiemer</div>
+              <div class="mono text-xs" style="color:var(--text3);">WSH · OF</div>
+            </div>
+            <div class="mono text-xs" style="text-align:right;line-height:1.6;">
+              <span style="color:var(--text);">.800</span> <span style="color:var(--text3);">AVG</span><br>
+              <span style="color:var(--amber);">2</span><span style="color:var(--text3);">HR</span> <span style="color:var(--text);">4</span><span style="color:var(--text3);">RBI</span> <span style="color:var(--text2);">16</span><span style="color:var(--text3);">TB</span>
+            </div>
+          </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;">
+            <span style="font-size:18px;">🥈</span>
+            <div style="flex:1;min-width:0;">
+              <div class="text-sm fw-700 truncate">Jose Altuve</div>
+              <div class="mono text-xs" style="color:var(--text3);">HOU · 2B,OF</div>
+            </div>
+            <div class="mono text-xs" style="text-align:right;line-height:1.6;">
+              <span style="color:var(--text);">.412</span> <span style="color:var(--text3);">AVG</span><br>
+              <span style="color:var(--amber);">2</span><span style="color:var(--text3);">HR</span> <span style="color:var(--text);">3</span><span style="color:var(--text3);">RBI</span> <span style="color:var(--text2);">14</span><span style="color:var(--text3);">TB</span>
+            </div>
+          </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;">
+            <span style="font-size:18px;">🥉</span>
+            <div style="flex:1;min-width:0;">
+              <div class="text-sm fw-700 truncate">Sal Stewart</div>
+              <div class="mono text-xs" style="color:var(--text3);">CIN · 1B</div>
+            </div>
+            <div class="mono text-xs" style="text-align:right;line-height:1.6;">
+              <span style="color:var(--text);">.667</span> <span style="color:var(--text3);">AVG</span><br>
+              <span style="color:var(--amber);">1</span><span style="color:var(--text3);">HR</span> <span style="color:var(--text);">2</span><span style="color:var(--text3);">RBI</span> <span style="color:var(--text2);">14</span><span style="color:var(--text3);">TB</span>
+            </div>
+          </div>
+      </div>
+
+      <!-- Hot Pitchers -->
+      <div class="card fade-in" style="padding:14px;animation-delay:0.05s;">
+        <div class="text-xs fw-600" style="color:var(--amber);margin-bottom:10px;letter-spacing:1px;">🔥 HOT PITCHERS <span style="color:var(--text3);font-weight:400;">Last 7d</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.15);">
+            <span style="font-size:18px;">🥇</span>
+            <div style="flex:1;min-width:0;">
+              <div class="text-sm fw-700 truncate">Emerson Hancock</div>
+              <div class="mono text-xs" style="color:var(--text3);">SEA · SP,RP</div>
+            </div>
+            <div class="mono text-xs" style="text-align:right;line-height:1.6;">
+              <span style="color:var(--text);">0.00</span> <span style="color:var(--text3);">ERA</span> <span style="color:var(--text2);">0.17</span> <span style="color:var(--text3);">WHIP</span><br>
+              <span style="color:var(--amber);">1</span><span style="color:var(--text3);">W</span> <span style="color:var(--text);">9</span><span style="color:var(--text3);">K</span> <span style="color:var(--text2);">6.0</span><span style="color:var(--text3);">IP</span>
+            </div>
+          </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;">
+            <span style="font-size:18px;">🥈</span>
+            <div style="flex:1;min-width:0;">
+              <div class="text-sm fw-700 truncate">Cristopher Sánchez</div>
+              <div class="mono text-xs" style="color:var(--text3);">PHI · SP</div>
+            </div>
+            <div class="mono text-xs" style="text-align:right;line-height:1.6;">
+              <span style="color:var(--text);">-</span> <span style="color:var(--text3);">ERA</span> <span style="color:var(--text2);">-</span> <span style="color:var(--text3);">WHIP</span><br>
+              <span style="color:var(--amber);">0</span><span style="color:var(--text3);">W</span> <span style="color:var(--text);">0</span><span style="color:var(--text3);">K</span> <span style="color:var(--text2);">-</span><span style="color:var(--text3);">IP</span>
+            </div>
+          </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;">
+            <span style="font-size:18px;">🥉</span>
+            <div style="flex:1;min-width:0;">
+              <div class="text-sm fw-700 truncate">Edward Cabrera</div>
+              <div class="mono text-xs" style="color:var(--text3);">CHC · SP</div>
+            </div>
+            <div class="mono text-xs" style="text-align:right;line-height:1.6;">
+              <span style="color:var(--text);">0.00</span> <span style="color:var(--text3);">ERA</span> <span style="color:var(--text2);">0.33</span> <span style="color:var(--text3);">WHIP</span><br>
+              <span style="color:var(--amber);">1</span><span style="color:var(--text3);">W</span> <span style="color:var(--text);">5</span><span style="color:var(--text3);">K</span> <span style="color:var(--text2);">6.0</span><span style="color:var(--text3);">IP</span>
+            </div>
+          </div>
+      </div>
+
+      <!-- Hot Teams (this week's roto) -->
+      <div class="card fade-in" style="padding:14px;animation-delay:0.1s;">
+        <div class="text-xs fw-600" style="color:var(--amber);margin-bottom:10px;letter-spacing:1px;">🔥 HOT TEAMS <span style="color:var(--text3);font-weight:400;">This Week</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.15);" onclick="selectTeam('469.l.18247.t.5')" style="cursor:pointer;">
+            <span style="font-size:18px;">🥇</span>
+            <div style="flex:1;min-width:0;">
+              <div class="text-sm fw-700 truncate">✌️ Yeonwoo's Double Play</div>
+              <div class="mono text-xs" style="color:var(--text3);">10W-12L-3T</div>
+            </div>
+            <div class="mono text-sm fw-700" style="color:var(--amber);">240.5<span class="text-xs" style="color:var(--text3);"> pts</span></div>
+          </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;" onclick="selectTeam('469.l.18247.t.12')" style="cursor:pointer;">
+            <span style="font-size:18px;">🥈</span>
+            <div style="flex:1;min-width:0;">
+              <div class="text-sm fw-700 truncate">💥 JongHun's Busters</div>
+              <div class="mono text-xs" style="color:var(--text3);">10W-13L-2T</div>
+            </div>
+            <div class="mono text-sm fw-700" style="color:var(--amber);">199.0<span class="text-xs" style="color:var(--text3);"> pts</span></div>
+          </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;" onclick="selectTeam('469.l.18247.t.10')" style="cursor:pointer;">
+            <span style="font-size:18px;">🥉</span>
+            <div style="flex:1;min-width:0;">
+              <div class="text-sm fw-700 truncate">🏆 ProfeSuh</div>
+              <div class="mono text-xs" style="color:var(--text3);">13W-10L-2T</div>
+            </div>
+            <div class="mono text-sm fw-700" style="color:var(--amber);">183.5<span class="text-xs" style="color:var(--text3);"> pts</span></div>
+          </div>
+      </div>
+    </div>
+
+    <!-- Row 1: Matchup + Standings -->
+    <div class="grid-sidebar fade-in" style="margin-bottom:20px;">
+
+      <!-- Standings -->
+      <div class="card" style="padding:16px;">
+        <div id="board-tabs" class="tab-bar" style="margin-bottom:10px;">
+          <button class="tab-btn active" onclick="switchBoard('h2h')">H2H</button>
+          <button class="tab-btn" onclick="switchBoard('roto')">Roto</button>
+        </div>
+
+        <!-- H2H Board -->
+        <div id="board-h2h" class="tab-content active">
+          <div data-team-key="469.l.18247.t.4" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.4')">
+              <span class="mono fw-700 text-sm" style="color:var(--amber);width:18px;text-align:right;">1</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">UTU_무네타카 무라콴호</span>
+              <span class="mono text-xs" style="color:var(--text2);">.700</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">15-5-5</span>
+            </div>
+          <div data-team-key="469.l.18247.t.10" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.10')">
+              <span class="mono fw-700 text-sm" style="color:var(--text2);width:18px;text-align:right;">2</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">🏆 ProfeSuh</span>
+              <span class="mono text-xs" style="color:var(--text2);">.560</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">13-10-2</span>
+            </div>
+          <div data-team-key="469.l.18247.t.11" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.11')">
+              <span class="mono fw-700 text-sm" style="color:var(--text2);width:18px;text-align:right;">3</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">💥 JeongWoo's Shockers</span>
+              <span class="mono text-xs" style="color:var(--text2);">.540</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">12-10-3</span>
+            </div>
+          <div data-team-key="469.l.18247.t.2" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.2')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">4</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">xXXXxAIxXXXx</span>
+              <span class="mono text-xs" style="color:var(--text2);">.520</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">11-10-4</span>
+            </div>
+          <div data-team-key="469.l.18247.t.9" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.9')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">5</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">JJ yoogwanholt</span>
+              <span class="mono text-xs" style="color:var(--text2);">.520</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">12-11-2</span>
+            </div>
+          <div data-team-key="469.l.18247.t.1" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.1')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">6</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">2026 MVP Mike Trout</span>
+              <span class="mono text-xs" style="color:var(--text2);">.500</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">10-10-5</span>
+            </div>
+          <div data-team-key="469.l.18247.t.6" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.6')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">7</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">독후감 신속히 제출해주세요.</span>
+              <span class="mono text-xs" style="color:var(--text2);">.500</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">10-10-5</span>
+            </div>
+          <div data-team-key="469.l.18247.t.3" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.3')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">8</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">TRUCK</span>
+              <span class="mono text-xs" style="color:var(--text2);">.480</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">10-11-4</span>
+            </div>
+          <div data-team-key="469.l.18247.t.8" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.8')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">9</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">응노</span>
+              <span class="mono text-xs" style="color:var(--text2);">.480</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">11-12-2</span>
+            </div>
+          <div data-team-key="469.l.18247.t.5" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.5')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">10</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">✌️ Yeonwoo's Double Play</span>
+              <span class="mono text-xs" style="color:var(--text2);">.460</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">10-12-3</span>
+            </div>
+          <div data-team-key="469.l.18247.t.12" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.12')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">11</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">💥 JongHun's Busters</span>
+              <span class="mono text-xs" style="color:var(--text2);">.440</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">10-13-2</span>
+            </div>
+          <div data-team-key="469.l.18247.t.7" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.7')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">12</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">커츠 나의어둠 나의삶</span>
+              <span class="mono text-xs" style="color:var(--text2);">.300</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">5-15-5</span>
+            </div>
+        </div>
+
+        <!-- Roto Board -->
+        <div id="board-roto" class="tab-content">
+          <div data-team-key="469.l.18247.t.9" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.9')">
+              <span class="mono fw-700 text-sm" style="color:var(--amber);width:18px;text-align:right;">1</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">JJ yoogwanholt</span>
+              <span class="mono text-xs fw-700" style="color:var(--accent);">199</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">12-11-2</span>
+            </div>
+          <div data-team-key="469.l.18247.t.4" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.4')">
+              <span class="mono fw-700 text-sm" style="color:var(--text2);width:18px;text-align:right;">2</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">UTU_무네타카 무라콴호</span>
+              <span class="mono text-xs fw-700" style="color:var(--accent);">197.5</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">15-5-5</span>
+            </div>
+          <div data-team-key="469.l.18247.t.10" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.10')">
+              <span class="mono fw-700 text-sm" style="color:var(--text2);width:18px;text-align:right;">3</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">🏆 ProfeSuh</span>
+              <span class="mono text-xs fw-700" style="color:var(--accent);">197.5</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">13-10-2</span>
+            </div>
+          <div data-team-key="469.l.18247.t.8" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.8')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">4</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">응노</span>
+              <span class="mono text-xs fw-700" style="color:var(--accent);">192.5</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">11-12-2</span>
+            </div>
+          <div data-team-key="469.l.18247.t.6" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.6')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">5</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">독후감 신속히 제출해주세요.</span>
+              <span class="mono text-xs fw-700" style="color:var(--accent);">189.5</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">10-10-5</span>
+            </div>
+          <div data-team-key="469.l.18247.t.1" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.1')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">6</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">2026 MVP Mike Trout</span>
+              <span class="mono text-xs fw-700" style="color:var(--accent);">180</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">10-10-5</span>
+            </div>
+          <div data-team-key="469.l.18247.t.12" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.12')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">7</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">💥 JongHun's Busters</span>
+              <span class="mono text-xs fw-700" style="color:var(--accent);">168</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">10-13-2</span>
+            </div>
+          <div data-team-key="469.l.18247.t.5" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.5')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">8</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">✌️ Yeonwoo's Double Play</span>
+              <span class="mono text-xs fw-700" style="color:var(--accent);">143</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">10-12-3</span>
+            </div>
+          <div data-team-key="469.l.18247.t.11" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.11')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">9</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">💥 JeongWoo's Shockers</span>
+              <span class="mono text-xs fw-700" style="color:var(--accent);">125</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">12-10-3</span>
+            </div>
+          <div data-team-key="469.l.18247.t.7" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.7')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">10</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">커츠 나의어둠 나의삶</span>
+              <span class="mono text-xs fw-700" style="color:var(--accent);">124</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">5-15-5</span>
+            </div>
+          <div data-team-key="469.l.18247.t.3" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.3')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">11</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">TRUCK</span>
+              <span class="mono text-xs fw-700" style="color:var(--accent);">121</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">10-11-4</span>
+            </div>
+          <div data-team-key="469.l.18247.t.2" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.2')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">12</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">xXXXxAIxXXXx</span>
+              <span class="mono text-xs fw-700" style="color:var(--accent);">113</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">11-10-4</span>
+            </div>
+        </div>
+      </div>
+
+      <!-- Matchup Detail -->
+      <div class="card" style="padding:20px;" id="matchup-detail">
+        <div id="matchup-header" style="margin-bottom:16px;"></div>
+        <div id="matchup-cats" class="grid-2" style="gap:12px;"></div>
+      </div>
+    </div>
+
+    <!-- Row 2: Trend Charts (H2H Rank + Roto Points) -->
+    <div class="row-2col" style="margin-bottom:20px;">
+      <div class="card fade-in" style="padding:16px;animation-delay:0.08s;">
+        <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">H2H Rank Trend</div>
+        <div style="position:relative;height:220px;">
+          <canvas id="chartRank"></canvas>
+        </div>
+      </div>
+      <div class="card fade-in" style="padding:16px;animation-delay:0.1s;">
+        <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">Roto Points Trend</div>
+        <div style="position:relative;height:220px;">
+          <canvas id="chartRoto"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3: Radar + Rankings -->
+    <div class="row-2col" style="margin-bottom:20px;">
+      <!-- Radar Charts -->
+      <div class="card fade-in" style="padding:16px;animation-delay:0.1s;">
+        <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">Category Radar</div>
+        <div class="grid-2" style="gap:12px;">
+          <div>
+            <div class="text-xs fw-600" style="color:var(--accent);text-align:center;margin-bottom:4px;">Batting</div>
+            <div style="position:relative;height:200px;">
+              <canvas id="radarBat"></canvas>
+            </div>
+          </div>
+          <div>
+            <div class="text-xs fw-600" style="color:#a78bfa;text-align:center;margin-bottom:4px;">Pitching</div>
+            <div style="position:relative;height:200px;">
+              <canvas id="radarPit"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category Rankings (dynamic) -->
+      <div class="card fade-in" style="padding:16px;animation-delay:0.15s;">
+        <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;" id="rankings-title">Rankings</div>
+        <div class="grid-2" style="gap:4px 16px;" id="rankings-body"></div>
+      </div>
+    </div>
+
+    <!-- Heatmap Tables -->
+    
+    <div class="card fade-in" style="padding:16px;margin-bottom:20px;animation-delay:0.18s;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+        <div class="text-xs fw-600" style="color:var(--text3);text-transform:uppercase;letter-spacing:1px;">Category Heatmap</div>
+        <div id="hm-tabs" class="tab-bar" style="margin-left:auto;">
+          <button class="tab-btn active" onclick="switchHeatmap('overview')">Overview</button>
+          <button class="tab-btn" onclick="switchHeatmap('bat')">Batting</button>
+          <button class="tab-btn" onclick="switchHeatmap('pit')">Pitching</button>
+        </div>
+      </div>
+      <div style="overflow-x:auto;">
+        <div id="hm-overview" class="tab-content active"><table class="heatmap"><thead><tr><th class="hm-team">Team</th><th class="hm-avg">AVG<br>Rank</th><th class="hm-avg">BAT<br>Avg</th><th class="hm-avg">PIT<br>Avg</th></tr></thead><tbody><tr onclick="selectTeam('469.l.18247.t.9')" style="cursor:pointer;" data-team-key="469.l.18247.t.9"><td class="hm-team">JJ yoogwanholt</td><td class="hm-avg" style="background:hsl(76,69%,31%);"><b>5.04</b></td><td class="hm-avg" style="background:hsl(94,67%,28%);">3.35</td><td class="hm-avg" style="background:hsl(56,70%,32%);">6.88</td></tr><tr onclick="selectTeam('469.l.18247.t.4')" style="cursor:pointer;" data-team-key="469.l.18247.t.4"><td class="hm-team">UTU_무네타카 무라콴호</td><td class="hm-avg" style="background:hsl(75,69%,31%);"><b>5.10</b></td><td class="hm-avg" style="background:hsl(75,69%,31%);">5.12</td><td class="hm-avg" style="background:hsl(75,69%,31%);">5.08</td></tr><tr onclick="selectTeam('469.l.18247.t.10')" style="cursor:pointer;" data-team-key="469.l.18247.t.10"><td class="hm-team">🏆 ProfeSuh</td><td class="hm-avg" style="background:hsl(75,69%,31%);"><b>5.10</b></td><td class="hm-avg" style="background:hsl(77,69%,31%);">4.92</td><td class="hm-avg" style="background:hsl(73,69%,31%);">5.29</td></tr><tr onclick="selectTeam('469.l.18247.t.8')" style="cursor:pointer;" data-team-key="469.l.18247.t.8"><td class="hm-team">응노</td><td class="hm-avg" style="background:hsl(73,69%,31%);"><b>5.30</b></td><td class="hm-avg" style="background:hsl(90,68%,29%);">3.77</td><td class="hm-avg" style="background:hsl(55,70%,32%);">6.96</td></tr><tr onclick="selectTeam('469.l.18247.t.6')" style="cursor:pointer;" data-team-key="469.l.18247.t.6"><td class="hm-team">독후감 신속히 제출해주세요.</td><td class="hm-avg" style="background:hsl(72,69%,31%);"><b>5.42</b></td><td class="hm-avg" style="background:hsl(77,69%,31%);">4.92</td><td class="hm-avg" style="background:hsl(66,70%,32%);">5.96</td></tr><tr onclick="selectTeam('469.l.18247.t.1')" style="cursor:pointer;" data-team-key="469.l.18247.t.1"><td class="hm-team">2026 MVP Mike Trout</td><td class="hm-avg" style="background:hsl(68,69%,32%);"><b>5.80</b></td><td class="hm-avg" style="background:hsl(64,70%,32%);">6.15</td><td class="hm-avg" style="background:hsl(72,69%,31%);">5.42</td></tr><tr onclick="selectTeam('469.l.18247.t.12')" style="cursor:pointer;" data-team-key="469.l.18247.t.12"><td class="hm-team">💥 JongHun's Busters</td><td class="hm-avg" style="background:hsl(62,70%,33%);"><b>6.28</b></td><td class="hm-avg" style="background:hsl(45,71%,31%);">7.85</td><td class="hm-avg" style="background:hsl(81,68%,30%);">4.58</td></tr><tr onclick="selectTeam('469.l.18247.t.5')" style="cursor:pointer;" data-team-key="469.l.18247.t.5"><td class="hm-team">✌️ Yeonwoo's Double Play</td><td class="hm-avg" style="background:hsl(51,71%,32%);"><b>7.28</b></td><td class="hm-avg" style="background:hsl(63,70%,33%);">6.19</td><td class="hm-avg" style="background:hsl(39,72%,30%);">8.46</td></tr><tr onclick="selectTeam('469.l.18247.t.11')" style="cursor:pointer;" data-team-key="469.l.18247.t.11"><td class="hm-team">💥 JeongWoo's Shockers</td><td class="hm-avg" style="background:hsl(44,71%,31%);"><b>8.00</b></td><td class="hm-avg" style="background:hsl(33,72%,29%);">9.00</td><td class="hm-avg" style="background:hsl(55,70%,32%);">6.92</td></tr><tr onclick="selectTeam('469.l.18247.t.7')" style="cursor:pointer;" data-team-key="469.l.18247.t.7"><td class="hm-team">커츠 나의어둠 나의삶</td><td class="hm-avg" style="background:hsl(43,71%,31%);"><b>8.04</b></td><td class="hm-avg" style="background:hsl(39,72%,30%);">8.46</td><td class="hm-avg" style="background:hsl(48,71%,31%);">7.58</td></tr><tr onclick="selectTeam('469.l.18247.t.3')" style="cursor:pointer;" data-team-key="469.l.18247.t.3"><td class="hm-team">TRUCK</td><td class="hm-avg" style="background:hsl(42,72%,31%);"><b>8.16</b></td><td class="hm-avg" style="background:hsl(30,73%,29%);">9.27</td><td class="hm-avg" style="background:hsl(55,70%,32%);">6.96</td></tr><tr onclick="selectTeam('469.l.18247.t.2')" style="cursor:pointer;" data-team-key="469.l.18247.t.2"><td class="hm-team">xXXXxAIxXXXx</td><td class="hm-avg" style="background:hsl(38,72%,30%);"><b>8.48</b></td><td class="hm-avg" style="background:hsl(33,72%,29%);">9.00</td><td class="hm-avg" style="background:hsl(45,71%,31%);">7.92</td></tr></tbody></table></div>
+        <div id="hm-bat" class="tab-content"><table class="heatmap"><thead><tr><th class="hm-team">Team</th><th class="hm-avg">BAT<br>Avg</th><th class="hm-cat">AVG</th><th class="hm-cat">OBP</th><th class="hm-cat">SLG</th><th class="hm-cat">R</th><th class="hm-cat">H</th><th class="hm-cat">HR</th><th class="hm-cat">RBI</th><th class="hm-cat">BB</th><th class="hm-cat">K</th><th class="hm-cat">TB</th><th class="hm-cat">A</th><th class="hm-cat">NSB</th><th class="hm-cat">SLAM</th></tr></thead><tbody><tr onclick="selectTeam('469.l.18247.t.9')" style="cursor:pointer;" data-team-key="469.l.18247.t.9"><td class="hm-team">JJ yoogwanholt</td><td class="hm-avg" style="background:hsl(94,67%,28%);"><b>3.35</b></td><td class="hm-cat" style="background:hsl(87,68%,29%);">4</td><td class="hm-cat" style="background:hsl(87,68%,29%);">4</td><td class="hm-cat" style="background:hsl(109,66%,26%);">2</td><td class="hm-cat" style="background:hsl(120,65%,25%);">1</td><td class="hm-cat" style="background:hsl(87,68%,29%);">4</td><td class="hm-cat" style="background:hsl(109,66%,26%);">2</td><td class="hm-cat" style="background:hsl(109,66%,26%);">2</td><td class="hm-cat" style="background:hsl(120,65%,25%);">1</td><td class="hm-cat" style="background:hsl(44,71%,31%);">8</td><td class="hm-cat" style="background:hsl(109,66%,26%);">2</td><td class="hm-cat" style="background:hsl(44,71%,31%);">8</td><td class="hm-cat" style="background:hsl(87,68%,29%);">4</td><td class="hm-cat" style="background:hsl(115,65%,26%);">1.5</td></tr><tr onclick="selectTeam('469.l.18247.t.8')" style="cursor:pointer;" data-team-key="469.l.18247.t.8"><td class="hm-team">응노</td><td class="hm-avg" style="background:hsl(90,68%,29%);"><b>3.77</b></td><td class="hm-cat" style="background:hsl(98,67%,28%);">3</td><td class="hm-cat" style="background:hsl(55,70%,32%);">7</td><td class="hm-cat" style="background:hsl(120,65%,25%);">1</td><td class="hm-cat" style="background:hsl(93,67%,29%);">3.5</td><td class="hm-cat" style="background:hsl(98,67%,28%);">3</td><td class="hm-cat" style="background:hsl(120,65%,25%);">1</td><td class="hm-cat" style="background:hsl(120,65%,25%);">1</td><td class="hm-cat" style="background:hsl(49,71%,32%);">7.5</td><td class="hm-cat" style="background:hsl(55,70%,32%);">7</td><td class="hm-cat" style="background:hsl(120,65%,25%);">1</td><td class="hm-cat" style="background:hsl(98,67%,28%);">3</td><td class="hm-cat" style="background:hsl(27,73%,29%);">9.5</td><td class="hm-cat" style="background:hsl(115,65%,26%);">1.5</td></tr><tr onclick="selectTeam('469.l.18247.t.10')" style="cursor:pointer;" data-team-key="469.l.18247.t.10"><td class="hm-team">🏆 ProfeSuh</td><td class="hm-avg" style="background:hsl(77,69%,31%);"><b>4.92</b></td><td class="hm-cat" style="background:hsl(120,65%,25%);">1</td><td class="hm-cat" style="background:hsl(120,65%,25%);">1</td><td class="hm-cat" style="background:hsl(98,67%,28%);">3</td><td class="hm-cat" style="background:hsl(55,70%,32%);">7</td><td class="hm-cat" style="background:hsl(120,65%,25%);">1</td><td class="hm-cat" style="background:hsl(82,68%,30%);">4.5</td><td class="hm-cat" style="background:hsl(98,67%,28%);">3</td><td class="hm-cat" style="background:hsl(49,71%,32%);">7.5</td><td class="hm-cat" style="background:hsl(33,72%,29%);">9</td><td class="hm-cat" style="background:hsl(98,67%,28%);">3</td><td class="hm-cat" style="background:hsl(22,73%,28%);">10</td><td class="hm-cat" style="background:hsl(60,70%,33%);">6.5</td><td class="hm-cat" style="background:hsl(49,71%,32%);">7.5</td></tr><tr onclick="selectTeam('469.l.18247.t.6')" style="cursor:pointer;" data-team-key="469.l.18247.t.6"><td class="hm-team">독후감 신속히 제출해주세요.</td><td class="hm-avg" style="background:hsl(77,69%,31%);"><b>4.92</b></td><td class="hm-cat" style="background:hsl(109,66%,26%);">2</td><td class="hm-cat" style="background:hsl(98,67%,28%);">3</td><td class="hm-cat" style="background:hsl(87,68%,29%);">4</td><td class="hm-cat" style="background:hsl(71,69%,32%);">5.5</td><td class="hm-cat" style="background:hsl(109,66%,26%);">2</td><td class="hm-cat" style="background:hsl(49,71%,32%);">7.5</td><td class="hm-cat" style="background:hsl(65,70%,32%);">6</td><td class="hm-cat" style="background:hsl(27,73%,29%);">9.5</td><td class="hm-cat" style="background:hsl(120,65%,25%);">1</td><td class="hm-cat" style="background:hsl(87,68%,29%);">4</td><td class="hm-cat" style="background:hsl(120,65%,25%);">1</td><td class="hm-cat" style="background:hsl(11,74%,26%);">11</td><td class="hm-cat" style="background:hsl(49,71%,32%);">7.5</td></tr><tr onclick="selectTeam('469.l.18247.t.4')" style="cursor:pointer;" data-team-key="469.l.18247.t.4"><td class="hm-team">UTU_무네타카 무라콴호</td><td class="hm-avg" style="background:hsl(75,69%,31%);"><b>5.12</b></td><td class="hm-cat" style="background:hsl(65,70%,32%);">6</td><td class="hm-cat" style="background:hsl(109,66%,26%);">2</td><td class="hm-cat" style="background:hsl(76,69%,31%);">5</td><td class="hm-cat" style="background:hsl(109,66%,26%);">2</td><td class="hm-cat" style="background:hsl(55,70%,32%);">7</td><td class="hm-cat" style="background:hsl(98,67%,28%);">3</td><td class="hm-cat" style="background:hsl(65,70%,32%);">6</td><td class="hm-cat" style="background:hsl(98,67%,28%);">3</td><td class="hm-cat" style="background:hsl(87,68%,29%);">4</td><td class="hm-cat" style="background:hsl(65,70%,32%);">6</td><td class="hm-cat" style="background:hsl(0,75%,25%);">12</td><td class="hm-cat" style="background:hsl(98,67%,28%);">3</td><td class="hm-cat" style="background:hsl(49,71%,32%);">7.5</td></tr><tr onclick="selectTeam('469.l.18247.t.1')" style="cursor:pointer;" data-team-key="469.l.18247.t.1"><td class="hm-team">2026 MVP Mike Trout</td><td class="hm-avg" style="background:hsl(64,70%,32%);"><b>6.15</b></td><td class="hm-cat" style="background:hsl(55,70%,32%);">7</td><td class="hm-cat" style="background:hsl(65,70%,32%);">6</td><td class="hm-cat" style="background:hsl(65,70%,32%);">6</td><td class="hm-cat" style="background:hsl(71,69%,32%);">5.5</td><td class="hm-cat" style="background:hsl(55,70%,32%);">7</td><td class="hm-cat" style="background:hsl(65,70%,32%);">6</td><td class="hm-cat" style="background:hsl(44,71%,31%);">8</td><td class="hm-cat" style="background:hsl(98,67%,28%);">3</td><td class="hm-cat" style="background:hsl(65,70%,32%);">6</td><td class="hm-cat" style="background:hsl(55,70%,32%);">7</td><td class="hm-cat" style="background:hsl(33,72%,29%);">9</td><td class="hm-cat" style="background:hsl(109,66%,26%);">2</td><td class="hm-cat" style="background:hsl(49,71%,32%);">7.5</td></tr><tr onclick="selectTeam('469.l.18247.t.5')" style="cursor:pointer;" data-team-key="469.l.18247.t.5"><td class="hm-team">✌️ Yeonwoo's Double Play</td><td class="hm-avg" style="background:hsl(63,70%,33%);"><b>6.19</b></td><td class="hm-cat" style="background:hsl(33,72%,29%);">9</td><td class="hm-cat" style="background:hsl(33,72%,29%);">9</td><td class="hm-cat" style="background:hsl(55,70%,32%);">7</td><td class="hm-cat" style="background:hsl(93,67%,29%);">3.5</td><td class="hm-cat" style="background:hsl(76,69%,31%);">5</td><td class="hm-cat" style="background:hsl(82,68%,30%);">4.5</td><td class="hm-cat" style="background:hsl(87,68%,29%);">4</td><td class="hm-cat" style="background:hsl(98,67%,28%);">3</td><td class="hm-cat" style="background:hsl(0,75%,25%);">12</td><td class="hm-cat" style="background:hsl(76,69%,31%);">5</td><td class="hm-cat" style="background:hsl(82,68%,30%);">4.5</td><td class="hm-cat" style="background:hsl(60,70%,33%);">6.5</td><td class="hm-cat" style="background:hsl(49,71%,32%);">7.5</td></tr><tr onclick="selectTeam('469.l.18247.t.12')" style="cursor:pointer;" data-team-key="469.l.18247.t.12"><td class="hm-team">💥 JongHun's Busters</td><td class="hm-avg" style="background:hsl(45,71%,31%);"><b>7.85</b></td><td class="hm-cat" style="background:hsl(76,69%,31%);">5</td><td class="hm-cat" style="background:hsl(76,69%,31%);">5</td><td class="hm-cat" style="background:hsl(0,75%,25%);">12</td><td class="hm-cat" style="background:hsl(5,75%,26%);">11.5</td><td class="hm-cat" style="background:hsl(55,70%,32%);">7</td><td class="hm-cat" style="background:hsl(11,74%,26%);">11</td><td class="hm-cat" style="background:hsl(65,70%,32%);">6</td><td class="hm-cat" style="background:hsl(65,70%,32%);">6</td><td class="hm-cat" style="background:hsl(104,66%,27%);">2.5</td><td class="hm-cat" style="background:hsl(0,75%,25%);">12</td><td class="hm-cat" style="background:hsl(55,70%,32%);">7</td><td class="hm-cat" style="background:hsl(27,73%,29%);">9.5</td><td class="hm-cat" style="background:hsl(49,71%,32%);">7.5</td></tr><tr onclick="selectTeam('469.l.18247.t.7')" style="cursor:pointer;" data-team-key="469.l.18247.t.7"><td class="hm-team">커츠 나의어둠 나의삶</td><td class="hm-avg" style="background:hsl(39,72%,30%);"><b>8.46</b></td><td class="hm-cat" style="background:hsl(44,71%,31%);">8</td><td class="hm-cat" style="background:hsl(22,73%,28%);">10</td><td class="hm-cat" style="background:hsl(44,71%,31%);">8</td><td class="hm-cat" style="background:hsl(27,73%,29%);">9.5</td><td class="hm-cat" style="background:hsl(27,73%,29%);">9.5</td><td class="hm-cat" style="background:hsl(27,73%,29%);">9.5</td><td class="hm-cat" style="background:hsl(11,74%,26%);">11</td><td class="hm-cat" style="background:hsl(27,73%,29%);">9.5</td><td class="hm-cat" style="background:hsl(76,69%,31%);">5</td><td class="hm-cat" style="background:hsl(22,73%,28%);">10</td><td class="hm-cat" style="background:hsl(65,70%,32%);">6</td><td class="hm-cat" style="background:hsl(60,70%,33%);">6.5</td><td class="hm-cat" style="background:hsl(49,71%,32%);">7.5</td></tr><tr onclick="selectTeam('469.l.18247.t.11')" style="cursor:pointer;" data-team-key="469.l.18247.t.11"><td class="hm-team">💥 JeongWoo's Shockers</td><td class="hm-avg" style="background:hsl(33,72%,29%);"><b>9.00</b></td><td class="hm-cat" style="background:hsl(0,75%,25%);">12</td><td class="hm-cat" style="background:hsl(0,75%,25%);">12</td><td class="hm-cat" style="background:hsl(27,73%,29%);">9.5</td><td class="hm-cat" style="background:hsl(5,75%,26%);">11.5</td><td class="hm-cat" style="background:hsl(5,75%,26%);">11.5</td><td class="hm-cat" style="background:hsl(49,71%,32%);">7.5</td><td class="hm-cat" style="background:hsl(27,73%,29%);">9.5</td><td class="hm-cat" style="background:hsl(0,75%,25%);">12</td><td class="hm-cat" style="background:hsl(16,74%,27%);">10.5</td><td class="hm-cat" style="background:hsl(44,71%,31%);">8</td><td class="hm-cat" style="background:hsl(82,68%,30%);">4.5</td><td class="hm-cat" style="background:hsl(120,65%,25%);">1</td><td class="hm-cat" style="background:hsl(49,71%,32%);">7.5</td></tr><tr onclick="selectTeam('469.l.18247.t.2')" style="cursor:pointer;" data-team-key="469.l.18247.t.2"><td class="hm-team">xXXXxAIxXXXx</td><td class="hm-avg" style="background:hsl(33,72%,29%);"><b>9.00</b></td><td class="hm-cat" style="background:hsl(11,74%,26%);">11</td><td class="hm-cat" style="background:hsl(11,74%,26%);">11</td><td class="hm-cat" style="background:hsl(11,74%,26%);">11</td><td class="hm-cat" style="background:hsl(44,71%,31%);">8</td><td class="hm-cat" style="background:hsl(27,73%,29%);">9.5</td><td class="hm-cat" style="background:hsl(27,73%,29%);">9.5</td><td class="hm-cat" style="background:hsl(27,73%,29%);">9.5</td><td class="hm-cat" style="background:hsl(11,74%,26%);">11</td><td class="hm-cat" style="background:hsl(104,66%,27%);">2.5</td><td class="hm-cat" style="background:hsl(33,72%,29%);">9</td><td class="hm-cat" style="background:hsl(11,74%,26%);">11</td><td class="hm-cat" style="background:hsl(60,70%,33%);">6.5</td><td class="hm-cat" style="background:hsl(49,71%,32%);">7.5</td></tr><tr onclick="selectTeam('469.l.18247.t.3')" style="cursor:pointer;" data-team-key="469.l.18247.t.3"><td class="hm-team">TRUCK</td><td class="hm-avg" style="background:hsl(30,73%,29%);"><b>9.27</b></td><td class="hm-cat" style="background:hsl(22,73%,28%);">10</td><td class="hm-cat" style="background:hsl(44,71%,31%);">8</td><td class="hm-cat" style="background:hsl(27,73%,29%);">9.5</td><td class="hm-cat" style="background:hsl(27,73%,29%);">9.5</td><td class="hm-cat" style="background:hsl(5,75%,26%);">11.5</td><td class="hm-cat" style="background:hsl(0,75%,25%);">12</td><td class="hm-cat" style="background:hsl(0,75%,25%);">12</td><td class="hm-cat" style="background:hsl(76,69%,31%);">5</td><td class="hm-cat" style="background:hsl(16,74%,27%);">10.5</td><td class="hm-cat" style="background:hsl(11,74%,26%);">11</td><td class="hm-cat" style="background:hsl(109,66%,26%);">2</td><td class="hm-cat" style="background:hsl(0,75%,25%);">12</td><td class="hm-cat" style="background:hsl(49,71%,32%);">7.5</td></tr></tbody></table></div>
+        <div id="hm-pit" class="tab-content"><table class="heatmap"><thead><tr><th class="hm-team">Team</th><th class="hm-avg">PIT<br>Avg</th><th class="hm-cat">ERA</th><th class="hm-cat">WHIP</th><th class="hm-cat">W</th><th class="hm-cat">L</th><th class="hm-cat">CG</th><th class="hm-cat">K(P)</th><th class="hm-cat">GIDP</th><th class="hm-cat">TB(P)</th><th class="hm-cat">K/BB</th><th class="hm-cat">RAPP</th><th class="hm-cat">QS</th><th class="hm-cat">NSVH</th></tr></thead><tbody><tr onclick="selectTeam('469.l.18247.t.12')" style="cursor:pointer;" data-team-key="469.l.18247.t.12"><td class="hm-team">💥 JongHun's Busters</td><td class="hm-avg" style="background:hsl(81,68%,30%);"><b>4.58</b></td><td class="hm-cat" style="background:hsl(120,65%,25%);">1</td><td class="hm-cat" style="background:hsl(98,67%,28%);">3</td><td class="hm-cat" style="background:hsl(115,65%,26%);">1.5</td><td class="hm-cat" style="background:hsl(109,66%,26%);">2</td><td class="hm-cat" style="background:hsl(60,70%,33%);">6.5</td><td class="hm-cat" style="background:hsl(98,67%,28%);">3</td><td class="hm-cat" style="background:hsl(82,68%,30%);">4.5</td><td class="hm-cat" style="background:hsl(22,73%,28%);">10</td><td class="hm-cat" style="background:hsl(87,68%,29%);">4</td><td class="hm-cat" style="background:hsl(27,73%,29%);">9.5</td><td class="hm-cat" style="background:hsl(115,65%,26%);">1.5</td><td class="hm-cat" style="background:hsl(38,72%,30%);">8.5</td></tr><tr onclick="selectTeam('469.l.18247.t.4')" style="cursor:pointer;" data-team-key="469.l.18247.t.4"><td class="hm-team">UTU_무네타카 무라콴호</td><td class="hm-avg" style="background:hsl(75,69%,31%);"><b>5.08</b></td><td class="hm-cat" style="background:hsl(109,66%,26%);">2</td><td class="hm-cat" style="background:hsl(109,66%,26%);">2</td><td class="hm-cat" style="background:hsl(93,67%,29%);">3.5</td><td class="hm-cat" style="background:hsl(109,66%,26%);">2</td><td class="hm-cat" style="background:hsl(60,70%,33%);">6.5</td><td class="hm-cat" style="background:hsl(11,74%,26%);">11</td><td class="hm-cat" style="background:hsl(82,68%,30%);">4.5</td><td class="hm-cat" style="background:hsl(98,67%,28%);">3</td><td class="hm-cat" style="background:hsl(76,69%,31%);">5</td><td class="hm-cat" style="background:hsl(93,67%,29%);">3.5</td><td class="hm-cat" style="background:hsl(27,73%,29%);">9.5</td><td class="hm-cat" style="background:hsl(38,72%,30%);">8.5</td></tr><tr onclick="selectTeam('469.l.18247.t.10')" style="cursor:pointer;" data-team-key="469.l.18247.t.10"><td class="hm-team">🏆 ProfeSuh</td><td class="hm-avg" style="background:hsl(73,69%,31%);"><b>5.29</b></td><td class="hm-cat" style="background:hsl(98,67%,28%);">3</td><td class="hm-cat" style="background:hsl(120,65%,25%);">1</td><td class="hm-cat" style="background:hsl(49,71%,32%);">7.5</td><td class="hm-cat" style="background:hsl(65,70%,32%);">6</td><td class="hm-cat" style="background:hsl(60,70%,33%);">6.5</td><td class="hm-cat" style="background:hsl(27,73%,29%);">9.5</td><td class="hm-cat" style="background:hsl(5,75%,26%);">11.5</td><td class="hm-cat" style="background:hsl(120,65%,25%);">1</td><td class="hm-cat" style="background:hsl(98,67%,28%);">3</td><td class="hm-cat" style="background:hsl(120,65%,25%);">1</td><td class="hm-cat" style="background:hsl(27,73%,29%);">9.5</td><td class="hm-cat" style="background:hsl(87,68%,29%);">4</td></tr><tr onclick="selectTeam('469.l.18247.t.1')" style="cursor:pointer;" data-team-key="469.l.18247.t.1"><td class="hm-team">2026 MVP Mike Trout</td><td class="hm-avg" style="background:hsl(72,69%,31%);"><b>5.42</b></td><td class="hm-cat" style="background:hsl(65,70%,32%);">6</td><td class="hm-cat" style="background:hsl(87,68%,29%);">4</td><td class="hm-cat" style="background:hsl(49,71%,32%);">7.5</td><td class="hm-cat" style="background:hsl(109,66%,26%);">2</td><td class="hm-cat" style="background:hsl(60,70%,33%);">6.5</td><td class="hm-cat" style="background:hsl(109,66%,26%);">2</td><td class="hm-cat" style="background:hsl(115,65%,26%);">1.5</td><td class="hm-cat" style="background:hsl(55,70%,32%);">7</td><td class="hm-cat" style="background:hsl(109,66%,26%);">2</td><td class="hm-cat" style="background:hsl(0,75%,25%);">12</td><td class="hm-cat" style="background:hsl(93,67%,29%);">3.5</td><td class="hm-cat" style="background:hsl(11,74%,26%);">11</td></tr><tr onclick="selectTeam('469.l.18247.t.6')" style="cursor:pointer;" data-team-key="469.l.18247.t.6"><td class="hm-team">독후감 신속히 제출해주세요.</td><td class="hm-avg" style="background:hsl(66,70%,32%);"><b>5.96</b></td><td class="hm-cat" style="background:hsl(76,69%,31%);">5</td><td class="hm-cat" style="background:hsl(71,69%,32%);">5.5</td><td class="hm-cat" style="background:hsl(49,71%,32%);">7.5</td><td class="hm-cat" style="background:hsl(65,70%,32%);">6</td><td class="hm-cat" style="background:hsl(60,70%,33%);">6.5</td><td class="hm-cat" style="background:hsl(27,73%,29%);">9.5</td><td class="hm-cat" style="background:hsl(44,71%,31%);">8</td><td class="hm-cat" style="background:hsl(87,68%,29%);">4</td><td class="hm-cat" style="background:hsl(44,71%,31%);">8</td><td class="hm-cat" style="background:hsl(93,67%,29%);">3.5</td><td class="hm-cat" style="background:hsl(65,70%,32%);">6</td><td class="hm-cat" style="background:hsl(109,66%,26%);">2</td></tr><tr onclick="selectTeam('469.l.18247.t.9')" style="cursor:pointer;" data-team-key="469.l.18247.t.9"><td class="hm-team">JJ yoogwanholt</td><td class="hm-avg" style="background:hsl(56,70%,32%);"><b>6.88</b></td><td class="hm-cat" style="background:hsl(87,68%,29%);">4</td><td class="hm-cat" style="background:hsl(44,71%,31%);">8</td><td class="hm-cat" style="background:hsl(11,74%,26%);">11</td><td class="hm-cat" style="background:hsl(65,70%,32%);">6</td><td class="hm-cat" style="background:hsl(60,70%,33%);">6.5</td><td class="hm-cat" style="background:hsl(44,71%,31%);">8</td><td class="hm-cat" style="background:hsl(44,71%,31%);">8</td><td class="hm-cat" style="background:hsl(76,69%,31%);">5</td><td class="hm-cat" style="background:hsl(33,72%,29%);">9</td><td class="hm-cat" style="background:hsl(27,73%,29%);">9.5</td><td class="hm-cat" style="background:hsl(93,67%,29%);">3.5</td><td class="hm-cat" style="background:hsl(87,68%,29%);">4</td></tr><tr onclick="selectTeam('469.l.18247.t.11')" style="cursor:pointer;" data-team-key="469.l.18247.t.11"><td class="hm-team">💥 JeongWoo's Shockers</td><td class="hm-avg" style="background:hsl(55,70%,32%);"><b>6.92</b></td><td class="hm-cat" style="background:hsl(44,71%,31%);">8</td><td class="hm-cat" style="background:hsl(55,70%,32%);">7</td><td class="hm-cat" style="background:hsl(49,71%,32%);">7.5</td><td class="hm-cat" style="background:hsl(87,68%,29%);">4</td><td class="hm-cat" style="background:hsl(60,70%,33%);">6.5</td><td class="hm-cat" style="background:hsl(0,75%,25%);">12</td><td class="hm-cat" style="background:hsl(5,75%,26%);">11.5</td><td class="hm-cat" style="background:hsl(109,66%,26%);">2</td><td class="hm-cat" style="background:hsl(55,70%,32%);">7</td><td class="hm-cat" style="background:hsl(55,70%,32%);">7</td><td class="hm-cat" style="background:hsl(27,73%,29%);">9.5</td><td class="hm-cat" style="background:hsl(120,65%,25%);">1</td></tr><tr onclick="selectTeam('469.l.18247.t.3')" style="cursor:pointer;" data-team-key="469.l.18247.t.3"><td class="hm-team">TRUCK</td><td class="hm-avg" style="background:hsl(55,70%,32%);"><b>6.96</b></td><td class="hm-cat" style="background:hsl(55,70%,32%);">7</td><td class="hm-cat" style="background:hsl(71,69%,32%);">5.5</td><td class="hm-cat" style="background:hsl(49,71%,32%);">7.5</td><td class="hm-cat" style="background:hsl(33,72%,29%);">9</td><td class="hm-cat" style="background:hsl(60,70%,33%);">6.5</td><td class="hm-cat" style="background:hsl(76,69%,31%);">5</td><td class="hm-cat" style="background:hsl(82,68%,30%);">4.5</td><td class="hm-cat" style="background:hsl(65,70%,32%);">6</td><td class="hm-cat" style="background:hsl(0,75%,25%);">12</td><td class="hm-cat" style="background:hsl(55,70%,32%);">7</td><td class="hm-cat" style="background:hsl(27,73%,29%);">9.5</td><td class="hm-cat" style="background:hsl(87,68%,29%);">4</td></tr><tr onclick="selectTeam('469.l.18247.t.8')" style="cursor:pointer;" data-team-key="469.l.18247.t.8"><td class="hm-team">응노</td><td class="hm-avg" style="background:hsl(55,70%,32%);"><b>6.96</b></td><td class="hm-cat" style="background:hsl(22,73%,28%);">10</td><td class="hm-cat" style="background:hsl(33,72%,29%);">9</td><td class="hm-cat" style="background:hsl(93,67%,29%);">3.5</td><td class="hm-cat" style="background:hsl(11,74%,26%);">11</td><td class="hm-cat" style="background:hsl(60,70%,33%);">6.5</td><td class="hm-cat" style="background:hsl(120,65%,25%);">1</td><td class="hm-cat" style="background:hsl(22,73%,28%);">10</td><td class="hm-cat" style="background:hsl(11,74%,26%);">11</td><td class="hm-cat" style="background:hsl(120,65%,25%);">1</td><td class="hm-cat" style="background:hsl(93,67%,29%);">3.5</td><td class="hm-cat" style="background:hsl(65,70%,32%);">6</td><td class="hm-cat" style="background:hsl(11,74%,26%);">11</td></tr><tr onclick="selectTeam('469.l.18247.t.7')" style="cursor:pointer;" data-team-key="469.l.18247.t.7"><td class="hm-team">커츠 나의어둠 나의삶</td><td class="hm-avg" style="background:hsl(48,71%,31%);"><b>7.58</b></td><td class="hm-cat" style="background:hsl(33,72%,29%);">9</td><td class="hm-cat" style="background:hsl(22,73%,28%);">10</td><td class="hm-cat" style="background:hsl(115,65%,26%);">1.5</td><td class="hm-cat" style="background:hsl(33,72%,29%);">9</td><td class="hm-cat" style="background:hsl(60,70%,33%);">6.5</td><td class="hm-cat" style="background:hsl(87,68%,29%);">4</td><td class="hm-cat" style="background:hsl(82,68%,30%);">4.5</td><td class="hm-cat" style="background:hsl(0,75%,25%);">12</td><td class="hm-cat" style="background:hsl(11,74%,26%);">11</td><td class="hm-cat" style="background:hsl(11,74%,26%);">11</td><td class="hm-cat" style="background:hsl(115,65%,26%);">1.5</td><td class="hm-cat" style="background:hsl(11,74%,26%);">11</td></tr><tr onclick="selectTeam('469.l.18247.t.2')" style="cursor:pointer;" data-team-key="469.l.18247.t.2"><td class="hm-team">xXXXxAIxXXXx</td><td class="hm-avg" style="background:hsl(45,71%,31%);"><b>7.92</b></td><td class="hm-cat" style="background:hsl(0,75%,25%);">12</td><td class="hm-cat" style="background:hsl(11,74%,26%);">11</td><td class="hm-cat" style="background:hsl(49,71%,32%);">7.5</td><td class="hm-cat" style="background:hsl(0,75%,25%);">12</td><td class="hm-cat" style="background:hsl(60,70%,33%);">6.5</td><td class="hm-cat" style="background:hsl(65,70%,32%);">6</td><td class="hm-cat" style="background:hsl(115,65%,26%);">1.5</td><td class="hm-cat" style="background:hsl(33,72%,29%);">9</td><td class="hm-cat" style="background:hsl(22,73%,28%);">10</td><td class="hm-cat" style="background:hsl(55,70%,32%);">7</td><td class="hm-cat" style="background:hsl(65,70%,32%);">6</td><td class="hm-cat" style="background:hsl(60,70%,33%);">6.5</td></tr><tr onclick="selectTeam('469.l.18247.t.5')" style="cursor:pointer;" data-team-key="469.l.18247.t.5"><td class="hm-team">✌️ Yeonwoo's Double Play</td><td class="hm-avg" style="background:hsl(39,72%,30%);"><b>8.46</b></td><td class="hm-cat" style="background:hsl(11,74%,26%);">11</td><td class="hm-cat" style="background:hsl(0,75%,25%);">12</td><td class="hm-cat" style="background:hsl(0,75%,25%);">12</td><td class="hm-cat" style="background:hsl(33,72%,29%);">9</td><td class="hm-cat" style="background:hsl(60,70%,33%);">6.5</td><td class="hm-cat" style="background:hsl(55,70%,32%);">7</td><td class="hm-cat" style="background:hsl(44,71%,31%);">8</td><td class="hm-cat" style="background:hsl(44,71%,31%);">8</td><td class="hm-cat" style="background:hsl(65,70%,32%);">6</td><td class="hm-cat" style="background:hsl(93,67%,29%);">3.5</td><td class="hm-cat" style="background:hsl(0,75%,25%);">12</td><td class="hm-cat" style="background:hsl(60,70%,33%);">6.5</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- Row 4: Matchup Cards + Transactions (side by side) -->
+    <div class="row-2col">
+      <!-- All Matchups -->
+      <div class="card fade-in" style="padding:16px;animation-delay:0.2s;">
+        <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">All Matchups</div>
+        <div id="matchup-cards">
+          <div class="mg matchup-card" data-idx="0">
+              <div style="text-align:right;" class="text-sm truncate fw-600 opacity-50">2026 MVP Mike Trout</div>
+              <div class="mono fw-700 text-sm" style="text-align:center;">
+                <span class="">9</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="w">12</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="t">4</span>
+              </div>
+              <div class="text-sm truncate fw-600 w">TRUCK</div>
+            </div>
+          <div class="mg matchup-card" data-idx="1">
+              <div style="text-align:right;" class="text-sm truncate fw-600 opacity-50">xXXXxAIxXXXx</div>
+              <div class="mono fw-700 text-sm" style="text-align:center;">
+                <span class="">8</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="w">11</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="t">6</span>
+              </div>
+              <div class="text-sm truncate fw-600 w">커츠 나의어둠 나의삶</div>
+            </div>
+          <div class="mg matchup-card" data-idx="2">
+              <div style="text-align:right;" class="text-sm truncate fw-600 w">UTU_무네타카 무라콴호</div>
+              <div class="mono fw-700 text-sm" style="text-align:center;">
+                <span class="w">13</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="">8</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="t">4</span>
+              </div>
+              <div class="text-sm truncate fw-600 opacity-50">JJ yoogwanholt</div>
+            </div>
+          <div class="mg matchup-card" data-idx="3">
+              <div style="text-align:right;" class="text-sm truncate fw-600 w">✌️ Yeonwoo's Double Play</div>
+              <div class="mono fw-700 text-sm" style="text-align:center;">
+                <span class="w">15</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="">2</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="t">8</span>
+              </div>
+              <div class="text-sm truncate fw-600 opacity-50">응노</div>
+            </div>
+          <div class="mg matchup-card" data-idx="4">
+              <div style="text-align:right;" class="text-sm truncate fw-600 opacity-50">독후감 신속히 제출해주세요.</div>
+              <div class="mono fw-700 text-sm" style="text-align:center;">
+                <span class="">7</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="w">15</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="t">3</span>
+              </div>
+              <div class="text-sm truncate fw-600 w">🏆 ProfeSuh</div>
+            </div>
+          <div class="mg matchup-card" data-idx="5">
+              <div style="text-align:right;" class="text-sm truncate fw-600 opacity-50">💥 JeongWoo's Shockers</div>
+              <div class="mono fw-700 text-sm" style="text-align:center;">
+                <span class="">4</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="w">13</span><span style="color:var(--text3);margin:0 3px;">-</span><span class="t">8</span>
+              </div>
+              <div class="text-sm truncate fw-600 w">💥 JongHun's Busters</div>
+            </div>
+        </div>
+      </div>
+
+      <!-- Transactions (compact, scrollable) -->
+      <div class="card fade-in" style="padding:16px;animation-delay:0.25s;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <div class="text-xs fw-600" style="color:var(--text3);text-transform:uppercase;letter-spacing:1px;">Transactions</div>
+          <span class="mono text-xs" style="color:var(--text3);">78</span>
+        </div>
+        <div class="scroll-y">
+          <div class="txn-row">
+                <span style="color:var(--text3);">4. 1.</span>
+                <div>+<span class="w">Colt Keith</span><span style="color:var(--text3);"> DET</span></div>
+                <div>-<span class="l">Jonathan Loáisiga</span><span style="color:var(--text3);"> AZ</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">4. 1.</span>
+                <div>+<span class="w">Daylen Lile</span><span style="color:var(--text3);"> WSH</span></div>
+                <div>-<span class="l">Michael Harris II</span><span style="color:var(--text3);"> ATL</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">4. 1.</span>
+                <div>+<span class="w">Kumar Rocker</span><span style="color:var(--text3);"> TEX</span></div>
+                <div>-<span class="l">Cody Ponce</span><span style="color:var(--text3);"> TOR</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">4. 1.</span>
+                <div>+<span class="w">Andrew Painter</span><span style="color:var(--text3);"> PHI</span></div>
+                <div>-<span class="l">Drew Anderson</span><span style="color:var(--text3);"> DET</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">4. 1.</span>
+                <div>+<span class="w">Owen Caissie</span><span style="color:var(--text3);"> MIA</span></div>
+                <div>-<span class="l">Coby Mayo</span><span style="color:var(--text3);"> BAL</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">4. 1.</span>
+                <div>+<span class="w">Andrés Giménez</span><span style="color:var(--text3);"> TOR</span></div>
+                <div>-<span class="l">Dominic Canzone</span><span style="color:var(--text3);"> SEA</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 31.</span>
+                <div>+<span class="w">Lance McCullers Jr.</span><span style="color:var(--text3);"> HOU</span></div>
+                <div>-<span class="l">Justin Crawford</span><span style="color:var(--text3);"> PHI</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 31.</span>
+                <div></div>
+                <div></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 31.</span>
+                <div>+<span class="w">Konnor Griffin</span><span style="color:var(--text3);"> PIT</span></div>
+                <div>-<span class="l">Gleyber Torres</span><span style="color:var(--text3);"> DET</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 31.</span>
+                <div>+<span class="w">Jake Burger</span><span style="color:var(--text3);"> TEX</span></div>
+                <div>-<span class="l">Caleb Thielbar</span><span style="color:var(--text3);"> CHC</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 31.</span>
+                <div>+<span class="w">Parker Messick</span><span style="color:var(--text3);"> CLE</span></div>
+                <div>-<span class="l">Josh Naylor</span><span style="color:var(--text3);"> SEA</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 31.</span>
+                <div>+<span class="w">Nolan Schanuel</span><span style="color:var(--text3);"> LAA</span></div>
+                <div>-<span class="l">Willson Contreras</span><span style="color:var(--text3);"> BOS</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 31.</span>
+                <div>+<span class="w">Lucas Erceg</span><span style="color:var(--text3);"> KC</span></div>
+                <div>-<span class="l">Clay Holmes</span><span style="color:var(--text3);"> NYM</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 31.</span>
+                <div>+<span class="w">Jake Bird</span><span style="color:var(--text3);"> NYY</span></div>
+                <div>-<span class="l">Chris Bassitt</span><span style="color:var(--text3);"> BAL</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 31.</span>
+                <div>+<span class="w">Joey Wiemer</span><span style="color:var(--text3);"> WSH</span></div>
+                <div>-<span class="l">Alec Burleson</span><span style="color:var(--text3);"> STL</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 30.</span>
+                <div>+<span class="w">Aaron Ashby</span><span style="color:var(--text3);"> MIL</span></div>
+                <div>-<span class="l">Grant Holmes</span><span style="color:var(--text3);"> ATL</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 30.</span>
+                <div>+<span class="w">Hunter Gaddis</span><span style="color:var(--text3);"> CLE</span></div>
+                <div></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 30.</span>
+                <div>+<span class="w">Ryan O'Hearn</span><span style="color:var(--text3);"> PIT</span></div>
+                <div>-<span class="l">Teoscar Hernández</span><span style="color:var(--text3);"> LAD</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 30.</span>
+                <div>+<span class="w">Dennis Santana</span><span style="color:var(--text3);"> PIT</span></div>
+                <div>-<span class="l">Will Vest</span><span style="color:var(--text3);"> DET</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 30.</span>
+                <div>+<span class="w">Emilio Pagán</span><span style="color:var(--text3);"> CIN</span></div>
+                <div>-<span class="l">Jordan Romano</span><span style="color:var(--text3);"> LAA</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 30.</span>
+                <div>+<span class="w">Jordan Walker</span><span style="color:var(--text3);"> STL</span></div>
+                <div>-<span class="l">Max Meyer</span><span style="color:var(--text3);"> MIA</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 30.</span>
+                <div>+<span class="w">Tim Hill</span><span style="color:var(--text3);"> NYY</span></div>
+                <div>-<span class="l">Oneil Cruz</span><span style="color:var(--text3);"> PIT</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 30.</span>
+                <div>+<span class="w">Emerson Hancock</span><span style="color:var(--text3);"> SEA</span></div>
+                <div>-<span class="l">Carmen Mlodzinski</span><span style="color:var(--text3);"> PIT</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 30.</span>
+                <div>+<span class="w">Kyle Harrison</span><span style="color:var(--text3);"> MIL</span></div>
+                <div>-<span class="l">Dustin May</span><span style="color:var(--text3);"> STL</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 30.</span>
+                <div>+<span class="w">Jason Adam</span><span style="color:var(--text3);"> SD</span></div>
+                <div></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 30.</span>
+                <div>+<span class="w">Chris Bassitt</span><span style="color:var(--text3);"> BAL</span></div>
+                <div>-<span class="l">Slade Cecconi</span><span style="color:var(--text3);"> CLE</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 30.</span>
+                <div>+<span class="w">Randy Vásquez</span><span style="color:var(--text3);"> SD</span></div>
+                <div></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 30.</span>
+                <div></div>
+                <div>-<span class="l">Bryan Abreu</span><span style="color:var(--text3);"> HOU</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 30.</span>
+                <div>+<span class="w">Jonathan Loáisiga</span><span style="color:var(--text3);"> AZ</span></div>
+                <div>-<span class="l">Noelvi Marte</span><span style="color:var(--text3);"> CIN</span></div>
+              </div>
+          <div class="txn-row">
+                <span style="color:var(--text3);">3. 29.</span>
+                <div>+<span class="w">Erik Sabrowski</span><span style="color:var(--text3);"> CLE</span></div>
+                <div>-<span class="l">Ezequiel Tovar</span><span style="color:var(--text3);"> COL</span></div>
+              </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // Data
+    var MATCHUPS = [{"idx":0,"t1Name":"2026 MVP Mike Trout","t1Key":"469.l.18247.t.1","t2Name":"TRUCK","t2Key":"469.l.18247.t.3","t1Wins":9,"t2Wins":12,"ties":4,"cats":[{"abbr":"AVG","statId":"3","group":"batting","t1Val":".089","t2Val":".200","winner":"t2"},{"abbr":"OBP","statId":"4","group":"batting","t1Val":".212","t2Val":".288","winner":"t2"},{"abbr":"SLG","statId":"5","group":"batting","t1Val":".161","t2Val":".338","winner":"t2"},{"abbr":"R","statId":"7","group":"batting","t1Val":4,"t2Val":6,"winner":"t2"},{"abbr":"H","statId":"8","group":"batting","t1Val":5,"t2Val":13,"winner":"t2"},{"abbr":"HR","statId":"12","group":"batting","t1Val":1,"t2Val":2,"winner":"t2"},{"abbr":"RBI","statId":"13","group":"batting","t1Val":2,"t2Val":8,"winner":"t2"},{"abbr":"BB","statId":"18","group":"batting","t1Val":9,"t2Val":8,"winner":"t1"},{"abbr":"K","statId":"21","group":"batting","t1Val":16,"t2Val":16,"winner":"tie"},{"abbr":"TB","statId":"23","group":"batting","t1Val":9,"t2Val":22,"winner":"t2"},{"abbr":"ERA","statId":"26","group":"pitching","t1Val":"3.95","t2Val":"9.00","winner":"t1"},{"abbr":"WHIP","statId":"27","group":"pitching","t1Val":"1.02","t2Val":"2.00","winner":"t1"},{"abbr":"W","statId":"28","group":"pitching","t1Val":1,"t2Val":0,"winner":"t1"},{"abbr":"L","statId":"29","group":"pitching","t1Val":1,"t2Val":0,"winner":"t2"},{"abbr":"CG","statId":"30","group":"pitching","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"K(P)","statId":"42","group":"pitching","t1Val":14,"t2Val":2,"winner":"t1"},{"abbr":"GIDP","statId":"46","group":"pitching","t1Val":3,"t2Val":0,"winner":"t1"},{"abbr":"TB(P)","statId":"49","group":"pitching","t1Val":13,"t2Val":1,"winner":"t2"},{"abbr":"A","statId":"52","group":"batting","t1Val":11,"t2Val":22,"winner":"t2"},{"abbr":"K/BB","statId":"56","group":"pitching","t1Val":"2.80","t2Val":"2.00","winner":"t1"},{"abbr":"NSB","statId":"62","group":"batting","t1Val":2,"t2Val":1,"winner":"t1"},{"abbr":"SLAM","statId":"66","group":"batting","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"RAPP","statId":"73","group":"pitching","t1Val":0,"t2Val":1,"winner":"t2"},{"abbr":"QS","statId":"83","group":"pitching","t1Val":1,"t2Val":0,"winner":"t1"},{"abbr":"NSVH","statId":"90","group":"pitching","t1Val":0,"t2Val":0,"winner":"tie"}]},{"idx":1,"t1Name":"xXXXxAIxXXXx","t1Key":"469.l.18247.t.2","t2Name":"커츠 나의어둠 나의삶","t2Key":"469.l.18247.t.7","t1Wins":8,"t2Wins":11,"ties":6,"cats":[{"abbr":"AVG","statId":"3","group":"batting","t1Val":".154","t2Val":".164","winner":"t2"},{"abbr":"OBP","statId":"4","group":"batting","t1Val":".222","t2Val":".227","winner":"t2"},{"abbr":"SLG","statId":"5","group":"batting","t1Val":".262","t2Val":".230","winner":"t1"},{"abbr":"R","statId":"7","group":"batting","t1Val":5,"t2Val":5,"winner":"tie"},{"abbr":"H","statId":"8","group":"batting","t1Val":10,"t2Val":10,"winner":"tie"},{"abbr":"HR","statId":"12","group":"batting","t1Val":2,"t2Val":1,"winner":"t1"},{"abbr":"RBI","statId":"13","group":"batting","t1Val":5,"t2Val":3,"winner":"t1"},{"abbr":"BB","statId":"18","group":"batting","t1Val":5,"t2Val":5,"winner":"tie"},{"abbr":"K","statId":"21","group":"batting","t1Val":15,"t2Val":10,"winner":"t2"},{"abbr":"TB","statId":"23","group":"batting","t1Val":17,"t2Val":14,"winner":"t1"},{"abbr":"ERA","statId":"26","group":"pitching","t1Val":"4.91","t2Val":"1.59","winner":"t2"},{"abbr":"WHIP","statId":"27","group":"pitching","t1Val":"1.77","t2Val":"1.10","winner":"t2"},{"abbr":"W","statId":"28","group":"pitching","t1Val":0,"t2Val":3,"winner":"t2"},{"abbr":"L","statId":"29","group":"pitching","t1Val":1,"t2Val":1,"winner":"tie"},{"abbr":"CG","statId":"30","group":"pitching","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"K(P)","statId":"42","group":"pitching","t1Val":4,"t2Val":25,"winner":"t2"},{"abbr":"GIDP","statId":"46","group":"pitching","t1Val":1,"t2Val":0,"winner":"t1"},{"abbr":"TB(P)","statId":"49","group":"pitching","t1Val":9,"t2Val":18,"winner":"t1"},{"abbr":"A","statId":"52","group":"batting","t1Val":8,"t2Val":11,"winner":"t2"},{"abbr":"K/BB","statId":"56","group":"pitching","t1Val":"0.80","t2Val":"1.79","winner":"t2"},{"abbr":"NSB","statId":"62","group":"batting","t1Val":0,"t2Val":1,"winner":"t2"},{"abbr":"SLAM","statId":"66","group":"batting","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"RAPP","statId":"73","group":"pitching","t1Val":3,"t2Val":2,"winner":"t1"},{"abbr":"QS","statId":"83","group":"pitching","t1Val":0,"t2Val":2,"winner":"t2"},{"abbr":"NSVH","statId":"90","group":"pitching","t1Val":3,"t2Val":0,"winner":"t1"}]},{"idx":2,"t1Name":"UTU_무네타카 무라콴호","t1Key":"469.l.18247.t.4","t2Name":"JJ yoogwanholt","t2Key":"469.l.18247.t.9","t1Wins":13,"t2Wins":8,"ties":4,"cats":[{"abbr":"AVG","statId":"3","group":"batting","t1Val":".286","t2Val":".229","winner":"t1"},{"abbr":"OBP","statId":"4","group":"batting","t1Val":".352","t2Val":".308","winner":"t1"},{"abbr":"SLG","statId":"5","group":"batting","t1Val":".492","t2Val":".329","winner":"t1"},{"abbr":"R","statId":"7","group":"batting","t1Val":12,"t2Val":10,"winner":"t1"},{"abbr":"H","statId":"8","group":"batting","t1Val":18,"t2Val":16,"winner":"t1"},{"abbr":"HR","statId":"12","group":"batting","t1Val":3,"t2Val":1,"winner":"t1"},{"abbr":"RBI","statId":"13","group":"batting","t1Val":9,"t2Val":8,"winner":"t1"},{"abbr":"BB","statId":"18","group":"batting","t1Val":7,"t2Val":8,"winner":"t2"},{"abbr":"K","statId":"21","group":"batting","t1Val":17,"t2Val":23,"winner":"t1"},{"abbr":"TB","statId":"23","group":"batting","t1Val":31,"t2Val":23,"winner":"t1"},{"abbr":"ERA","statId":"26","group":"pitching","t1Val":"2.65","t2Val":"2.25","winner":"t2"},{"abbr":"WHIP","statId":"27","group":"pitching","t1Val":"0.94","t2Val":"0.75","winner":"t2"},{"abbr":"W","statId":"28","group":"pitching","t1Val":1,"t2Val":0,"winner":"t1"},{"abbr":"L","statId":"29","group":"pitching","t1Val":2,"t2Val":0,"winner":"t2"},{"abbr":"CG","statId":"30","group":"pitching","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"K(P)","statId":"42","group":"pitching","t1Val":15,"t2Val":12,"winner":"t1"},{"abbr":"GIDP","statId":"46","group":"pitching","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"TB(P)","statId":"49","group":"pitching","t1Val":17,"t2Val":5,"winner":"t2"},{"abbr":"A","statId":"52","group":"batting","t1Val":14,"t2Val":22,"winner":"t2"},{"abbr":"K/BB","statId":"56","group":"pitching","t1Val":"3.00","t2Val":"6.00","winner":"t2"},{"abbr":"NSB","statId":"62","group":"batting","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"SLAM","statId":"66","group":"batting","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"RAPP","statId":"73","group":"pitching","t1Val":3,"t2Val":2,"winner":"t1"},{"abbr":"QS","statId":"83","group":"pitching","t1Val":0,"t2Val":1,"winner":"t2"},{"abbr":"NSVH","statId":"90","group":"pitching","t1Val":3,"t2Val":0,"winner":"t1"}]},{"idx":3,"t1Name":"✌️ Yeonwoo's Double Play","t1Key":"469.l.18247.t.5","t2Name":"응노","t2Key":"469.l.18247.t.8","t1Wins":15,"t2Wins":2,"ties":8,"cats":[{"abbr":"AVG","statId":"3","group":"batting","t1Val":".344","t2Val":".206","winner":"t1"},{"abbr":"OBP","statId":"4","group":"batting","t1Val":".468","t2Val":".333","winner":"t1"},{"abbr":"SLG","statId":"5","group":"batting","t1Val":".641","t2Val":".365","winner":"t1"},{"abbr":"R","statId":"7","group":"batting","t1Val":13,"t2Val":8,"winner":"t1"},{"abbr":"H","statId":"8","group":"batting","t1Val":22,"t2Val":13,"winner":"t1"},{"abbr":"HR","statId":"12","group":"batting","t1Val":5,"t2Val":2,"winner":"t1"},{"abbr":"RBI","statId":"13","group":"batting","t1Val":11,"t2Val":9,"winner":"t1"},{"abbr":"BB","statId":"18","group":"batting","t1Val":15,"t2Val":12,"winner":"t1"},{"abbr":"K","statId":"21","group":"batting","t1Val":13,"t2Val":17,"winner":"t1"},{"abbr":"TB","statId":"23","group":"batting","t1Val":41,"t2Val":23,"winner":"t1"},{"abbr":"ERA","statId":"26","group":"pitching","t1Val":"2.35","t2Val":"2.40","winner":"t1"},{"abbr":"WHIP","statId":"27","group":"pitching","t1Val":"0.72","t2Val":"1.00","winner":"t1"},{"abbr":"W","statId":"28","group":"pitching","t1Val":2,"t2Val":1,"winner":"t1"},{"abbr":"L","statId":"29","group":"pitching","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"CG","statId":"30","group":"pitching","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"K(P)","statId":"42","group":"pitching","t1Val":15,"t2Val":15,"winner":"tie"},{"abbr":"GIDP","statId":"46","group":"pitching","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"TB(P)","statId":"49","group":"pitching","t1Val":7,"t2Val":18,"winner":"t1"},{"abbr":"A","statId":"52","group":"batting","t1Val":17,"t2Val":18,"winner":"t2"},{"abbr":"K/BB","statId":"56","group":"pitching","t1Val":"2.50","t2Val":"3.00","winner":"t2"},{"abbr":"NSB","statId":"62","group":"batting","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"SLAM","statId":"66","group":"batting","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"RAPP","statId":"73","group":"pitching","t1Val":4,"t2Val":4,"winner":"tie"},{"abbr":"QS","statId":"83","group":"pitching","t1Val":2,"t2Val":1,"winner":"t1"},{"abbr":"NSVH","statId":"90","group":"pitching","t1Val":2,"t2Val":2,"winner":"tie"}]},{"idx":4,"t1Name":"독후감 신속히 제출해주세요.","t1Key":"469.l.18247.t.6","t2Name":"🏆 ProfeSuh","t2Key":"469.l.18247.t.10","t1Wins":7,"t2Wins":15,"ties":3,"cats":[{"abbr":"AVG","statId":"3","group":"batting","t1Val":".212","t2Val":".297","winner":"t2"},{"abbr":"OBP","statId":"4","group":"batting","t1Val":".297","t2Val":".375","winner":"t2"},{"abbr":"SLG","statId":"5","group":"batting","t1Val":".379","t2Val":".422","winner":"t2"},{"abbr":"R","statId":"7","group":"batting","t1Val":10,"t2Val":3,"winner":"t1"},{"abbr":"H","statId":"8","group":"batting","t1Val":14,"t2Val":19,"winner":"t2"},{"abbr":"HR","statId":"12","group":"batting","t1Val":2,"t2Val":1,"winner":"t1"},{"abbr":"RBI","statId":"13","group":"batting","t1Val":10,"t2Val":8,"winner":"t1"},{"abbr":"BB","statId":"18","group":"batting","t1Val":7,"t2Val":8,"winner":"t2"},{"abbr":"K","statId":"21","group":"batting","t1Val":10,"t2Val":19,"winner":"t1"},{"abbr":"TB","statId":"23","group":"batting","t1Val":25,"t2Val":27,"winner":"t2"},{"abbr":"ERA","statId":"26","group":"pitching","t1Val":"9.39","t2Val":"0.82","winner":"t2"},{"abbr":"WHIP","statId":"27","group":"pitching","t1Val":"1.70","t2Val":"0.77","winner":"t2"},{"abbr":"W","statId":"28","group":"pitching","t1Val":0,"t2Val":2,"winner":"t2"},{"abbr":"L","statId":"29","group":"pitching","t1Val":2,"t2Val":1,"winner":"t2"},{"abbr":"CG","statId":"30","group":"pitching","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"K(P)","statId":"42","group":"pitching","t1Val":7,"t2Val":26,"winner":"t2"},{"abbr":"GIDP","statId":"46","group":"pitching","t1Val":1,"t2Val":1,"winner":"tie"},{"abbr":"TB(P)","statId":"49","group":"pitching","t1Val":23,"t2Val":13,"winner":"t2"},{"abbr":"A","statId":"52","group":"batting","t1Val":21,"t2Val":9,"winner":"t1"},{"abbr":"K/BB","statId":"56","group":"pitching","t1Val":"2.33","t2Val":"3.71","winner":"t2"},{"abbr":"NSB","statId":"62","group":"batting","t1Val":0,"t2Val":-1,"winner":"t1"},{"abbr":"SLAM","statId":"66","group":"batting","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"RAPP","statId":"73","group":"pitching","t1Val":4,"t2Val":3,"winner":"t1"},{"abbr":"QS","statId":"83","group":"pitching","t1Val":0,"t2Val":3,"winner":"t2"},{"abbr":"NSVH","statId":"90","group":"pitching","t1Val":0,"t2Val":1,"winner":"t2"}]},{"idx":5,"t1Name":"💥 JeongWoo's Shockers","t1Key":"469.l.18247.t.11","t2Name":"💥 JongHun's Busters","t2Key":"469.l.18247.t.12","t1Wins":4,"t2Wins":13,"ties":8,"cats":[{"abbr":"AVG","statId":"3","group":"batting","t1Val":".185","t2Val":".313","winner":"t2"},{"abbr":"OBP","statId":"4","group":"batting","t1Val":".260","t2Val":".382","winner":"t2"},{"abbr":"SLG","statId":"5","group":"batting","t1Val":".323","t2Val":".433","winner":"t2"},{"abbr":"R","statId":"7","group":"batting","t1Val":5,"t2Val":8,"winner":"t2"},{"abbr":"H","statId":"8","group":"batting","t1Val":12,"t2Val":21,"winner":"t2"},{"abbr":"HR","statId":"12","group":"batting","t1Val":2,"t2Val":2,"winner":"tie"},{"abbr":"RBI","statId":"13","group":"batting","t1Val":4,"t2Val":7,"winner":"t2"},{"abbr":"BB","statId":"18","group":"batting","t1Val":4,"t2Val":8,"winner":"t2"},{"abbr":"K","statId":"21","group":"batting","t1Val":18,"t2Val":15,"winner":"t2"},{"abbr":"TB","statId":"23","group":"batting","t1Val":21,"t2Val":29,"winner":"t2"},{"abbr":"ERA","statId":"26","group":"pitching","t1Val":"2.63","t2Val":"1.32","winner":"t2"},{"abbr":"WHIP","statId":"27","group":"pitching","t1Val":"0.95","t2Val":"0.88","winner":"t2"},{"abbr":"W","statId":"28","group":"pitching","t1Val":2,"t2Val":2,"winner":"tie"},{"abbr":"L","statId":"29","group":"pitching","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"CG","statId":"30","group":"pitching","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"K(P)","statId":"42","group":"pitching","t1Val":17,"t2Val":10,"winner":"t1"},{"abbr":"GIDP","statId":"46","group":"pitching","t1Val":1,"t2Val":4,"winner":"t2"},{"abbr":"TB(P)","statId":"49","group":"pitching","t1Val":17,"t2Val":11,"winner":"t2"},{"abbr":"A","statId":"52","group":"batting","t1Val":16,"t2Val":16,"winner":"tie"},{"abbr":"K/BB","statId":"56","group":"pitching","t1Val":"5.67","t2Val":"2.00","winner":"t1"},{"abbr":"NSB","statId":"62","group":"batting","t1Val":1,"t2Val":1,"winner":"tie"},{"abbr":"SLAM","statId":"66","group":"batting","t1Val":0,"t2Val":0,"winner":"tie"},{"abbr":"RAPP","statId":"73","group":"pitching","t1Val":3,"t2Val":2,"winner":"t1"},{"abbr":"QS","statId":"83","group":"pitching","t1Val":1,"t2Val":1,"winner":"tie"},{"abbr":"NSVH","statId":"90","group":"pitching","t1Val":2,"t2Val":0,"winner":"t1"}]}];
+    var TEAMS = [{"key":"469.l.18247.t.4","name":"UTU_무네타카 무라콴호"},{"key":"469.l.18247.t.10","name":"🏆 ProfeSuh"},{"key":"469.l.18247.t.11","name":"💥 JeongWoo's Shockers"},{"key":"469.l.18247.t.2","name":"xXXXxAIxXXXx"},{"key":"469.l.18247.t.9","name":"JJ yoogwanholt"},{"key":"469.l.18247.t.1","name":"2026 MVP Mike Trout"},{"key":"469.l.18247.t.6","name":"독후감 신속히 제출해주세요."},{"key":"469.l.18247.t.3","name":"TRUCK"},{"key":"469.l.18247.t.8","name":"응노"},{"key":"469.l.18247.t.5","name":"✌️ Yeonwoo's Double Play"},{"key":"469.l.18247.t.12","name":"💥 JongHun's Busters"},{"key":"469.l.18247.t.7","name":"커츠 나의어둠 나의삶"}];
+    var MY_KEY = "469.l.18247.t.10";
+    var CAT_RANKINGS = {"3":[{"teamName":"🏆 ProfeSuh","value":".302","rank":1},{"teamName":"독후감 신속히 제출해주세요.","value":".267","rank":2},{"teamName":"응노","value":".252","rank":3},{"teamName":"JJ yoogwanholt","value":".245","rank":4},{"teamName":"💥 JongHun's Busters","value":".241","rank":5},{"teamName":"UTU_무네타카 무라콴호","value":".237","rank":6},{"teamName":"2026 MVP Mike Trout","value":".234","rank":7},{"teamName":"커츠 나의어둠 나의삶","value":".228","rank":8},{"teamName":"✌️ Yeonwoo's Double Play","value":".226","rank":9},{"teamName":"TRUCK","value":".212","rank":10},{"teamName":"xXXXxAIxXXXx","value":".207","rank":11},{"teamName":"💥 JeongWoo's Shockers","value":".185","rank":12}],"4":[{"teamName":"🏆 ProfeSuh","value":".390","rank":1},{"teamName":"UTU_무네타카 무라콴호","value":".356","rank":2},{"teamName":"독후감 신속히 제출해주세요.","value":".348","rank":3},{"teamName":"JJ yoogwanholt","value":".347","rank":4},{"teamName":"💥 JongHun's Busters","value":".342","rank":5},{"teamName":"2026 MVP Mike Trout","value":".340","rank":6},{"teamName":"응노","value":".327","rank":7},{"teamName":"TRUCK","value":".325","rank":8},{"teamName":"✌️ Yeonwoo's Double Play","value":".324","rank":9},{"teamName":"커츠 나의어둠 나의삶","value":".322","rank":10},{"teamName":"xXXXxAIxXXXx","value":".288","rank":11},{"teamName":"💥 JeongWoo's Shockers","value":".272","rank":12}],"5":[{"teamName":"응노","value":".583","rank":1},{"teamName":"JJ yoogwanholt","value":".497","rank":2},{"teamName":"🏆 ProfeSuh","value":".483","rank":3},{"teamName":"독후감 신속히 제출해주세요.","value":".425","rank":4},{"teamName":"UTU_무네타카 무라콴호","value":".422","rank":5},{"teamName":"2026 MVP Mike Trout","value":".409","rank":6},{"teamName":"✌️ Yeonwoo's Double Play","value":".377","rank":7},{"teamName":"커츠 나의어둠 나의삶","value":".331","rank":8},{"teamName":"💥 JeongWoo's Shockers","value":".311","rank":9.5},{"teamName":"TRUCK","value":".311","rank":9.5},{"teamName":"xXXXxAIxXXXx","value":".307","rank":11},{"teamName":"💥 JongHun's Busters","value":".293","rank":12}],"7":[{"teamName":"JJ yoogwanholt","value":"28","rank":1},{"teamName":"UTU_무네타카 무라콴호","value":"26","rank":2},{"teamName":"응노","value":"23","rank":3.5},{"teamName":"✌️ Yeonwoo's Double Play","value":"23","rank":3.5},{"teamName":"2026 MVP Mike Trout","value":"22","rank":5.5},{"teamName":"독후감 신속히 제출해주세요.","value":"22","rank":5.5},{"teamName":"🏆 ProfeSuh","value":"17","rank":7},{"teamName":"xXXXxAIxXXXx","value":"16","rank":8},{"teamName":"TRUCK","value":"15","rank":9.5},{"teamName":"커츠 나의어둠 나의삶","value":"15","rank":9.5},{"teamName":"💥 JeongWoo's Shockers","value":"14","rank":11.5},{"teamName":"💥 JongHun's Busters","value":"14","rank":11.5}],"8":[{"teamName":"🏆 ProfeSuh","value":"45","rank":1},{"teamName":"독후감 신속히 제출해주세요.","value":"39","rank":2},{"teamName":"응노","value":"38","rank":3},{"teamName":"JJ yoogwanholt","value":"37","rank":4},{"teamName":"✌️ Yeonwoo's Double Play","value":"36","rank":5},{"teamName":"UTU_무네타카 무라콴호","value":"32","rank":7},{"teamName":"2026 MVP Mike Trout","value":"32","rank":7},{"teamName":"💥 JongHun's Busters","value":"32","rank":7},{"teamName":"xXXXxAIxXXXx","value":"29","rank":9.5},{"teamName":"커츠 나의어둠 나의삶","value":"29","rank":9.5},{"teamName":"💥 JeongWoo's Shockers","value":"28","rank":11.5},{"teamName":"TRUCK","value":"28","rank":11.5}],"12":[{"teamName":"응노","value":"15","rank":1},{"teamName":"JJ yoogwanholt","value":"11","rank":2},{"teamName":"UTU_무네타카 무라콴호","value":"7","rank":3},{"teamName":"🏆 ProfeSuh","value":"6","rank":4.5},{"teamName":"✌️ Yeonwoo's Double Play","value":"6","rank":4.5},{"teamName":"2026 MVP Mike Trout","value":"5","rank":6},{"teamName":"💥 JeongWoo's Shockers","value":"4","rank":7.5},{"teamName":"독후감 신속히 제출해주세요.","value":"4","rank":7.5},{"teamName":"xXXXxAIxXXXx","value":"3","rank":9.5},{"teamName":"커츠 나의어둠 나의삶","value":"3","rank":9.5},{"teamName":"💥 JongHun's Busters","value":"2","rank":11},{"teamName":"TRUCK","value":"1","rank":12}],"13":[{"teamName":"응노","value":"30","rank":1},{"teamName":"JJ yoogwanholt","value":"28","rank":2},{"teamName":"🏆 ProfeSuh","value":"20","rank":3},{"teamName":"✌️ Yeonwoo's Double Play","value":"19","rank":4},{"teamName":"UTU_무네타카 무라콴호","value":"16","rank":6},{"teamName":"독후감 신속히 제출해주세요.","value":"16","rank":6},{"teamName":"💥 JongHun's Busters","value":"16","rank":6},{"teamName":"2026 MVP Mike Trout","value":"15","rank":8},{"teamName":"💥 JeongWoo's Shockers","value":"14","rank":9.5},{"teamName":"xXXXxAIxXXXx","value":"14","rank":9.5},{"teamName":"커츠 나의어둠 나의삶","value":"13","rank":11},{"teamName":"TRUCK","value":"5","rank":12}],"18":[{"teamName":"JJ yoogwanholt","value":"24","rank":1},{"teamName":"UTU_무네타카 무라콴호","value":"23","rank":3},{"teamName":"2026 MVP Mike Trout","value":"23","rank":3},{"teamName":"✌️ Yeonwoo's Double Play","value":"23","rank":3},{"teamName":"TRUCK","value":"21","rank":5},{"teamName":"💥 JongHun's Busters","value":"20","rank":6},{"teamName":"🏆 ProfeSuh","value":"18","rank":7.5},{"teamName":"응노","value":"18","rank":7.5},{"teamName":"독후감 신속히 제출해주세요.","value":"16","rank":9.5},{"teamName":"커츠 나의어둠 나의삶","value":"16","rank":9.5},{"teamName":"xXXXxAIxXXXx","value":"15","rank":11},{"teamName":"💥 JeongWoo's Shockers","value":"14","rank":12}],"21":[{"teamName":"독후감 신속히 제출해주세요.","value":"27","rank":1},{"teamName":"xXXXxAIxXXXx","value":"30","rank":2.5},{"teamName":"💥 JongHun's Busters","value":"30","rank":2.5},{"teamName":"UTU_무네타카 무라콴호","value":"32","rank":4},{"teamName":"커츠 나의어둠 나의삶","value":"33","rank":5},{"teamName":"2026 MVP Mike Trout","value":"34","rank":6},{"teamName":"응노","value":"40","rank":7},{"teamName":"JJ yoogwanholt","value":"42","rank":8},{"teamName":"🏆 ProfeSuh","value":"43","rank":9},{"teamName":"💥 JeongWoo's Shockers","value":"44","rank":10.5},{"teamName":"TRUCK","value":"44","rank":10.5},{"teamName":"✌️ Yeonwoo's Double Play","value":"45","rank":12}],"23":[{"teamName":"응노","value":"88","rank":1},{"teamName":"JJ yoogwanholt","value":"75","rank":2},{"teamName":"🏆 ProfeSuh","value":"72","rank":3},{"teamName":"독후감 신속히 제출해주세요.","value":"62","rank":4},{"teamName":"✌️ Yeonwoo's Double Play","value":"60","rank":5},{"teamName":"UTU_무네타카 무라콴호","value":"57","rank":6},{"teamName":"2026 MVP Mike Trout","value":"56","rank":7},{"teamName":"💥 JeongWoo's Shockers","value":"47","rank":8},{"teamName":"xXXXxAIxXXXx","value":"43","rank":9},{"teamName":"커츠 나의어둠 나의삶","value":"42","rank":10},{"teamName":"TRUCK","value":"41","rank":11},{"teamName":"💥 JongHun's Busters","value":"39","rank":12}],"26":[{"teamName":"💥 JongHun's Busters","value":"1.66","rank":1},{"teamName":"UTU_무네타카 무라콴호","value":"1.73","rank":2},{"teamName":"🏆 ProfeSuh","value":"2.30","rank":3},{"teamName":"JJ yoogwanholt","value":"2.62","rank":4},{"teamName":"독후감 신속히 제출해주세요.","value":"3.18","rank":5},{"teamName":"2026 MVP Mike Trout","value":"3.30","rank":6},{"teamName":"TRUCK","value":"3.74","rank":7},{"teamName":"💥 JeongWoo's Shockers","value":"4.41","rank":8},{"teamName":"커츠 나의어둠 나의삶","value":"4.97","rank":9},{"teamName":"응노","value":"5.27","rank":10},{"teamName":"✌️ Yeonwoo's Double Play","value":"5.63","rank":11},{"teamName":"xXXXxAIxXXXx","value":"5.91","rank":12}],"27":[{"teamName":"🏆 ProfeSuh","value":"0.73","rank":1},{"teamName":"UTU_무네타카 무라콴호","value":"0.92","rank":2},{"teamName":"💥 JongHun's Busters","value":"1.07","rank":3},{"teamName":"2026 MVP Mike Trout","value":"1.08","rank":4},{"teamName":"독후감 신속히 제출해주세요.","value":"1.09","rank":5.5},{"teamName":"TRUCK","value":"1.09","rank":5.5},{"teamName":"💥 JeongWoo's Shockers","value":"1.16","rank":7},{"teamName":"JJ yoogwanholt","value":"1.17","rank":8},{"teamName":"응노","value":"1.29","rank":9},{"teamName":"커츠 나의어둠 나의삶","value":"1.34","rank":10},{"teamName":"xXXXxAIxXXXx","value":"1.47","rank":11},{"teamName":"✌️ Yeonwoo's Double Play","value":"1.59","rank":12}],"28":[{"teamName":"💥 JongHun's Busters","value":"4","rank":1.5},{"teamName":"커츠 나의어둠 나의삶","value":"4","rank":1.5},{"teamName":"UTU_무네타카 무라콴호","value":"3","rank":3.5},{"teamName":"응노","value":"3","rank":3.5},{"teamName":"🏆 ProfeSuh","value":"2","rank":7.5},{"teamName":"💥 JeongWoo's Shockers","value":"2","rank":7.5},{"teamName":"xXXXxAIxXXXx","value":"2","rank":7.5},{"teamName":"2026 MVP Mike Trout","value":"2","rank":7.5},{"teamName":"독후감 신속히 제출해주세요.","value":"2","rank":7.5},{"teamName":"TRUCK","value":"2","rank":7.5},{"teamName":"JJ yoogwanholt","value":"1","rank":11},{"teamName":"✌️ Yeonwoo's Double Play","value":"0","rank":12}],"29":[{"teamName":"UTU_무네타카 무라콴호","value":"0","rank":2},{"teamName":"2026 MVP Mike Trout","value":"0","rank":2},{"teamName":"💥 JongHun's Busters","value":"0","rank":2},{"teamName":"💥 JeongWoo's Shockers","value":"1","rank":4},{"teamName":"🏆 ProfeSuh","value":"2","rank":6},{"teamName":"JJ yoogwanholt","value":"2","rank":6},{"teamName":"독후감 신속히 제출해주세요.","value":"2","rank":6},{"teamName":"TRUCK","value":"3","rank":9},{"teamName":"✌️ Yeonwoo's Double Play","value":"3","rank":9},{"teamName":"커츠 나의어둠 나의삶","value":"3","rank":9},{"teamName":"응노","value":"4","rank":11},{"teamName":"xXXXxAIxXXXx","value":"5","rank":12}],"30":[{"teamName":"UTU_무네타카 무라콴호","value":"0","rank":6.5},{"teamName":"🏆 ProfeSuh","value":"0","rank":6.5},{"teamName":"💥 JeongWoo's Shockers","value":"0","rank":6.5},{"teamName":"xXXXxAIxXXXx","value":"0","rank":6.5},{"teamName":"JJ yoogwanholt","value":"0","rank":6.5},{"teamName":"2026 MVP Mike Trout","value":"0","rank":6.5},{"teamName":"독후감 신속히 제출해주세요.","value":"0","rank":6.5},{"teamName":"TRUCK","value":"0","rank":6.5},{"teamName":"응노","value":"0","rank":6.5},{"teamName":"✌️ Yeonwoo's Double Play","value":"0","rank":6.5},{"teamName":"💥 JongHun's Busters","value":"0","rank":6.5},{"teamName":"커츠 나의어둠 나의삶","value":"0","rank":6.5}],"42":[{"teamName":"응노","value":"58","rank":1},{"teamName":"2026 MVP Mike Trout","value":"55","rank":2},{"teamName":"💥 JongHun's Busters","value":"52","rank":3},{"teamName":"커츠 나의어둠 나의삶","value":"51","rank":4},{"teamName":"TRUCK","value":"48","rank":5},{"teamName":"xXXXxAIxXXXx","value":"44","rank":6},{"teamName":"✌️ Yeonwoo's Double Play","value":"41","rank":7},{"teamName":"JJ yoogwanholt","value":"38","rank":8},{"teamName":"🏆 ProfeSuh","value":"34","rank":9.5},{"teamName":"독후감 신속히 제출해주세요.","value":"34","rank":9.5},{"teamName":"UTU_무네타카 무라콴호","value":"31","rank":11},{"teamName":"💥 JeongWoo's Shockers","value":"18","rank":12}],"46":[{"teamName":"xXXXxAIxXXXx","value":"5","rank":1.5},{"teamName":"2026 MVP Mike Trout","value":"5","rank":1.5},{"teamName":"UTU_무네타카 무라콴호","value":"4","rank":4.5},{"teamName":"TRUCK","value":"4","rank":4.5},{"teamName":"💥 JongHun's Busters","value":"4","rank":4.5},{"teamName":"커츠 나의어둠 나의삶","value":"4","rank":4.5},{"teamName":"JJ yoogwanholt","value":"2","rank":8},{"teamName":"독후감 신속히 제출해주세요.","value":"2","rank":8},{"teamName":"✌️ Yeonwoo's Double Play","value":"2","rank":8},{"teamName":"응노","value":"1","rank":10},{"teamName":"🏆 ProfeSuh","value":"0","rank":11.5},{"teamName":"💥 JeongWoo's Shockers","value":"0","rank":11.5}],"49":[{"teamName":"🏆 ProfeSuh","value":"19","rank":1},{"teamName":"💥 JeongWoo's Shockers","value":"22","rank":2},{"teamName":"UTU_무네타카 무라콴호","value":"29","rank":3},{"teamName":"독후감 신속히 제출해주세요.","value":"39","rank":4},{"teamName":"JJ yoogwanholt","value":"42","rank":5},{"teamName":"TRUCK","value":"47","rank":6},{"teamName":"2026 MVP Mike Trout","value":"55","rank":7},{"teamName":"✌️ Yeonwoo's Double Play","value":"64","rank":8},{"teamName":"xXXXxAIxXXXx","value":"67","rank":9},{"teamName":"💥 JongHun's Busters","value":"71","rank":10},{"teamName":"응노","value":"78","rank":11},{"teamName":"커츠 나의어둠 나의삶","value":"99","rank":12}],"52":[{"teamName":"독후감 신속히 제출해주세요.","value":"45","rank":1},{"teamName":"TRUCK","value":"44","rank":2},{"teamName":"응노","value":"42","rank":3},{"teamName":"💥 JeongWoo's Shockers","value":"41","rank":4.5},{"teamName":"✌️ Yeonwoo's Double Play","value":"41","rank":4.5},{"teamName":"커츠 나의어둠 나의삶","value":"40","rank":6},{"teamName":"💥 JongHun's Busters","value":"33","rank":7},{"teamName":"JJ yoogwanholt","value":"32","rank":8},{"teamName":"2026 MVP Mike Trout","value":"31","rank":9},{"teamName":"🏆 ProfeSuh","value":"30","rank":10},{"teamName":"xXXXxAIxXXXx","value":"29","rank":11},{"teamName":"UTU_무네타카 무라콴호","value":"23","rank":12}],"56":[{"teamName":"응노","value":"7.25","rank":1},{"teamName":"2026 MVP Mike Trout","value":"4.58","rank":2},{"teamName":"🏆 ProfeSuh","value":"4.25","rank":3},{"teamName":"💥 JongHun's Busters","value":"4.00","rank":4},{"teamName":"UTU_무네타카 무라콴호","value":"3.88","rank":5},{"teamName":"✌️ Yeonwoo's Double Play","value":"3.73","rank":6},{"teamName":"💥 JeongWoo's Shockers","value":"3.60","rank":7},{"teamName":"독후감 신속히 제출해주세요.","value":"3.40","rank":8},{"teamName":"JJ yoogwanholt","value":"2.53","rank":9},{"teamName":"xXXXxAIxXXXx","value":"2.20","rank":10},{"teamName":"커츠 나의어둠 나의삶","value":"2.04","rank":11},{"teamName":"TRUCK","value":"2.00","rank":12}],"62":[{"teamName":"💥 JeongWoo's Shockers","value":"7","rank":1},{"teamName":"2026 MVP Mike Trout","value":"5","rank":2},{"teamName":"UTU_무네타카 무라콴호","value":"4","rank":3},{"teamName":"JJ yoogwanholt","value":"3","rank":4},{"teamName":"🏆 ProfeSuh","value":"2","rank":6.5},{"teamName":"xXXXxAIxXXXx","value":"2","rank":6.5},{"teamName":"✌️ Yeonwoo's Double Play","value":"2","rank":6.5},{"teamName":"커츠 나의어둠 나의삶","value":"2","rank":6.5},{"teamName":"응노","value":"1","rank":9.5},{"teamName":"💥 JongHun's Busters","value":"1","rank":9.5},{"teamName":"독후감 신속히 제출해주세요.","value":"0","rank":11},{"teamName":"TRUCK","value":"-1","rank":12}],"66":[{"teamName":"JJ yoogwanholt","value":"1","rank":1.5},{"teamName":"응노","value":"1","rank":1.5},{"teamName":"UTU_무네타카 무라콴호","value":"0","rank":7.5},{"teamName":"🏆 ProfeSuh","value":"0","rank":7.5},{"teamName":"💥 JeongWoo's Shockers","value":"0","rank":7.5},{"teamName":"xXXXxAIxXXXx","value":"0","rank":7.5},{"teamName":"2026 MVP Mike Trout","value":"0","rank":7.5},{"teamName":"독후감 신속히 제출해주세요.","value":"0","rank":7.5},{"teamName":"TRUCK","value":"0","rank":7.5},{"teamName":"✌️ Yeonwoo's Double Play","value":"0","rank":7.5},{"teamName":"💥 JongHun's Busters","value":"0","rank":7.5},{"teamName":"커츠 나의어둠 나의삶","value":"0","rank":7.5}],"73":[{"teamName":"🏆 ProfeSuh","value":"12","rank":1},{"teamName":"UTU_무네타카 무라콴호","value":"8","rank":3.5},{"teamName":"독후감 신속히 제출해주세요.","value":"8","rank":3.5},{"teamName":"응노","value":"8","rank":3.5},{"teamName":"✌️ Yeonwoo's Double Play","value":"8","rank":3.5},{"teamName":"💥 JeongWoo's Shockers","value":"7","rank":7},{"teamName":"xXXXxAIxXXXx","value":"7","rank":7},{"teamName":"TRUCK","value":"7","rank":7},{"teamName":"JJ yoogwanholt","value":"5","rank":9.5},{"teamName":"💥 JongHun's Busters","value":"5","rank":9.5},{"teamName":"커츠 나의어둠 나의삶","value":"4","rank":11},{"teamName":"2026 MVP Mike Trout","value":"0","rank":12}],"83":[{"teamName":"💥 JongHun's Busters","value":"4","rank":1.5},{"teamName":"커츠 나의어둠 나의삶","value":"4","rank":1.5},{"teamName":"JJ yoogwanholt","value":"3","rank":3.5},{"teamName":"2026 MVP Mike Trout","value":"3","rank":3.5},{"teamName":"xXXXxAIxXXXx","value":"2","rank":6},{"teamName":"독후감 신속히 제출해주세요.","value":"2","rank":6},{"teamName":"응노","value":"2","rank":6},{"teamName":"UTU_무네타카 무라콴호","value":"1","rank":9.5},{"teamName":"🏆 ProfeSuh","value":"1","rank":9.5},{"teamName":"💥 JeongWoo's Shockers","value":"1","rank":9.5},{"teamName":"TRUCK","value":"1","rank":9.5},{"teamName":"✌️ Yeonwoo's Double Play","value":"0","rank":12}],"90":[{"teamName":"💥 JeongWoo's Shockers","value":"5","rank":1},{"teamName":"독후감 신속히 제출해주세요.","value":"4","rank":2},{"teamName":"🏆 ProfeSuh","value":"3","rank":4},{"teamName":"JJ yoogwanholt","value":"3","rank":4},{"teamName":"TRUCK","value":"3","rank":4},{"teamName":"xXXXxAIxXXXx","value":"2","rank":6.5},{"teamName":"✌️ Yeonwoo's Double Play","value":"2","rank":6.5},{"teamName":"UTU_무네타카 무라콴호","value":"1","rank":8.5},{"teamName":"💥 JongHun's Busters","value":"1","rank":8.5},{"teamName":"2026 MVP Mike Trout","value":"0","rank":11},{"teamName":"응노","value":"0","rank":11},{"teamName":"커츠 나의어둠 나의삶","value":"0","rank":11}]};
+    var STAT_META = {"3":{"abbr":"AVG","group":"batting"},"4":{"abbr":"OBP","group":"batting"},"5":{"abbr":"SLG","group":"batting"},"7":{"abbr":"R","group":"batting"},"8":{"abbr":"H","group":"batting"},"12":{"abbr":"HR","group":"batting"},"13":{"abbr":"RBI","group":"batting"},"18":{"abbr":"BB","group":"batting"},"21":{"abbr":"K","group":"batting"},"23":{"abbr":"TB","group":"batting"},"26":{"abbr":"ERA","group":"pitching"},"27":{"abbr":"WHIP","group":"pitching"},"28":{"abbr":"W","group":"pitching"},"29":{"abbr":"L","group":"pitching"},"30":{"abbr":"CG","group":"pitching"},"42":{"abbr":"K(P)","group":"pitching"},"46":{"abbr":"GIDP","group":"pitching"},"49":{"abbr":"TB(P)","group":"pitching"},"52":{"abbr":"A","group":"batting"},"56":{"abbr":"K/BB","group":"pitching"},"62":{"abbr":"NSB","group":"batting"},"66":{"abbr":"SLAM","group":"batting"},"73":{"abbr":"RAPP","group":"pitching"},"83":{"abbr":"QS","group":"pitching"},"90":{"abbr":"NSVH","group":"pitching"}};
+    var TEAM_NAMES = {"469.l.18247.t.4":"UTU_무네타카 무라콴호","469.l.18247.t.10":"🏆 ProfeSuh","469.l.18247.t.11":"💥 JeongWoo's Shockers","469.l.18247.t.2":"xXXXxAIxXXXx","469.l.18247.t.9":"JJ yoogwanholt","469.l.18247.t.1":"2026 MVP Mike Trout","469.l.18247.t.6":"독후감 신속히 제출해주세요.","469.l.18247.t.3":"TRUCK","469.l.18247.t.8":"응노","469.l.18247.t.5":"✌️ Yeonwoo's Double Play","469.l.18247.t.12":"💥 JongHun's Busters","469.l.18247.t.7":"커츠 나의어둠 나의삶"};
+    var sel = document.getElementById('matchup-select');
+
+    // Radar charts (stored for dynamic update)
+    // Radar tooltip
+    function radarTooltip(context) {
+      var chart = context.chart;
+      var tooltip = context.tooltip;
+      var el = chart.canvas.parentNode.querySelector('.ct');
+      if (!el) { el = document.createElement('div'); el.className = 'ct'; chart.canvas.parentNode.appendChild(el); }
+      if (tooltip.opacity === 0) { el.classList.remove('show'); return; }
+      var items = tooltip.dataPoints || [];
+      var inner = '<div class="ct-inner">';
+      items.forEach(function(pt) {
+        var label = pt.label || '';
+        var score = pt.raw;
+        var rank = 13 - score;
+        inner += '<div class="ct-row highlight">';
+        inner += '<span class="ct-name">' + label + '</span>';
+        inner += '<span class="ct-val" style="color:var(--accent);">#' + rank + '</span>';
+        inner += '</div>';
+      });
+      inner += '</div>';
+      el.replaceChildren();
+      var tmp = document.createElement('div'); tmp.innerHTML = inner;
+      while (tmp.firstChild) el.appendChild(tmp.firstChild);
+      el.style.left = tooltip.caretX + 'px';
+      el.style.top = tooltip.caretY + 'px';
+      el.classList.add('show');
+    }
+    var ro = { responsive:true, maintainAspectRatio:false, scales:{r:{min:0,max:12,ticks:{display:false,stepSize:3},grid:{color:'rgba(148,163,184,0.08)'},pointLabels:{color:'#64748b',font:{size:10,weight:'600',family:'JetBrains Mono'}},angleLines:{color:'rgba(148,163,184,0.05)'}}},plugins:{legend:{display:false},tooltip:{enabled:false,external:radarTooltip}} };
+    var batLabels = ["AVG","OBP","SLG","R","H","HR","RBI","BB","K","TB","A","NSB","SLAM"];
+    var pitLabels = ["ERA","WHIP","W","L","CG","K(P)","GIDP","TB(P)","K/BB","RAPP","QS","NSVH"];
+    var chartBat = new Chart(document.getElementById('radarBat'),{type:'radar',data:{labels:batLabels,datasets:[{data:[12,12,10,6,12,8.5,10,5.5,4,10,3,6.5,5.5],backgroundColor:'rgba(59,130,246,0.1)',borderColor:'rgba(59,130,246,0.6)',borderWidth:1.5,pointBackgroundColor:'#3b82f6',pointRadius:3}]},options:ro});
+    var chartPit = new Chart(document.getElementById('radarPit'),{type:'radar',data:{labels:pitLabels,datasets:[{data:[10,12,5.5,7,6.5,3.5,1.5,12,10,12,3.5,9],backgroundColor:'rgba(167,139,250,0.1)',borderColor:'rgba(167,139,250,0.6)',borderWidth:1.5,pointBackgroundColor:'#a78bfa',pointRadius:3}]},options:ro});
+
+    // Trend charts
+    var HISTORY = {"weeks":[{"week":1,"teams":[{"key":"469.l.18247.t.4","name":"UTU_무네타카 무라콴호","rank":1,"wins":15,"losses":5,"ties":5,"pct":".700","rotoPoints":197.5},{"key":"469.l.18247.t.10","name":"🏆 ProfeSuh","rank":2,"wins":13,"losses":10,"ties":2,"pct":".560","rotoPoints":197.5},{"key":"469.l.18247.t.11","name":"💥 JeongWoo's Shockers","rank":3,"wins":12,"losses":10,"ties":3,"pct":".540","rotoPoints":125},{"key":"469.l.18247.t.2","name":"xXXXxAIxXXXx","rank":4,"wins":11,"losses":10,"ties":4,"pct":".520","rotoPoints":113},{"key":"469.l.18247.t.9","name":"JJ yoogwanholt","rank":5,"wins":12,"losses":11,"ties":2,"pct":".520","rotoPoints":199},{"key":"469.l.18247.t.1","name":"2026 MVP Mike Trout","rank":6,"wins":10,"losses":10,"ties":5,"pct":".500","rotoPoints":180},{"key":"469.l.18247.t.6","name":"독후감 신속히 제출해주세요.","rank":7,"wins":10,"losses":10,"ties":5,"pct":".500","rotoPoints":189.5},{"key":"469.l.18247.t.3","name":"TRUCK","rank":8,"wins":10,"losses":11,"ties":4,"pct":".480","rotoPoints":121},{"key":"469.l.18247.t.8","name":"응노","rank":9,"wins":11,"losses":12,"ties":2,"pct":".480","rotoPoints":192.5},{"key":"469.l.18247.t.5","name":"✌️ Yeonwoo's Double Play","rank":10,"wins":10,"losses":12,"ties":3,"pct":".460","rotoPoints":143},{"key":"469.l.18247.t.12","name":"💥 JongHun's Busters","rank":11,"wins":10,"losses":13,"ties":2,"pct":".440","rotoPoints":168},{"key":"469.l.18247.t.7","name":"커츠 나의어둠 나의삶","rank":12,"wins":5,"losses":15,"ties":5,"pct":".300","rotoPoints":124}]},{"week":2,"teams":[{"key":"469.l.18247.t.4","name":"UTU_무네타카 무라콴호","rank":1,"wins":15,"losses":5,"ties":5,"pct":".700","rotoPoints":197.5},{"key":"469.l.18247.t.10","name":"🏆 ProfeSuh","rank":2,"wins":13,"losses":10,"ties":2,"pct":".560","rotoPoints":197.5},{"key":"469.l.18247.t.11","name":"💥 JeongWoo's Shockers","rank":3,"wins":12,"losses":10,"ties":3,"pct":".540","rotoPoints":125},{"key":"469.l.18247.t.2","name":"xXXXxAIxXXXx","rank":4,"wins":11,"losses":10,"ties":4,"pct":".520","rotoPoints":113},{"key":"469.l.18247.t.9","name":"JJ yoogwanholt","rank":5,"wins":12,"losses":11,"ties":2,"pct":".520","rotoPoints":199},{"key":"469.l.18247.t.1","name":"2026 MVP Mike Trout","rank":6,"wins":10,"losses":10,"ties":5,"pct":".500","rotoPoints":180},{"key":"469.l.18247.t.6","name":"독후감 신속히 제출해주세요.","rank":7,"wins":10,"losses":10,"ties":5,"pct":".500","rotoPoints":189.5},{"key":"469.l.18247.t.3","name":"TRUCK","rank":8,"wins":10,"losses":11,"ties":4,"pct":".480","rotoPoints":121},{"key":"469.l.18247.t.8","name":"응노","rank":9,"wins":11,"losses":12,"ties":2,"pct":".480","rotoPoints":192.5},{"key":"469.l.18247.t.5","name":"✌️ Yeonwoo's Double Play","rank":10,"wins":10,"losses":12,"ties":3,"pct":".460","rotoPoints":143},{"key":"469.l.18247.t.12","name":"💥 JongHun's Busters","rank":11,"wins":10,"losses":13,"ties":2,"pct":".440","rotoPoints":168},{"key":"469.l.18247.t.7","name":"커츠 나의어둠 나의삶","rank":12,"wins":5,"losses":15,"ties":5,"pct":".300","rotoPoints":124}]}]};
+    var weekLabels = HISTORY.weeks.map(function(w) { return 'W' + w.week; });
+
+    // Custom external tooltip handler
+    function externalTooltip(context) {
+      var chart = context.chart;
+      var tooltip = context.tooltip;
+      var el = chart.canvas.parentNode.querySelector('.ct');
+      if (!el) {
+        el = document.createElement('div');
+        el.className = 'ct';
+        chart.canvas.parentNode.appendChild(el);
+      }
+      if (tooltip.opacity === 0) {
+        el.classList.remove('show');
+        return;
+      }
+      // Sort items by value for rank charts (selected team first otherwise)
+      var items = tooltip.dataPoints || [];
+      // Build rows — only show teams with visible data (pointRadius > 0 or borderWidth > 1.5)
+      var rows = [];
+      items.forEach(function(pt) {
+        var ds = chart.data.datasets[pt.datasetIndex];
+        if (pt.raw === null || pt.raw === undefined) return;
+        var isHighlight = ds.borderWidth > 1.5;
+        var color = isHighlight ? ds.borderColor : 'var(--text3)';
+        rows.push({ name: ds.label, value: pt.formattedValue, color: color, highlight: isHighlight, raw: pt.raw });
+      });
+      // Only show highlighted team + sort others by value
+      var highlighted = rows.filter(function(r) { return r.highlight; });
+      var others = rows.filter(function(r) { return !r.highlight; });
+      // For rank: sort ascending (lower is better). For roto: sort descending
+      var isRank = chart.options.scales && chart.options.scales.y && chart.options.scales.y.reverse;
+      others.sort(function(a, b) { return isRank ? a.raw - b.raw : b.raw - a.raw; });
+      // Show top 3 others + highlighted
+      var top3 = others.slice(0, 3);
+      var display = highlighted.concat(top3);
+      // Sort final display
+      display.sort(function(a, b) { return isRank ? a.raw - b.raw : b.raw - a.raw; });
+
+      var inner = '<div class="ct-inner">';
+      inner += '<div class="ct-title">' + (tooltip.title[0] || '') + '</div>';
+      display.forEach(function(r) {
+        var hl = r.highlight ? ' highlight' : '';
+        inner += '<div class="ct-row' + hl + '">';
+        inner += '<div class="ct-dot" style="background:' + r.color + ';"></div>';
+        inner += '<span class="ct-name">' + r.name + '</span>';
+        inner += '<span class="ct-val" style="color:' + r.color + ';">' + r.value + '</span>';
+        inner += '</div>';
+      });
+      if (others.length > 3) {
+        inner += '<div class="ct-row"><span class="ct-name" style="font-size:10px;color:var(--text3);">+' + (others.length - 3) + ' more</span></div>';
+      }
+      inner += '</div>';
+      el.replaceChildren();
+      var tmp = document.createElement('div');
+      tmp.innerHTML = inner;
+      while (tmp.firstChild) el.appendChild(tmp.firstChild);
+
+      el.style.left = tooltip.caretX + 'px';
+      el.style.top = tooltip.caretY + 'px';
+      el.classList.add('show');
+    }
+
+    var trendLineOpts = {
+      responsive: true, maintainAspectRatio: false,
+      scales: {
+        x: { grid: { color: 'rgba(148,163,184,0.05)' }, ticks: { color: '#64748b', font: { size: 10, family: 'JetBrains Mono' } } },
+        y: { grid: { color: 'rgba(148,163,184,0.08)' }, ticks: { color: '#64748b', font: { size: 10, family: 'JetBrains Mono' }, stepSize: 1 } }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: { enabled: false, external: externalTooltip }
+      },
+      interaction: { mode: 'index', intersect: false },
+      elements: { point: { radius: 4, hoverRadius: 6 }, line: { tension: 0.3 } }
+    };
+
+    var rankOpts = JSON.parse(JSON.stringify(trendLineOpts));
+    rankOpts.scales.y.reverse = true;
+    rankOpts.scales.y.min = 1;
+    rankOpts.scales.y.max = 12;
+    // Re-attach external fn (lost in JSON.parse)
+    rankOpts.plugins.tooltip = { enabled: false, external: externalTooltip };
+
+    var rotoOpts = JSON.parse(JSON.stringify(trendLineOpts));
+    rotoOpts.plugins.tooltip = { enabled: false, external: externalTooltip };
+
+    function getTeamTrendData(teamKey, field) {
+      return HISTORY.weeks.map(function(w) {
+        var t = w.teams.find(function(t) { return t.key === teamKey; });
+        return t ? t[field] : null;
+      });
+    }
+
+    // Team color palette (consistent per team index)
+    var TEAM_COLORS = ['#3b82f6','#22c55e','#f59e0b','#ef4444','#a78bfa','#06b6d4','#ec4899','#84cc16','#f97316','#6366f1','#14b8a6','#e11d48'];
+    function teamColor(teamKey) {
+      var idx = TEAMS.findIndex(function(t) { return t.key === teamKey; });
+      return TEAM_COLORS[idx % TEAM_COLORS.length];
+    }
+
+    // Initialize with selected team + all others as faint background
+    function buildTrendDatasets(teamKey, field) {
+      var datasets = [];
+      // Background: all teams faint
+      TEAMS.forEach(function(t) {
+        if (t.key === teamKey) return;
+        datasets.push({
+          label: t.name,
+          data: getTeamTrendData(t.key, field),
+          borderColor: 'rgba(148,163,184,0.12)',
+          backgroundColor: 'transparent',
+          borderWidth: 1,
+          pointRadius: 0,
+          tension: 0.3,
+        });
+      });
+      // Foreground: selected team bold
+      var color = teamColor(teamKey);
+      datasets.push({
+        label: TEAM_NAMES[teamKey] || '',
+        data: getTeamTrendData(teamKey, field),
+        borderColor: color,
+        backgroundColor: color + '1a',
+        borderWidth: 2.5,
+        pointRadius: 5,
+        pointBackgroundColor: color,
+        tension: 0.3,
+        fill: true,
+      });
+      return datasets;
+    }
+
+    var chartRank = new Chart(document.getElementById('chartRank'), {
+      type: 'line',
+      data: { labels: weekLabels, datasets: buildTrendDatasets(MY_KEY, 'rank') },
+      options: rankOpts,
+    });
+    var chartRoto = new Chart(document.getElementById('chartRoto'), {
+      type: 'line',
+      data: { labels: weekLabels, datasets: buildTrendDatasets(MY_KEY, 'rotoPoints') },
+      options: rotoOpts,
+    });
+
+    function updateTrend(teamKey) {
+      chartRank.data.datasets = buildTrendDatasets(teamKey, 'rank');
+      chartRank.update();
+      chartRoto.data.datasets = buildTrendDatasets(teamKey, 'rotoPoints');
+      chartRoto.update();
+    }
+
+    TEAMS.forEach(function(t) {
+      var o = document.createElement('option');
+      o.value = t.key; o.textContent = t.name;
+      if (t.key === MY_KEY) o.selected = true;
+      sel.appendChild(o);
+    });
+
+    function findMatchupByTeam(k) { return MATCHUPS.findIndex(function(m){return m.t1Key===k||m.t2Key===k;}); }
+
+    function renderMatchup(idx) {
+      var m = MATCHUPS[idx];
+      var t1Won = m.t1Wins > m.t2Wins, draw = m.t1Wins === m.t2Wins;
+
+      // Header
+      var h = document.getElementById('matchup-header');
+      h.replaceChildren();
+      var row = document.createElement('div');
+      row.style.cssText = 'display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;';
+
+      var l = document.createElement('div');
+      l.style.textAlign = 'right';
+      var ln = document.createElement('div');
+      ln.className = 'text-base fw-700';
+      ln.style.color = t1Won ? 'var(--green)' : draw ? 'var(--text)' : 'var(--text3)';
+      ln.textContent = m.t1Name;
+      l.appendChild(ln);
+
+      var c = document.createElement('div');
+      c.className = 'mono fw-700';
+      c.style.cssText = 'text-align:center;font-size:28px;letter-spacing:2px;';
+      var cs1 = document.createElement('span');
+      cs1.style.color = t1Won ? 'var(--green)' : draw ? 'var(--text)' : 'var(--text3)';
+      cs1.textContent = m.t1Wins;
+      var cd = document.createElement('span');
+      cd.style.cssText = 'color:var(--text3);margin:0 8px;font-size:20px;';
+      cd.textContent = ':';
+      var cs2 = document.createElement('span');
+      cs2.style.color = !t1Won&&!draw ? 'var(--green)' : draw ? 'var(--text)' : 'var(--text3)';
+      cs2.textContent = m.t2Wins;
+      var ct = document.createElement('span');
+      ct.style.cssText = 'color:var(--text3);margin-left:8px;font-size:14px;';
+      ct.textContent = '(T:'+m.ties+')';
+      c.append(cs1,cd,cs2,ct);
+
+      var r = document.createElement('div');
+      var rn = document.createElement('div');
+      rn.className = 'text-base fw-700';
+      rn.style.color = !t1Won&&!draw ? 'var(--green)' : draw ? 'var(--text)' : 'var(--text3)';
+      rn.textContent = m.t2Name;
+      r.appendChild(rn);
+
+      row.append(l,c,r);
+      h.appendChild(row);
+
+      // Cats
+      var ce = document.getElementById('matchup-cats');
+      ce.replaceChildren();
+
+      function buildGroup(label, cats) {
+        var col = document.createElement('div');
+        var title = document.createElement('div');
+        title.className = 'text-xs fw-600';
+        title.style.cssText = 'color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;';
+        title.textContent = label;
+        col.appendChild(title);
+        cats.forEach(function(cat) {
+          var cr = document.createElement('div');
+          cr.className = 'cat-row';
+          var t1Win = cat.winner==='t1', t2Win = cat.winner==='t2', tie = cat.winner==='tie';
+
+          var v1 = document.createElement('span');
+          v1.className = 'mono text-sm fw-600';
+          v1.style.cssText = 'text-align:right;color:'+(t1Win?'var(--green)':tie?'var(--text2)':'var(--text3)')+';';
+          v1.textContent = cat.t1Val;
+
+          var bar1 = document.createElement('div');
+          bar1.style.cssText = 'height:2px;background:'+(t1Win?'var(--green)':'transparent')+';border-radius:1px;margin:0 4px;';
+
+          var ab = document.createElement('span');
+          ab.className = 'mono text-xs fw-600';
+          ab.style.cssText = 'text-align:center;color:var(--text3);';
+          ab.textContent = cat.abbr;
+
+          var bar2 = document.createElement('div');
+          bar2.style.cssText = 'height:2px;background:'+(t2Win?'var(--green)':'transparent')+';border-radius:1px;margin:0 4px;';
+
+          var v2 = document.createElement('span');
+          v2.className = 'mono text-sm fw-600';
+          v2.style.cssText = 'color:'+(t2Win?'var(--green)':tie?'var(--text2)':'var(--text3)')+';';
+          v2.textContent = cat.t2Val;
+
+          cr.append(v1,bar1,ab,bar2,v2);
+          col.appendChild(cr);
+        });
+        return col;
+      }
+
+      ce.append(
+        buildGroup('Batting', m.cats.filter(function(c){return c.group==='batting';})),
+        buildGroup('Pitching', m.cats.filter(function(c){return c.group==='pitching';}))
+      );
+
+      // Highlight card
+      document.querySelectorAll('.matchup-card').forEach(function(card) {
+        var ci = parseInt(card.dataset.idx);
+        if (ci===idx) { card.classList.add('active'); } else { card.classList.remove('active'); }
+      });
+    }
+
+    // Get rankings for a team by key
+    function getTeamRankings(teamKey) {
+      var teamName = TEAM_NAMES[teamKey];
+      var results = [];
+      for (var statId in STAT_META) {
+        var meta = STAT_META[statId];
+        var rankings = CAT_RANKINGS[statId];
+        if (!rankings) continue;
+        var entry = rankings.find(function(e) { return e.teamName === teamName; });
+        if (entry) results.push({ statId: statId, abbr: meta.abbr, group: meta.group, value: entry.value, rank: entry.rank });
+      }
+      return results;
+    }
+
+    // Update radar charts for selected team (match label order)
+    function updateRadar(teamKey) {
+      var rankings = getTeamRankings(teamKey);
+      var rMap = {};
+      rankings.forEach(function(r) { rMap[r.abbr] = 13 - r.rank; });
+      chartBat.data.datasets[0].data = batLabels.map(function(l) { return rMap[l] || 0; });
+      chartBat.update();
+      chartPit.data.datasets[0].data = pitLabels.map(function(l) { return rMap[l] || 0; });
+      chartPit.update();
+    }
+
+    // Update rankings pills for selected team
+    function updateRankings(teamKey) {
+      var rankings = getTeamRankings(teamKey);
+      var body = document.getElementById('rankings-body');
+      body.replaceChildren();
+      rankings.forEach(function(r) {
+        var tier = r.rank <= 3 ? 'top' : r.rank >= 10 ? 'bot' : 'mid';
+        var row = document.createElement('div');
+        row.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:3px 0;';
+        var label = document.createElement('span');
+        label.className = 'mono text-xs fw-600';
+        label.style.cssText = 'color:var(--text2);width:44px;';
+        label.textContent = r.abbr;
+        var pill = document.createElement('span');
+        pill.className = 'rank-pill ' + tier;
+        pill.textContent = '#' + r.rank + ' ' + r.value;
+        row.append(label, pill);
+        body.appendChild(row);
+      });
+      // Update title
+      var teamName = TEAM_NAMES[teamKey];
+      document.getElementById('rankings-title').textContent = (teamName || 'Rankings') + ' Rankings';
+    }
+
+    // Highlight selected team in standings
+    function highlightStandings(teamKey) {
+      document.querySelectorAll('[data-team-key]').forEach(function(el) {
+        if (el.dataset.teamKey === teamKey) {
+          el.style.background = 'rgba(59,130,246,0.08)';
+          el.style.border = '1px solid rgba(59,130,246,0.2)';
+        } else {
+          el.style.background = '';
+          el.style.border = '';
+        }
+      });
+    }
+
+    // Board tabs (H2H / Roto)
+    function switchBoard(tab) {
+      document.getElementById('board-h2h').classList.toggle('active', tab === 'h2h');
+      document.getElementById('board-roto').classList.toggle('active', tab === 'roto');
+      var btns = document.getElementById('board-tabs').querySelectorAll('.tab-btn');
+      btns[0].classList.toggle('active', tab === 'h2h');
+      btns[1].classList.toggle('active', tab === 'roto');
+    }
+
+    function switchHeatmap(tab) {
+      ['overview','bat','pit'].forEach(function(t) {
+        document.getElementById('hm-' + t).classList.toggle('active', t === tab);
+      });
+      var btns = document.getElementById('hm-tabs').querySelectorAll('.tab-btn');
+      btns[0].classList.toggle('active', tab === 'overview');
+      btns[1].classList.toggle('active', tab === 'bat');
+      btns[2].classList.toggle('active', tab === 'pit');
+    }
+
+    function selectTeam(k) {
+      sel.value = k;
+      var i = findMatchupByTeam(k);
+      if (i >= 0) renderMatchup(i);
+      updateRadar(k);
+      updateRankings(k);
+      highlightStandings(k);
+      updateTrend(k);
+    }
+
+    sel.addEventListener('change', function(){selectTeam(sel.value);});
+    document.querySelectorAll('.matchup-card').forEach(function(card){
+      card.addEventListener('click', function(){
+        var m = MATCHUPS[parseInt(card.dataset.idx)];
+        selectTeam(m.t1Key);
+        document.getElementById('matchup-detail').scrollIntoView({behavior:'smooth',block:'nearest'});
+      });
+    });
+    selectTeam(MY_KEY);
+  </script>
+</body>
+</html>
