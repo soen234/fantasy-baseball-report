@@ -2742,10 +2742,12 @@ function generateMarkdown(
 export async function runExpectationReport(
   options: ExpectationOptions,
 ): Promise<void> {
-  const count = options.count ?? 36;
   const myPick = options.myPick ?? 4;
   const numTeams = options.numTeams ?? 12;
   const rounds = options.rounds ?? 5;
+  // 요청된 라운드 수에서 필요한 최소 선수 수를 계산 (마지막 픽 + 여유분)
+  const minNeeded = rounds * numTeams + numTeams;
+  const count = options.count ?? Math.max(36, minNeeded);
 
   const [board, context] = await Promise.all([
     fetchYahooBoard(options.leagueKey, count),

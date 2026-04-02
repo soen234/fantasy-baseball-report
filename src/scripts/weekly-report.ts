@@ -496,7 +496,20 @@ async function generateWeeklyReport(week: number) {
       const vb = parseFloat(b.value) || 0;
       return meta.higherBetter ? vb - va : va - vb;
     });
-    entries.forEach((e, i) => (e.rank = i + 1));
+    // 동점자에게 평균 순위 부여 (HTML 리포트와 일관성 유지)
+    let i = 0;
+    while (i < entries.length) {
+      let j = i;
+      while (
+        j < entries.length &&
+        parseFloat(entries[j].value) === parseFloat(entries[i].value)
+      ) {
+        j++;
+      }
+      const avgRank = (i + 1 + j) / 2;
+      for (let k = i; k < j; k++) entries[k].rank = avgRank;
+      i = j;
+    }
     catRankings[statId] = entries;
   }
 
@@ -649,9 +662,13 @@ async function generateWeeklyReport(week: number) {
   // ─── 트랜잭션 ───
   ln("## 🔄 주요 트랜잭션");
   ln("");
-  // week 1 시작일 (3/25) ~ 현재까지의 트랜잭션만
-  const weekStart = new Date("2026-03-25").getTime() / 1000;
-  const weekTxns = transactions.filter((t) => t.timestamp >= weekStart);
+  // 해당 주차의 트랜잭션만 필터 (시즌 시작: 3/25, 주당 7일)
+  const SEASON_START = new Date("2026-03-25").getTime() / 1000;
+  const weekStart = SEASON_START + (week - 1) * 7 * 86400;
+  const weekEnd = SEASON_START + week * 7 * 86400;
+  const weekTxns = transactions.filter(
+    (t) => t.timestamp >= weekStart && t.timestamp < weekEnd,
+  );
   if (weekTxns.length === 0) {
     ln("_이번 주 트랜잭션 없음_");
   } else {

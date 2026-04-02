@@ -655,8 +655,13 @@ async function generateHtmlReport(week: number) {
       });
     }
   }
-  const weekStart = new Date("2026-03-25").getTime() / 1000;
-  const weekTxns = transactions.filter((t) => t.timestamp >= weekStart);
+  // 해당 주차의 트랜잭션만 필터 (시즌 시작: 3/25, 주당 7일)
+  const SEASON_START = new Date("2026-03-25").getTime() / 1000;
+  const weekStart = SEASON_START + (week - 1) * 7 * 86400;
+  const weekEnd = SEASON_START + week * 7 * 86400;
+  const weekTxns = transactions.filter(
+    (t) => t.timestamp >= weekStart && t.timestamp < weekEnd,
+  );
 
   // ─── Build HTML ────────────────────────────
 
@@ -1725,7 +1730,11 @@ async function generateHtmlReport(week: number) {
   const weekFiles = fs
     .readdirSync(docsDir)
     .filter((f) => f.match(/^week\d+\.html$/))
-    .sort();
+    .sort((a, b) => {
+      const na = parseInt(a.replace(/\D/g, ""));
+      const nb = parseInt(b.replace(/\D/g, ""));
+      return na - nb;
+    });
   const indexPageHtml = generateIndexPage(weekFiles, week);
   fs.writeFileSync(path.join(docsDir, "weeks.html"), indexPageHtml, "utf-8");
 
