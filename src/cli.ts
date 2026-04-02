@@ -187,10 +187,14 @@ program
   .description("주간 리포트 생성")
   .action(async (week) => {
     const { execFileSync } = await import("child_process");
-    execFileSync("npx", ["tsx", "src/scripts/weekly-report.ts", week || "1"], {
-      stdio: "inherit",
-      cwd: process.cwd(),
-    });
+    execFileSync(
+      "npx",
+      ["tsx", "src/scripts/weekly-report.ts", ...(week ? [week] : [])],
+      {
+        stdio: "inherit",
+        cwd: process.cwd(),
+      },
+    );
   });
 
 // ─── expectations ───────────────────────────

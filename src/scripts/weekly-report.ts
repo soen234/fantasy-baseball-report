@@ -775,8 +775,21 @@ async function generateWeeklyReport(week: number) {
   console.log(lines.join("\n"));
 }
 
+// 히스토리에서 마지막 주차 조회
+function getLatestWeek(): number {
+  const histPath = path.join(process.cwd(), "data", "history.json");
+  if (!fs.existsSync(histPath)) return 1;
+  try {
+    const data = JSON.parse(fs.readFileSync(histPath, "utf-8"));
+    const weeks: number[] = (data.weeks || []).map((w: any) => w.week);
+    return weeks.length > 0 ? Math.max(...weeks) : 1;
+  } catch {
+    return 1;
+  }
+}
+
 // CLI
-const week = parseInt(process.argv[2] || "1");
+const week = parseInt(process.argv[2] || String(getLatestWeek()));
 generateWeeklyReport(week).catch((err) => {
   console.error("❌", err.message);
   process.exit(1);
