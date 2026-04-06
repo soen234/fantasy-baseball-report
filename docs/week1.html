@@ -33,16 +33,37 @@
 
     @media (max-width: 768px) {
       .grid-2, .grid-3, .grid-sidebar, .row-2col, .hot-grid { grid-template-columns: 1fr !important; }
-      .container { padding: 0 10px; }
-      header .container { flex-direction: column; gap: 8px; align-items: flex-start; }
-      .mg { grid-template-columns: 1fr 56px 1fr; padding: 7px 8px; font-size: 12px; }
-      .cat-row { grid-template-columns: 40px 1fr auto 1fr 40px; font-size: 11px; padding: 4px 6px; }
-      .rank-pill { font-size: 10px; padding: 2px 6px; }
-      .ct-inner { min-width: 140px; padding: 8px 10px; }
+      .container { padding: 0 8px; }
+      header .container { flex-direction: column; gap: 6px; align-items: stretch; }
+      .card { border-radius: 8px; overflow: hidden; }
+      /* Standings: hide PCT + W-L-T on narrow */
+      .standings-pct, .standings-record { display: none !important; }
+      /* Hot zone */
+      .hot-grid .card { padding: 10px !important; }
+      /* Matchup */
+      .mg { grid-template-columns: 1fr 50px 1fr; padding: 6px 6px; font-size: 11px; }
+      .cat-row { grid-template-columns: 36px 1fr auto 1fr 36px; font-size: 10px; padding: 3px 4px; }
+      .rank-pill { font-size: 9px; padding: 1px 5px; }
+      /* Selects */
       select { min-width: 0 !important; width: 100%; font-size: 12px; }
-      .card { border-radius: 8px; }
-      .scroll-y { max-height: 300px; }
-      .txn-row { grid-template-columns: 40px 1fr 1fr; font-size: 11px; gap: 4px; }
+      /* Tabs */
+      .tab-bar { flex-wrap: wrap; }
+      .tab-btn { padding: 5px 10px; font-size: 11px; }
+      /* Tooltips */
+      .ct-inner { min-width: 120px; padding: 6px 8px; font-size: 11px; }
+      .ct-row { gap: 4px; }
+      .ct-name { font-size: 10px; }
+      .ct-val { font-size: 10px; }
+      /* Scroll areas */
+      .scroll-y { max-height: 280px; }
+      .txn-row { grid-template-columns: 36px 1fr 1fr; font-size: 10px; gap: 4px; }
+      /* Heatmap */
+      .heatmap { font-size: 9px; }
+      .hm-team { font-size: 10px; max-width: 100px; }
+      .hm-avg { min-width: 36px; font-size: 9px; }
+      .hm-cat { min-width: 28px; font-size: 9px; }
+      /* Chart containers: prevent overflow */
+      canvas { max-width: 100% !important; }
     }
 
     /* Matchup grid */
@@ -146,6 +167,180 @@
 
     <!-- ═══ TAB: Overview ═══ -->
     <div id="tab-overview" class="main-tab active">
+
+    <div style="margin-bottom:16px;">
+      <select id="overview-team-select" style="min-width:240px;"></select>
+    </div>
+
+    <div class="row-2col" style="margin-bottom:20px;">
+      <div class="card fade-in" style="padding:16px;">
+        <div id="board-tabs" class="tab-bar" style="margin-bottom:10px;">
+          <button class="tab-btn active" onclick="switchBoard('h2h')">H2H</button>
+          <button class="tab-btn" onclick="switchBoard('roto')">Roto</button>
+        </div>
+        <div id="board-h2h" class="tab-content active">
+          <div data-team-key="469.l.18247.t.4" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.4')">
+              <span class="mono fw-700 text-sm" style="color:var(--amber);width:18px;text-align:right;">1</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">UTU_무네타카 무라콴호</span>
+              <span class="mono text-xs standings-pct" style="color:var(--text2);">.700</span>
+              <span class="mono text-xs standings-record" style="color:var(--text3);width:52px;text-align:right;">15-5-5</span>
+            </div>
+          <div data-team-key="469.l.18247.t.10" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.10')">
+              <span class="mono fw-700 text-sm" style="color:var(--text2);width:18px;text-align:right;">2</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">🏆 ProfeSuh</span>
+              <span class="mono text-xs standings-pct" style="color:var(--text2);">.560</span>
+              <span class="mono text-xs standings-record" style="color:var(--text3);width:52px;text-align:right;">13-10-2</span>
+            </div>
+          <div data-team-key="469.l.18247.t.11" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.11')">
+              <span class="mono fw-700 text-sm" style="color:var(--text2);width:18px;text-align:right;">3</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">💥 JeongWoo's Shockers</span>
+              <span class="mono text-xs standings-pct" style="color:var(--text2);">.540</span>
+              <span class="mono text-xs standings-record" style="color:var(--text3);width:52px;text-align:right;">12-10-3</span>
+            </div>
+          <div data-team-key="469.l.18247.t.2" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.2')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">4</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">xXxAIxXx</span>
+              <span class="mono text-xs standings-pct" style="color:var(--text2);">.520</span>
+              <span class="mono text-xs standings-record" style="color:var(--text3);width:52px;text-align:right;">11-10-4</span>
+            </div>
+          <div data-team-key="469.l.18247.t.9" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.9')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">5</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">JJ yoogwanholt</span>
+              <span class="mono text-xs standings-pct" style="color:var(--text2);">.520</span>
+              <span class="mono text-xs standings-record" style="color:var(--text3);width:52px;text-align:right;">12-11-2</span>
+            </div>
+          <div data-team-key="469.l.18247.t.1" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.1')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">6</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">2026 MVP Mike Trout</span>
+              <span class="mono text-xs standings-pct" style="color:var(--text2);">.500</span>
+              <span class="mono text-xs standings-record" style="color:var(--text3);width:52px;text-align:right;">10-10-5</span>
+            </div>
+          <div data-team-key="469.l.18247.t.6" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.6')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">7</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">독후감 신속히 제출해주세요.</span>
+              <span class="mono text-xs standings-pct" style="color:var(--text2);">.500</span>
+              <span class="mono text-xs standings-record" style="color:var(--text3);width:52px;text-align:right;">10-10-5</span>
+            </div>
+          <div data-team-key="469.l.18247.t.3" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.3')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">8</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">TRUCK</span>
+              <span class="mono text-xs standings-pct" style="color:var(--text2);">.480</span>
+              <span class="mono text-xs standings-record" style="color:var(--text3);width:52px;text-align:right;">10-11-4</span>
+            </div>
+          <div data-team-key="469.l.18247.t.8" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.8')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">9</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">응노</span>
+              <span class="mono text-xs standings-pct" style="color:var(--text2);">.480</span>
+              <span class="mono text-xs standings-record" style="color:var(--text3);width:52px;text-align:right;">11-12-2</span>
+            </div>
+          <div data-team-key="469.l.18247.t.5" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.5')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">10</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">✌️ Yeonwoo's Double Play</span>
+              <span class="mono text-xs standings-pct" style="color:var(--text2);">.460</span>
+              <span class="mono text-xs standings-record" style="color:var(--text3);width:52px;text-align:right;">10-12-3</span>
+            </div>
+          <div data-team-key="469.l.18247.t.12" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.12')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">11</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">💥 JongHun's Busters</span>
+              <span class="mono text-xs standings-pct" style="color:var(--text2);">.440</span>
+              <span class="mono text-xs standings-record" style="color:var(--text3);width:52px;text-align:right;">10-13-2</span>
+            </div>
+          <div data-team-key="469.l.18247.t.7" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.7')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">12</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">커츠. 나</span>
+              <span class="mono text-xs standings-pct" style="color:var(--text2);">.300</span>
+              <span class="mono text-xs standings-record" style="color:var(--text3);width:52px;text-align:right;">5-15-5</span>
+            </div>
+        </div>
+        <div id="board-roto" class="tab-content">
+          <div data-team-key="469.l.18247.t.9" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.9')">
+              <span class="mono fw-700 text-sm" style="color:var(--amber);width:18px;text-align:right;">1</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">JJ yoogwanholt</span>
+              <span class="mono text-xs fw-700" style="color:var(--accent);">196</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">12-11-2</span>
+            </div>
+          <div data-team-key="469.l.18247.t.6" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.6')">
+              <span class="mono fw-700 text-sm" style="color:var(--text2);width:18px;text-align:right;">2</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">독후감 신속히 제출해주세요.</span>
+              <span class="mono text-xs fw-700" style="color:var(--accent);">196</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">10-10-5</span>
+            </div>
+          <div data-team-key="469.l.18247.t.10" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.10')">
+              <span class="mono fw-700 text-sm" style="color:var(--text2);width:18px;text-align:right;">3</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">🏆 ProfeSuh</span>
+              <span class="mono text-xs fw-700" style="color:var(--accent);">192</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">13-10-2</span>
+            </div>
+          <div data-team-key="469.l.18247.t.1" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.1')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">4</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">2026 MVP Mike Trout</span>
+              <span class="mono text-xs fw-700" style="color:var(--accent);">190.5</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">10-10-5</span>
+            </div>
+          <div data-team-key="469.l.18247.t.4" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.4')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">5</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">UTU_무네타카 무라콴호</span>
+              <span class="mono text-xs fw-700" style="color:var(--accent);">185</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">15-5-5</span>
+            </div>
+          <div data-team-key="469.l.18247.t.8" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.8')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">6</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">응노</span>
+              <span class="mono text-xs fw-700" style="color:var(--accent);">173.5</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">11-12-2</span>
+            </div>
+          <div data-team-key="469.l.18247.t.2" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.2')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">7</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">xXxAIxXx</span>
+              <span class="mono text-xs fw-700" style="color:var(--accent);">154</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">11-10-4</span>
+            </div>
+          <div data-team-key="469.l.18247.t.12" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.12')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">8</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">💥 JongHun's Busters</span>
+              <span class="mono text-xs fw-700" style="color:var(--accent);">146</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">10-13-2</span>
+            </div>
+          <div data-team-key="469.l.18247.t.3" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.3')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">9</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">TRUCK</span>
+              <span class="mono text-xs fw-700" style="color:var(--accent);">142</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">10-11-4</span>
+            </div>
+          <div data-team-key="469.l.18247.t.11" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.11')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">10</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">💥 JeongWoo's Shockers</span>
+              <span class="mono text-xs fw-700" style="color:var(--accent);">133</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">12-10-3</span>
+            </div>
+          <div data-team-key="469.l.18247.t.7" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.7')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">11</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">커츠. 나</span>
+              <span class="mono text-xs fw-700" style="color:var(--accent);">129.5</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">5-15-5</span>
+            </div>
+          <div data-team-key="469.l.18247.t.5" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.5')">
+              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">12</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">✌️ Yeonwoo's Double Play</span>
+              <span class="mono text-xs fw-700" style="color:var(--accent);">112.5</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">10-12-3</span>
+            </div>
+        </div>
+      </div>
+
+      <!-- Trend Charts stacked -->
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div class="card fade-in" style="padding:14px;">
+          <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">H2H Rank Trend</div>
+          <div style="position:relative;height:320px;"><canvas id="chartRank"></canvas></div>
+        </div>
+        <div class="card fade-in" style="padding:14px;">
+          <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">Roto Points Trend</div>
+          <div style="position:relative;height:320px;"><canvas id="chartRoto"></canvas></div>
+        </div>
+      </div>
+    </div>
+
 
     <!-- Hot Zone: Players + Team -->
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px;" class="hot-grid">
@@ -252,176 +447,6 @@
             </div>
             <div class="mono text-sm fw-700" style="color:var(--amber);">192.0<span class="text-xs" style="color:var(--text3);"> pts</span></div>
           </div>
-      </div>
-    </div>
-
-    <!-- Standings (H2H + Roto) -->
-    <div class="row-2col" style="margin-bottom:20px;">
-      <div class="card fade-in" style="padding:16px;">
-        <div id="board-tabs" class="tab-bar" style="margin-bottom:10px;">
-          <button class="tab-btn active" onclick="switchBoard('h2h')">H2H</button>
-          <button class="tab-btn" onclick="switchBoard('roto')">Roto</button>
-        </div>
-        <div id="board-h2h" class="tab-content active">
-          <div data-team-key="469.l.18247.t.4" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.4')">
-              <span class="mono fw-700 text-sm" style="color:var(--amber);width:18px;text-align:right;">1</span>
-              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">UTU_무네타카 무라콴호</span>
-              <span class="mono text-xs" style="color:var(--text2);">.700</span>
-              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">15-5-5</span>
-            </div>
-          <div data-team-key="469.l.18247.t.10" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.10')">
-              <span class="mono fw-700 text-sm" style="color:var(--text2);width:18px;text-align:right;">2</span>
-              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">🏆 ProfeSuh</span>
-              <span class="mono text-xs" style="color:var(--text2);">.560</span>
-              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">13-10-2</span>
-            </div>
-          <div data-team-key="469.l.18247.t.11" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.11')">
-              <span class="mono fw-700 text-sm" style="color:var(--text2);width:18px;text-align:right;">3</span>
-              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">💥 JeongWoo's Shockers</span>
-              <span class="mono text-xs" style="color:var(--text2);">.540</span>
-              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">12-10-3</span>
-            </div>
-          <div data-team-key="469.l.18247.t.2" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.2')">
-              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">4</span>
-              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">xXxAIxXx</span>
-              <span class="mono text-xs" style="color:var(--text2);">.520</span>
-              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">11-10-4</span>
-            </div>
-          <div data-team-key="469.l.18247.t.9" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.9')">
-              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">5</span>
-              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">JJ yoogwanholt</span>
-              <span class="mono text-xs" style="color:var(--text2);">.520</span>
-              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">12-11-2</span>
-            </div>
-          <div data-team-key="469.l.18247.t.1" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.1')">
-              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">6</span>
-              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">2026 MVP Mike Trout</span>
-              <span class="mono text-xs" style="color:var(--text2);">.500</span>
-              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">10-10-5</span>
-            </div>
-          <div data-team-key="469.l.18247.t.6" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.6')">
-              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">7</span>
-              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">독후감 신속히 제출해주세요.</span>
-              <span class="mono text-xs" style="color:var(--text2);">.500</span>
-              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">10-10-5</span>
-            </div>
-          <div data-team-key="469.l.18247.t.3" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.3')">
-              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">8</span>
-              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">TRUCK</span>
-              <span class="mono text-xs" style="color:var(--text2);">.480</span>
-              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">10-11-4</span>
-            </div>
-          <div data-team-key="469.l.18247.t.8" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.8')">
-              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">9</span>
-              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">응노</span>
-              <span class="mono text-xs" style="color:var(--text2);">.480</span>
-              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">11-12-2</span>
-            </div>
-          <div data-team-key="469.l.18247.t.5" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.5')">
-              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">10</span>
-              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">✌️ Yeonwoo's Double Play</span>
-              <span class="mono text-xs" style="color:var(--text2);">.460</span>
-              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">10-12-3</span>
-            </div>
-          <div data-team-key="469.l.18247.t.12" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.12')">
-              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">11</span>
-              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">💥 JongHun's Busters</span>
-              <span class="mono text-xs" style="color:var(--text2);">.440</span>
-              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">10-13-2</span>
-            </div>
-          <div data-team-key="469.l.18247.t.7" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.7')">
-              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">12</span>
-              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">커츠. 나</span>
-              <span class="mono text-xs" style="color:var(--text2);">.300</span>
-              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">5-15-5</span>
-            </div>
-        </div>
-        <div id="board-roto" class="tab-content">
-          <div data-team-key="469.l.18247.t.9" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.9')">
-              <span class="mono fw-700 text-sm" style="color:var(--amber);width:18px;text-align:right;">1</span>
-              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">JJ yoogwanholt</span>
-              <span class="mono text-xs fw-700" style="color:var(--accent);">196</span>
-              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">12-11-2</span>
-            </div>
-          <div data-team-key="469.l.18247.t.6" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.6')">
-              <span class="mono fw-700 text-sm" style="color:var(--text2);width:18px;text-align:right;">2</span>
-              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">독후감 신속히 제출해주세요.</span>
-              <span class="mono text-xs fw-700" style="color:var(--accent);">196</span>
-              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">10-10-5</span>
-            </div>
-          <div data-team-key="469.l.18247.t.10" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.10')">
-              <span class="mono fw-700 text-sm" style="color:var(--text2);width:18px;text-align:right;">3</span>
-              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">🏆 ProfeSuh</span>
-              <span class="mono text-xs fw-700" style="color:var(--accent);">192</span>
-              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">13-10-2</span>
-            </div>
-          <div data-team-key="469.l.18247.t.1" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.1')">
-              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">4</span>
-              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">2026 MVP Mike Trout</span>
-              <span class="mono text-xs fw-700" style="color:var(--accent);">190.5</span>
-              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">10-10-5</span>
-            </div>
-          <div data-team-key="469.l.18247.t.4" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.4')">
-              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">5</span>
-              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">UTU_무네타카 무라콴호</span>
-              <span class="mono text-xs fw-700" style="color:var(--accent);">185</span>
-              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">15-5-5</span>
-            </div>
-          <div data-team-key="469.l.18247.t.8" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.8')">
-              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">6</span>
-              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">응노</span>
-              <span class="mono text-xs fw-700" style="color:var(--accent);">173.5</span>
-              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">11-12-2</span>
-            </div>
-          <div data-team-key="469.l.18247.t.2" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.2')">
-              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">7</span>
-              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">xXxAIxXx</span>
-              <span class="mono text-xs fw-700" style="color:var(--accent);">154</span>
-              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">11-10-4</span>
-            </div>
-          <div data-team-key="469.l.18247.t.12" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.12')">
-              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">8</span>
-              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">💥 JongHun's Busters</span>
-              <span class="mono text-xs fw-700" style="color:var(--accent);">146</span>
-              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">10-13-2</span>
-            </div>
-          <div data-team-key="469.l.18247.t.3" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.3')">
-              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">9</span>
-              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">TRUCK</span>
-              <span class="mono text-xs fw-700" style="color:var(--accent);">142</span>
-              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">10-11-4</span>
-            </div>
-          <div data-team-key="469.l.18247.t.11" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.11')">
-              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">10</span>
-              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">💥 JeongWoo's Shockers</span>
-              <span class="mono text-xs fw-700" style="color:var(--accent);">133</span>
-              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">12-10-3</span>
-            </div>
-          <div data-team-key="469.l.18247.t.7" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.7')">
-              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">11</span>
-              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">커츠. 나</span>
-              <span class="mono text-xs fw-700" style="color:var(--accent);">129.5</span>
-              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">5-15-5</span>
-            </div>
-          <div data-team-key="469.l.18247.t.5" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.5')">
-              <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">12</span>
-              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">✌️ Yeonwoo's Double Play</span>
-              <span class="mono text-xs fw-700" style="color:var(--accent);">112.5</span>
-              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">10-12-3</span>
-            </div>
-        </div>
-      </div>
-
-      <!-- Trend Charts stacked -->
-      <div style="display:flex;flex-direction:column;gap:16px;">
-        <div class="card fade-in" style="padding:14px;">
-          <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">H2H Rank Trend</div>
-          <div style="position:relative;height:320px;"><canvas id="chartRank"></canvas></div>
-        </div>
-        <div class="card fade-in" style="padding:14px;">
-          <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">Roto Points Trend</div>
-          <div style="position:relative;height:320px;"><canvas id="chartRoto"></canvas></div>
-        </div>
       </div>
     </div>
 
@@ -1023,9 +1048,11 @@
     var TEAM_NAMES = {"469.l.18247.t.4":"UTU_무네타카 무라콴호","469.l.18247.t.10":"🏆 ProfeSuh","469.l.18247.t.11":"💥 JeongWoo's Shockers","469.l.18247.t.2":"xXxAIxXx","469.l.18247.t.9":"JJ yoogwanholt","469.l.18247.t.1":"2026 MVP Mike Trout","469.l.18247.t.6":"독후감 신속히 제출해주세요.","469.l.18247.t.3":"TRUCK","469.l.18247.t.8":"응노","469.l.18247.t.5":"✌️ Yeonwoo's Double Play","469.l.18247.t.12":"💥 JongHun's Busters","469.l.18247.t.7":"커츠. 나"};
     var sel = document.getElementById('matchup-select');
     var selAnalysis = document.getElementById('analysis-team-select');
+    var selOverview = document.getElementById('overview-team-select');
+    var allSelects = [sel, selAnalysis, selOverview];
     var STORAGE_KEY = 'fb-selected-team';
 
-    // Populate both selects
+    // Populate all selects
     function populateSelect(selectEl) {
       TEAMS.forEach(function(t) {
         var o = document.createElement('option');
@@ -1034,8 +1061,7 @@
         selectEl.appendChild(o);
       });
     }
-    populateSelect(sel);
-    populateSelect(selAnalysis);
+    allSelects.forEach(populateSelect);
 
     // Radar charts (stored for dynamic update)
     // Radar tooltip
@@ -1138,7 +1164,7 @@
         y: { grid: { color: 'rgba(148,163,184,0.08)' }, ticks: { color: '#64748b', font: { size: 10, family: 'JetBrains Mono' }, stepSize: 1 } }
       },
       plugins: {
-        legend: { display: true, position: 'bottom', labels: { color: '#94a3b8', font: { size: 9, family: 'DM Sans' }, boxWidth: 10, padding: 6, usePointStyle: true, pointStyle: 'circle' } },
+        legend: { display: window.innerWidth > 768, position: 'bottom', labels: { color: '#94a3b8', font: { size: 9, family: 'DM Sans' }, boxWidth: 8, padding: 4, usePointStyle: true, pointStyle: 'circle' } },
         tooltip: { enabled: false, external: externalTooltip }
       },
       interaction: { mode: 'index', intersect: false },
@@ -1424,8 +1450,7 @@
     }
 
     function selectTeam(k) {
-      sel.value = k;
-      selAnalysis.value = k;
+      allSelects.forEach(function(s) { s.value = k; });
       var i = findMatchupByTeam(k);
       if (i >= 0) renderMatchup(i);
       updateRadar(k);
@@ -1435,8 +1460,9 @@
       try { localStorage.setItem(STORAGE_KEY, k); } catch(e) {}
     }
 
-    sel.addEventListener('change', function(){selectTeam(sel.value);});
-    selAnalysis.addEventListener('change', function(){selectTeam(selAnalysis.value);});
+    allSelects.forEach(function(s) {
+      s.addEventListener('change', function() { selectTeam(s.value); });
+    });
     document.querySelectorAll('.matchup-card').forEach(function(card){
       card.addEventListener('click', function(){
         var m = MATCHUPS[parseInt(card.dataset.idx)];
