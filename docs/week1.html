@@ -36,10 +36,13 @@
     /* Row layouts */
     .row-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 
+    /* Header */
+    .header-grid { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+
     @media (max-width: 768px) {
       .grid-2, .grid-3, .grid-sidebar, .row-2col, .hot-grid { grid-template-columns: 1fr !important; }
       .container { padding: 0 8px; }
-      header .container { flex-direction: column; gap: 6px; align-items: stretch; }
+      .header-grid { flex-direction: column; gap: 8px; align-items: stretch; }
       .card { border-radius: 8px; overflow: hidden; }
       /* Standings: single-line compact on mobile */
       .standings-row { gap: 6px !important; padding: 5px 4px !important; }
@@ -621,7 +624,7 @@
                 <td class="hm-cat">0.367</td>
                 <td class="hm-cat">0.658</td>
                 <td class="hm-cat">0.496</td>
-                <td class="hm-cat" style="color:var(--red);">+0.214</td>
+                <td class="hm-cat" style="color:var(--green);">+0.214</td>
               </tr><tr>
                 <td class="hm-team">Mark Vientos</td>
                 <td class="hm-cat">89.6</td>
@@ -632,7 +635,7 @@
                 <td class="hm-cat">0.357</td>
                 <td class="hm-cat">0.574</td>
                 <td class="hm-cat">0.428</td>
-                <td class="hm-cat" style="color:var(--red);">+0.128</td>
+                <td class="hm-cat" style="color:var(--green);">+0.128</td>
               </tr><tr>
                 <td class="hm-team">Matt Olson</td>
                 <td class="hm-cat">92.5</td>
@@ -643,7 +646,7 @@
                 <td class="hm-cat">0.266</td>
                 <td class="hm-cat">0.641</td>
                 <td class="hm-cat">0.405</td>
-                <td class="hm-cat" style="color:var(--red);">+0.024</td>
+                <td class="hm-cat" style="color:var(--green);">+0.024</td>
               </tr><tr>
                 <td class="hm-team">Shohei Ohtani</td>
                 <td class="hm-cat">95.0</td>
@@ -654,7 +657,7 @@
                 <td class="hm-cat">0.254</td>
                 <td class="hm-cat">0.477</td>
                 <td class="hm-cat">0.404</td>
-                <td class="hm-cat" style="color:var(--green);">-0.059</td>
+                <td class="hm-cat" style="color:var(--red);">-0.059</td>
               </tr><tr>
                 <td class="hm-team">Brendan Donovan</td>
                 <td class="hm-cat">89.8</td>
@@ -665,7 +668,7 @@
                 <td class="hm-cat">0.279</td>
                 <td class="hm-cat">0.433</td>
                 <td class="hm-cat">0.378</td>
-                <td class="hm-cat" style="color:var(--red);">+0.120</td>
+                <td class="hm-cat" style="color:var(--green);">+0.120</td>
               </tr><tr>
                 <td class="hm-team">Kazuma Okamoto</td>
                 <td class="hm-cat">93.2</td>
@@ -687,7 +690,7 @@
                 <td class="hm-cat">0.284</td>
                 <td class="hm-cat">0.455</td>
                 <td class="hm-cat">0.342</td>
-                <td class="hm-cat" style="color:var(--red);">+0.100</td>
+                <td class="hm-cat" style="color:var(--green);">+0.100</td>
               </tr><tr>
                 <td class="hm-team">Juan Soto</td>
                 <td class="hm-cat">87.3</td>
@@ -698,7 +701,7 @@
                 <td class="hm-cat">0.261</td>
                 <td class="hm-cat">0.430</td>
                 <td class="hm-cat">0.321</td>
-                <td class="hm-cat" style="color:var(--red);">+0.081</td>
+                <td class="hm-cat" style="color:var(--green);">+0.081</td>
               </tr><tr>
                 <td class="hm-team">Mauricio Dubón</td>
                 <td class="hm-cat">89.3</td>
@@ -709,7 +712,7 @@
                 <td class="hm-cat">0.243</td>
                 <td class="hm-cat">0.386</td>
                 <td class="hm-cat">0.298</td>
-                <td class="hm-cat" style="color:var(--red);">+0.101</td>
+                <td class="hm-cat" style="color:var(--green);">+0.101</td>
               </tr><tr>
                 <td class="hm-team">Geraldo Perdomo</td>
                 <td class="hm-cat">88.5</td>
@@ -731,7 +734,7 @@
                 <td class="hm-cat">0.127</td>
                 <td class="hm-cat">0.224</td>
                 <td class="hm-cat">0.210</td>
-                <td class="hm-cat" style="color:var(--green);">-0.027</td>
+                <td class="hm-cat" style="color:var(--red);">-0.027</td>
               </tr>
           </tbody>
         </table>
