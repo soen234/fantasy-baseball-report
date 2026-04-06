@@ -1493,10 +1493,11 @@ async function generateHtmlReport(week: number) {
             ${myBatterStatcast
               .sort((a, b) => b.xwOBA - a.xwOBA)
               .map((p) => {
+                // wobaDiff = wOBA - xwOBA: negative = unlucky (green, buy), positive = lucky (red, sell)
                 const luckColor =
-                  p.wobaDiff > 0.02
+                  p.wobaDiff < -0.02
                     ? "var(--green)"
-                    : p.wobaDiff < -0.02
+                    : p.wobaDiff > 0.02
                       ? "var(--red)"
                       : "var(--text3)";
                 return `<tr>
@@ -1709,10 +1710,10 @@ async function generateHtmlReport(week: number) {
             .join("")}
         </div>
         <div>
-          <div class="text-xs fw-600" style="color:var(--red);margin-bottom:6px;">Most Unlucky (Buy Low)</div>
+          <div class="text-xs fw-600" style="color:var(--green);margin-bottom:6px;">Most Unlucky (Buy Low)</div>
           ${[...savantBatters]
             .filter((p) => p.attempts >= 20)
-            .sort((a, b) => b.wobaDiff - a.wobaDiff)
+            .sort((a, b) => a.wobaDiff - b.wobaDiff)
             .slice(0, 10)
             .map((p, i) => {
               const isMine = myRosterNames.some(
@@ -1721,7 +1722,7 @@ async function generateHtmlReport(week: number) {
               return `<div style="display:flex;align-items:center;gap:6px;padding:3px 0;">
               <span class="mono text-xs" style="color:var(--text3);width:16px;">${i + 1}</span>
               <span class="text-xs truncate ${isMine ? "fw-700" : "fw-600"}" style="flex:1;color:${isMine ? "var(--accent)" : "var(--text2)"};">${escapeHtml(p.name)}</span>
-              <span class="mono text-xs fw-600" style="color:var(--green);">+${p.wobaDiff.toFixed(3)}</span>
+              <span class="mono text-xs fw-600" style="color:var(--green);">${p.wobaDiff.toFixed(3)}</span>
             </div>`;
             })
             .join("")}
