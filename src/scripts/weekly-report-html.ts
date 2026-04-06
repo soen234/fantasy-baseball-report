@@ -1419,93 +1419,91 @@ async function generateHtmlReport(week: number) {
     <!-- ═══ TAB: Activity ═══ -->
     <div id="tab-activity" class="main-tab">
 
-    <!-- Team Activity Summary -->
-    <div class="card fade-in" style="padding:16px;margin-bottom:16px;">
-      <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">Team Activity</div>
-      ${(() => {
-        // Count adds/drops per team
-        const teamActivity: Record<
-          string,
-          { adds: number; drops: number; total: number }
-        > = {};
-        for (const txn of weekTxns) {
+    ${(() => {
+      // Helper: build activity summary + transaction log for a set of txns
+      function buildActivityBlock(txnList: typeof weekTxns, idPrefix: string) {
+        // Count adds per team
+        const teamAdds: Record<string, number> = {};
+        for (const txn of txnList) {
           for (const a of txn.adds) {
-            const t = a.team;
-            if (!teamActivity[t])
-              teamActivity[t] = { adds: 0, drops: 0, total: 0 };
-            teamActivity[t].adds++;
-            teamActivity[t].total++;
-          }
-          for (const d of txn.drops) {
-            const t = d.team;
-            if (!teamActivity[t])
-              teamActivity[t] = { adds: 0, drops: 0, total: 0 };
-            teamActivity[t].drops++;
-            teamActivity[t].total++;
+            teamAdds[a.team] = (teamAdds[a.team] || 0) + 1;
           }
         }
-        const sorted = Object.entries(teamActivity).sort(
-          (a, b) => b[1].total - a[1].total,
-        );
-        const maxTotal = sorted[0]?.[1].total || 1;
-        return sorted
-          .map(([name, stat]) => {
-            const pct = ((stat.total / maxTotal) * 100).toFixed(0);
-            return `<div style="display:flex;align-items:center;gap:8px;padding:4px 0;">
-            <span class="text-xs fw-600 truncate" style="color:var(--text2);width:140px;">${escapeHtml(name)}</span>
-            <div style="flex:1;display:flex;height:16px;border-radius:3px;overflow:hidden;background:var(--surface2);">
-              <div style="width:${((stat.adds / maxTotal) * 100).toFixed(0)}%;background:var(--green);opacity:0.6;"></div>
-              <div style="width:${((stat.drops / maxTotal) * 100).toFixed(0)}%;background:var(--red);opacity:0.6;"></div>
-            </div>
-            <span class="mono text-xs" style="width:60px;text-align:right;"><span class="w">${stat.adds}</span><span style="color:var(--text3);"> / </span><span class="l">${stat.drops}</span></span>
-          </div>`;
-          })
-          .join("\n      ");
-      })()}
-    </div>
+        const sorted = Object.entries(teamAdds).sort((a, b) => b[1] - a[1]);
+        const maxAdds = sorted[0]?.[1] || 1;
 
-    <!-- Transaction Log -->
-    <div class="card fade-in" style="padding:16px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-        <div class="text-xs fw-600" style="color:var(--text3);text-transform:uppercase;letter-spacing:1px;">Transaction Log</div>
-        <span class="mono text-xs" style="color:var(--text3);">${weekTxns.length}건</span>
-      </div>
-      ${
-        weekTxns.length === 0
-          ? `<div class="text-sm" style="color:var(--text3);">None</div>`
-          : `<div class="scroll-y" style="max-height:600px;">
-          ${weekTxns
-            .map((txn) => {
-              const date = new Date(txn.timestamp * 1000).toLocaleDateString(
-                "ko-KR",
-                { month: "numeric", day: "numeric" },
-              );
-              const team = txn.adds[0]?.team || txn.drops[0]?.team || "?";
-              const addStr =
-                txn.adds
-                  .map(
-                    (a) =>
-                      `<span class="w">${escapeHtml(a.player)}</span> <span style="color:var(--text3);">${a.mlb} ${a.pos}</span>`,
-                  )
-                  .join(", ") || "";
-              const dropStr =
-                txn.drops
-                  .map(
-                    (d) =>
-                      `<span class="l">${escapeHtml(d.player)}</span> <span style="color:var(--text3);">${d.mlb} ${d.pos}</span>`,
-                  )
-                  .join(", ") || "";
-              return `<div style="display:grid;grid-template-columns:44px 140px 1fr 1fr;gap:8px;padding:7px 10px;font-size:12px;border-bottom:1px solid var(--border);align-items:center;">
-              <span style="color:var(--text3);">${date}</span>
-              <span class="fw-600 truncate" style="color:var(--text2);">${escapeHtml(team)}</span>
-              <div>${addStr ? "+" + addStr : ""}</div>
-              <div>${dropStr ? "-" + dropStr : ""}</div>
-            </div>`;
-            })
-            .join("\n          ")}
-        </div>`
+        const summaryHtml = sorted
+          .map(
+            ([name, adds]) =>
+              `<div style="display:flex;align-items:center;gap:8px;padding:3px 0;">
+            <span class="text-xs fw-600 truncate" style="color:var(--text2);width:140px;">${escapeHtml(name)}</span>
+            <div style="flex:1;height:14px;border-radius:3px;overflow:hidden;background:var(--surface2);">
+              <div style="width:${((adds / maxAdds) * 100).toFixed(0)}%;height:100%;background:var(--accent);opacity:0.5;"></div>
+            </div>
+            <span class="mono text-xs fw-600" style="color:var(--text);width:24px;text-align:right;">${adds}</span>
+          </div>`,
+          )
+          .join("\n");
+
+        const logHtml =
+          txnList.length === 0
+            ? `<div class="text-sm" style="color:var(--text3);">None</div>`
+            : `<div class="scroll-y" style="max-height:500px;">${txnList
+                .map((txn) => {
+                  const date = new Date(
+                    txn.timestamp * 1000,
+                  ).toLocaleDateString("ko-KR", {
+                    month: "numeric",
+                    day: "numeric",
+                  });
+                  const team = txn.adds[0]?.team || txn.drops[0]?.team || "?";
+                  const addStr =
+                    txn.adds
+                      .map(
+                        (a) =>
+                          `<span class="w">${escapeHtml(a.player)}</span> <span style="color:var(--text3);">${a.mlb}</span>`,
+                      )
+                      .join(", ") || "";
+                  const dropStr =
+                    txn.drops
+                      .map(
+                        (d) =>
+                          `<span class="l">${escapeHtml(d.player)}</span> <span style="color:var(--text3);">${d.mlb}</span>`,
+                      )
+                      .join(", ") || "";
+                  return `<div style="display:grid;grid-template-columns:40px 120px 1fr 1fr;gap:6px;padding:6px 8px;font-size:11px;border-bottom:1px solid var(--border);align-items:center;">
+                <span style="color:var(--text3);">${date}</span>
+                <span class="fw-600 truncate" style="color:var(--text2);">${escapeHtml(team)}</span>
+                <div>${addStr ? "+" + addStr : ""}</div>
+                <div>${dropStr ? "-" + dropStr : ""}</div>
+              </div>`;
+                })
+                .join("\n")}</div>`;
+
+        return `
+        <div class="card fade-in" style="padding:16px;margin-bottom:16px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <div class="text-xs fw-600" style="color:var(--text3);text-transform:uppercase;letter-spacing:1px;">Adds by Team</div>
+            <span class="mono text-xs" style="color:var(--text3);">${txnList.length} moves</span>
+          </div>
+          ${summaryHtml}
+        </div>
+        <div class="card fade-in" style="padding:16px;">
+          <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">Transaction Log</div>
+          ${logHtml}
+        </div>`;
       }
+
+      return `
+    <div style="margin-bottom:12px;">
+      <div id="activity-tabs" class="tab-bar" style="display:inline-flex;">
+        <button class="tab-btn active" onclick="switchActivity('weekly')">Weekly</button>
+        <button class="tab-btn" onclick="switchActivity('season')">Season</button>
+      </div>
     </div>
+    <div id="activity-weekly" class="tab-content active">${buildActivityBlock(weekTxns, "w")}</div>
+    <div id="activity-season" class="tab-content">${buildActivityBlock(transactions, "s")}</div>`;
+    })()}
 
     </div><!-- /tab-activity -->
 
@@ -1895,6 +1893,14 @@ async function generateHtmlReport(week: number) {
 
     // Main tab switching
     var mainTabNames = ['overview','matchup','analysis','activity'];
+    function switchActivity(scope) {
+      document.getElementById('activity-weekly').classList.toggle('active', scope === 'weekly');
+      document.getElementById('activity-season').classList.toggle('active', scope === 'season');
+      var btns = document.getElementById('activity-tabs').querySelectorAll('.tab-btn');
+      btns[0].classList.toggle('active', scope === 'weekly');
+      btns[1].classList.toggle('active', scope === 'season');
+    }
+
     function switchMainTab(tab) {
       mainTabNames.forEach(function(t) {
         var el = document.getElementById('tab-' + t);
