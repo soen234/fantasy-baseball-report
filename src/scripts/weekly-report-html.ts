@@ -957,12 +957,15 @@ async function generateHtmlReport(week: number) {
     .row-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 
     /* Header */
-    .header-grid { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .header-grid { display: flex; flex-direction: column; gap: 10px; }
+    .header-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .header-top .tab-bar { padding: 3px; }
+    .header-top .tab-btn { padding: 5px 12px; font-size: 12px; }
 
     @media (max-width: 768px) {
       .grid-2, .grid-3, .grid-sidebar, .row-2col, .hot-grid { grid-template-columns: 1fr !important; }
       .container { padding: 0 8px; }
-      .header-grid { flex-direction: column; gap: 8px; align-items: stretch; }
+      .header-top { flex-wrap: wrap; gap: 6px; }
       .card { border-radius: 8px; overflow: hidden; }
       /* Standings: single-line compact on mobile */
       .standings-row { gap: 6px !important; padding: 5px 4px !important; }
@@ -1072,42 +1075,35 @@ async function generateHtmlReport(week: number) {
   <!-- Header -->
   <header style="border-bottom:1px solid var(--border);padding:10px 0;">
     <div class="container header-grid">
-      <div style="display:flex;align-items:center;gap:10px;">
-        <span class="mono fw-700" style="font-size:18px;color:var(--accent);">FB</span>
-        <div style="display:flex;align-items:center;gap:4px;">
+      <div class="header-top">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="mono fw-700" style="font-size:18px;color:var(--accent);">FB</span>
+          <div style="display:flex;align-items:center;gap:4px;">
           ${(() => {
             const maxWeek = Math.max(week, ...history.weeks.map((w) => w.week));
-            const prevDisabled = week <= 1;
-            const nextDisabled = week >= maxWeek;
-            return `${!prevDisabled ? `<a href="week${week - 1}.html" style="color:var(--text3);text-decoration:none;padding:4px 6px;border-radius:4px;font-size:12px;" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background=''">&lt;</a>` : `<span style="padding:4px 6px;color:var(--surface2);font-size:12px;">&lt;</span>`}
+            return `${week > 1 ? `<a href="week${week - 1}.html" style="color:var(--text3);text-decoration:none;padding:4px 6px;border-radius:4px;font-size:12px;" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background=''">&lt;</a>` : `<span style="padding:4px 6px;color:var(--surface2);font-size:12px;">&lt;</span>`}
           <select id="week-select" onchange="location.href='week'+this.value+'.html'" style="min-width:80px;font-size:12px;padding:4px 24px 4px 8px;">
             ${Array.from({ length: maxWeek }, (_, i) => i + 1)
               .map(
                 (w) =>
                   `<option value="${w}" ${w === week ? "selected" : ""}>Week ${w}</option>`,
               )
-              .join("")}`;
-          })()}
+              .join("")}
           </select>
-          ${(() => {
-            const maxW = Math.max(week, ...history.weeks.map((w) => w.week));
-            return week < maxW
-              ? `<a href="week${week + 1}.html" style="color:var(--text3);text-decoration:none;padding:4px 6px;border-radius:4px;font-size:12px;" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background=''">&gt;</a>`
-              : `<span style="padding:4px 6px;color:var(--surface2);font-size:12px;">&gt;</span>`;
+          ${week < maxWeek ? `<a href="week${week + 1}.html" style="color:var(--text3);text-decoration:none;padding:4px 6px;border-radius:4px;font-size:12px;" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background=''">&gt;</a>` : `<span style="padding:4px 6px;color:var(--surface2);font-size:12px;">&gt;</span>`}`;
           })()}
-        </div>
-      </div>
-      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-        <div id="main-tabs" class="tab-bar">
-          <button class="tab-btn active" onclick="switchMainTab('overview')">Overview</button>
-          <button class="tab-btn" onclick="switchMainTab('matchup')">Matchup</button>
-          <button class="tab-btn" onclick="switchMainTab('analysis')">Analysis</button>
-          <button class="tab-btn" onclick="switchMainTab('activity')">Activity</button>
+          </div>
         </div>
         <div id="scope-toggle" class="tab-bar">
           <button class="tab-btn active" onclick="switchGlobalScope('weekly')">Weekly</button>
           <button class="tab-btn" onclick="switchGlobalScope('season')">Season</button>
         </div>
+      </div>
+      <div id="main-tabs" class="tab-bar" style="align-self:stretch;">
+        <button class="tab-btn active" onclick="switchMainTab('overview')" style="flex:1;text-align:center;">Overview</button>
+        <button class="tab-btn" onclick="switchMainTab('matchup')" style="flex:1;text-align:center;">Matchup</button>
+        <button class="tab-btn" onclick="switchMainTab('analysis')" style="flex:1;text-align:center;">Analysis</button>
+        <button class="tab-btn" onclick="switchMainTab('activity')" style="flex:1;text-align:center;">Activity</button>
       </div>
     </div>
   </header>
@@ -1600,7 +1596,7 @@ async function generateHtmlReport(week: number) {
     ${
       savantBatters.length > 0
         ? (() => {
-            // Helper: render a leaderboard row — team highlight done by JS
+            // Helper: render a leaderboard row — FA tagged, team highlight done by JS
             function scRow(
               p: { name: string },
               i: number,
@@ -1627,7 +1623,7 @@ async function generateHtmlReport(week: number) {
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
         <div class="text-xs fw-600" style="color:var(--text3);text-transform:uppercase;letter-spacing:1px;">Statcast Leaders</div>
         <span class="text-xs" style="color:var(--amber);">■</span><span class="text-xs" style="color:var(--text3);">= FA</span>
-        <span class="text-xs" style="color:var(--accent);">■</span><span class="text-xs" style="color:var(--text3);" id="sc-legend-team">= Selected Team</span>
+        <span class="text-xs" style="color:var(--accent);">■</span><span class="text-xs" style="color:var(--text3);">= My Team</span>
       </div>
       <div class="row-2col" style="gap:16px;">
         <div>
@@ -2163,12 +2159,9 @@ async function generateHtmlReport(week: number) {
       var roster = ROSTER_BY_TEAM[teamKey] || [];
       var norm = function(n) { return n.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s*\(.*\)/,'').toLowerCase().trim(); };
       var rosterNorm = roster.map(norm);
-      var legendEl = document.getElementById('sc-legend-team');
-      if (legendEl) legendEl.textContent = '= ' + (TEAM_NAMES[teamKey] || 'Selected');
       document.querySelectorAll('.sc-row').forEach(function(row) {
         var pName = row.dataset.playerName || '';
         var isTeamPlayer = rosterNorm.some(function(r) { return r === norm(pName); });
-        var isFa = row.dataset.isFa === '1';
         var nameEl = row.querySelector('.sc-name');
         if (isTeamPlayer) {
           row.style.background = 'rgba(59,130,246,0.1)';
@@ -2177,7 +2170,11 @@ async function generateHtmlReport(week: number) {
         } else {
           row.style.background = '';
           row.style.borderRadius = '';
-          if (nameEl) nameEl.style.color = isFa ? 'var(--amber)' : 'var(--text2)';
+          // Restore original color (FA=amber, rostered=text2)
+          if (nameEl) {
+            var isFa = nameEl.textContent.includes('FA');
+            nameEl.style.color = isFa ? 'var(--amber)' : '';
+          }
         }
       });
     }
