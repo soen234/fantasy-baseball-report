@@ -10,7 +10,7 @@
           "wins": 15,
           "losses": 5,
           "ties": 5,
-          "pct": ".700",
+          "pct": "0.700",
           "rotoPoints": 185
         },
         {
@@ -20,7 +20,7 @@
           "wins": 13,
           "losses": 10,
           "ties": 2,
-          "pct": ".560",
+          "pct": "0.560",
           "rotoPoints": 192
         },
         {
@@ -30,7 +30,7 @@
           "wins": 12,
           "losses": 10,
           "ties": 3,
-          "pct": ".540",
+          "pct": "0.540",
           "rotoPoints": 133
         },
         {
@@ -40,7 +40,7 @@
           "wins": 11,
           "losses": 10,
           "ties": 4,
-          "pct": ".520",
+          "pct": "0.520",
           "rotoPoints": 154
         },
         {
@@ -50,7 +50,7 @@
           "wins": 12,
           "losses": 11,
           "ties": 2,
-          "pct": ".520",
+          "pct": "0.520",
           "rotoPoints": 196
         },
         {
@@ -60,7 +60,7 @@
           "wins": 10,
           "losses": 10,
           "ties": 5,
-          "pct": ".500",
+          "pct": "0.500",
           "rotoPoints": 190.5
         },
         {
@@ -70,7 +70,7 @@
           "wins": 10,
           "losses": 10,
           "ties": 5,
-          "pct": ".500",
+          "pct": "0.500",
           "rotoPoints": 196
         },
         {
@@ -80,7 +80,7 @@
           "wins": 10,
           "losses": 11,
           "ties": 4,
-          "pct": ".480",
+          "pct": "0.480",
           "rotoPoints": 142
         },
         {
@@ -90,7 +90,7 @@
           "wins": 11,
           "losses": 12,
           "ties": 2,
-          "pct": ".480",
+          "pct": "0.480",
           "rotoPoints": 173.5
         },
         {
@@ -100,7 +100,7 @@
           "wins": 10,
           "losses": 12,
           "ties": 3,
-          "pct": ".460",
+          "pct": "0.460",
           "rotoPoints": 112.5
         },
         {
@@ -110,7 +110,7 @@
           "wins": 10,
           "losses": 13,
           "ties": 2,
-          "pct": ".440",
+          "pct": "0.440",
           "rotoPoints": 146
         },
         {
@@ -120,7 +120,7 @@
           "wins": 5,
           "losses": 15,
           "ties": 5,
-          "pct": ".300",
+          "pct": "0.300",
           "rotoPoints": 129.5
         }
       ]
@@ -132,121 +132,121 @@
           "key": "469.l.18247.t.4",
           "name": "UTU_무네타카 무라콴호",
           "rank": 1,
-          "wins": 15,
-          "losses": 5,
-          "ties": 5,
-          "pct": ".700",
+          "wins": 30,
+          "losses": 11,
+          "ties": 9,
+          "pct": "0.690",
           "rotoPoints": 192.5
         },
         {
-          "key": "469.l.18247.t.10",
-          "name": "🏆 ProfeSuh",
+          "key": "469.l.18247.t.12",
+          "name": "💥 JongHun's Busters",
           "rank": 2,
-          "wins": 13,
-          "losses": 10,
-          "ties": 2,
-          "pct": ".560",
-          "rotoPoints": 155.5
-        },
-        {
-          "key": "469.l.18247.t.11",
-          "name": "💥 JeongWoo's Shockers",
-          "rank": 3,
-          "wins": 12,
-          "losses": 10,
-          "ties": 3,
-          "pct": ".540",
-          "rotoPoints": 112
-        },
-        {
-          "key": "469.l.18247.t.2",
-          "name": "xXxAIxXx",
-          "rank": 4,
-          "wins": 11,
-          "losses": 10,
-          "ties": 4,
-          "pct": ".520",
-          "rotoPoints": 151.5
-        },
-        {
-          "key": "469.l.18247.t.9",
-          "name": "JJ yoogwanholt",
-          "rank": 5,
-          "wins": 12,
-          "losses": 11,
-          "ties": 2,
-          "pct": ".520",
-          "rotoPoints": 173.5
-        },
-        {
-          "key": "469.l.18247.t.1",
-          "name": "2026 MVP Mike Trout",
-          "rank": 6,
-          "wins": 10,
-          "losses": 10,
-          "ties": 5,
-          "pct": ".500",
-          "rotoPoints": 106.5
+          "wins": 27,
+          "losses": 17,
+          "ties": 6,
+          "pct": "0.600",
+          "rotoPoints": 211
         },
         {
           "key": "469.l.18247.t.6",
           "name": "독후감 신속히 제출해주세요.",
-          "rank": 7,
-          "wins": 10,
-          "losses": 10,
-          "ties": 5,
-          "pct": ".500",
+          "rank": 3,
+          "wins": 23,
+          "losses": 19,
+          "ties": 8,
+          "pct": "0.540",
           "rotoPoints": 178.5
         },
         {
           "key": "469.l.18247.t.3",
           "name": "TRUCK",
-          "rank": 8,
-          "wins": 10,
-          "losses": 11,
-          "ties": 4,
-          "pct": ".480",
+          "rank": 4,
+          "wins": 23,
+          "losses": 19,
+          "ties": 8,
+          "pct": "0.540",
           "rotoPoints": 104.5
-        },
-        {
-          "key": "469.l.18247.t.8",
-          "name": "응노",
-          "rank": 9,
-          "wins": 11,
-          "losses": 12,
-          "ties": 2,
-          "pct": ".480",
-          "rotoPoints": 169.5
         },
         {
           "key": "469.l.18247.t.5",
           "name": "✌️ Yeonwoo's Double Play",
-          "rank": 10,
-          "wins": 10,
-          "losses": 12,
-          "ties": 3,
-          "pct": ".460",
+          "rank": 5,
+          "wins": 21,
+          "losses": 21,
+          "ties": 8,
+          "pct": "0.500",
           "rotoPoints": 204.5
         },
         {
-          "key": "469.l.18247.t.12",
-          "name": "💥 JongHun's Busters",
-          "rank": 11,
-          "wins": 10,
-          "losses": 13,
-          "ties": 2,
-          "pct": ".440",
-          "rotoPoints": 211
+          "key": "469.l.18247.t.10",
+          "name": "🏆 ProfeSuh",
+          "rank": 6,
+          "wins": 22,
+          "losses": 23,
+          "ties": 5,
+          "pct": "0.490",
+          "rotoPoints": 155.5
         },
         {
           "key": "469.l.18247.t.7",
           "name": "커츠. 나",
-          "rank": 12,
-          "wins": 5,
-          "losses": 15,
-          "ties": 5,
-          "pct": ".300",
+          "rank": 7,
+          "wins": 18,
+          "losses": 20,
+          "ties": 12,
+          "pct": "0.480",
           "rotoPoints": 190.5
+        },
+        {
+          "key": "469.l.18247.t.8",
+          "name": "응노",
+          "rank": 8,
+          "wins": 20,
+          "losses": 23,
+          "ties": 7,
+          "pct": "0.470",
+          "rotoPoints": 169.5
+        },
+        {
+          "key": "469.l.18247.t.1",
+          "name": "2026 MVP Mike Trout",
+          "rank": 9,
+          "wins": 18,
+          "losses": 23,
+          "ties": 9,
+          "pct": "0.450",
+          "rotoPoints": 106.5
+        },
+        {
+          "key": "469.l.18247.t.2",
+          "name": "xXxAIxXx",
+          "rank": 10,
+          "wins": 16,
+          "losses": 23,
+          "ties": 11,
+          "pct": "0.430",
+          "rotoPoints": 151.5
+        },
+        {
+          "key": "469.l.18247.t.9",
+          "name": "JJ yoogwanholt",
+          "rank": 11,
+          "wins": 18,
+          "losses": 26,
+          "ties": 6,
+          "pct": "0.420",
+          "rotoPoints": 173.5
+        },
+        {
+          "key": "469.l.18247.t.11",
+          "name": "💥 JeongWoo's Shockers",
+          "rank": 12,
+          "wins": 16,
+          "losses": 27,
+          "ties": 7,
+          "pct": "0.390",
+          "rotoPoints": 112
         }
       ]
     }
