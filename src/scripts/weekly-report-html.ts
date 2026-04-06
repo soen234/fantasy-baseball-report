@@ -9,7 +9,10 @@ import {
   getScoreboard,
   getTransactions,
   getHotPlayers,
+  yahooApi,
 } from "../api/yahoo.js";
+import { fetchBatterStatcast, fetchPitcherStatcast } from "../api/savant.js";
+import type { BatterStatcast, PitcherStatcast } from "../api/savant.js";
 import * as fs from "fs";
 import * as path from "path";
 
@@ -322,14 +325,65 @@ function compareStats(
 async function generateHtmlReport(week: number) {
   console.log(`📊 Week ${week} HTML 리포트 생성 중...`);
 
-  const [standingsRaw, scoreboardRaw, transactionsRaw, hotBatRaw, hotPitRaw] =
-    await Promise.all([
-      getStandings(LEAGUE_KEY),
-      getScoreboard(LEAGUE_KEY, week),
-      getTransactions(LEAGUE_KEY),
-      getHotPlayers(LEAGUE_KEY, "B", 3),
-      getHotPlayers(LEAGUE_KEY, "P", 3),
-    ]);
+  const [
+    standingsRaw,
+    scoreboardRaw,
+    transactionsRaw,
+    hotBatRaw,
+    hotPitRaw,
+    savantBatters,
+    savantPitchers,
+  ] = await Promise.all([
+    getStandings(LEAGUE_KEY),
+    getScoreboard(LEAGUE_KEY, week),
+    getTransactions(LEAGUE_KEY),
+    getHotPlayers(LEAGUE_KEY, "B", 3),
+    getHotPlayers(LEAGUE_KEY, "P", 3),
+    fetchBatterStatcast(2026, 10).catch(() => [] as BatterStatcast[]),
+    fetchPitcherStatcast(2026, 10).catch(() => [] as PitcherStatcast[]),
+  ]);
+  console.log(
+    `⚡ Statcast: ${savantBatters.length}B + ${savantPitchers.length}P`,
+  );
+
+  // ─── Fetch my roster for Statcast matching ───
+  const myRosterNames: string[] = [];
+  try {
+    const myRosterRaw = await yahooApi(`/team/${MY_TEAM_KEY}/roster/players`);
+    const rosterPlayers =
+      myRosterRaw?.fantasy_content?.team?.[1]?.roster?.["0"]?.players;
+    if (rosterPlayers) {
+      for (const idx of Object.keys(rosterPlayers)) {
+        if (idx === "count") continue;
+        for (const item of rosterPlayers[idx].player[0]) {
+          if (item?.name?.full) myRosterNames.push(item.name.full);
+        }
+      }
+    }
+  } catch {}
+
+  // Match roster to Statcast
+  function normalizePlayerName(name: string): string {
+    return name
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/\s*\(.*\)/, "")
+      .toLowerCase()
+      .trim();
+  }
+  const myBatterStatcast = savantBatters.filter((s) =>
+    myRosterNames.some(
+      (r) => normalizePlayerName(r) === normalizePlayerName(s.name),
+    ),
+  );
+  const myPitcherStatcast = savantPitchers.filter((s) =>
+    myRosterNames.some(
+      (r) => normalizePlayerName(r) === normalizePlayerName(s.name),
+    ),
+  );
+  console.log(
+    `⚡ My Statcast: ${myBatterStatcast.length}B + ${myPitcherStatcast.length}P (roster: ${myRosterNames.length})`,
+  );
 
   // ─── Parse hot players ──────────────────────
   interface HotPlayer {
@@ -1414,6 +1468,101 @@ async function generateHtmlReport(week: number) {
     </div>`;
     })()}
 
+    <!-- Statcast: My Team -->
+    <div class="card fade-in" style="padding:16px;margin-top:20px;">
+      <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">My Team Statcast</div>
+      ${
+        myBatterStatcast.length > 0
+          ? `
+      <div class="text-xs fw-600" style="color:var(--accent);margin-bottom:6px;">Batters (by xwOBA)</div>
+      <div style="overflow-x:auto;margin-bottom:16px;">
+        <table class="heatmap">
+          <thead><tr>
+            <th class="hm-team">Player</th>
+            <th class="hm-cat">EV</th>
+            <th class="hm-cat">MaxEV</th>
+            <th class="hm-cat">LA</th>
+            <th class="hm-cat">Brl%</th>
+            <th class="hm-cat">HH%</th>
+            <th class="hm-cat">xBA</th>
+            <th class="hm-cat">xSLG</th>
+            <th class="hm-cat">xwOBA</th>
+            <th class="hm-cat">Luck</th>
+          </tr></thead>
+          <tbody>
+            ${myBatterStatcast
+              .sort((a, b) => b.xwOBA - a.xwOBA)
+              .map((p) => {
+                const luckColor =
+                  p.wobaDiff > 0.02
+                    ? "var(--green)"
+                    : p.wobaDiff < -0.02
+                      ? "var(--red)"
+                      : "var(--text3)";
+                return `<tr>
+                <td class="hm-team">${escapeHtml(p.name)}</td>
+                <td class="hm-cat">${p.avgExitVelo.toFixed(1)}</td>
+                <td class="hm-cat">${p.maxExitVelo.toFixed(1)}</td>
+                <td class="hm-cat">${p.avgLaunchAngle.toFixed(1)}</td>
+                <td class="hm-cat">${p.barrelPct.toFixed(1)}</td>
+                <td class="hm-cat">${p.hardHitPct.toFixed(1)}</td>
+                <td class="hm-cat">${p.xBA.toFixed(3)}</td>
+                <td class="hm-cat">${p.xSLG.toFixed(3)}</td>
+                <td class="hm-cat">${p.xwOBA.toFixed(3)}</td>
+                <td class="hm-cat" style="color:${luckColor};">${p.wobaDiff > 0 ? "+" : ""}${p.wobaDiff.toFixed(3)}</td>
+              </tr>`;
+              })
+              .join("")}
+          </tbody>
+        </table>
+      </div>`
+          : `<div class="text-sm" style="color:var(--text3);margin-bottom:12px;">No batter Statcast data</div>`
+      }
+      ${
+        myPitcherStatcast.length > 0
+          ? `
+      <div class="text-xs fw-600" style="color:#a78bfa;margin-bottom:6px;">Pitchers (by xwOBA against, lower = better)</div>
+      <div style="overflow-x:auto;">
+        <table class="heatmap">
+          <thead><tr>
+            <th class="hm-team">Player</th>
+            <th class="hm-cat">EV Ag.</th>
+            <th class="hm-cat">Brl% Ag.</th>
+            <th class="hm-cat">HH% Ag.</th>
+            <th class="hm-cat">xBA</th>
+            <th class="hm-cat">xSLG</th>
+            <th class="hm-cat">xwOBA</th>
+            <th class="hm-cat">Luck</th>
+          </tr></thead>
+          <tbody>
+            ${myPitcherStatcast
+              .sort((a, b) => a.xwOBA - b.xwOBA)
+              .map((p) => {
+                const luckColor =
+                  p.wobaDiff < -0.02
+                    ? "var(--green)"
+                    : p.wobaDiff > 0.02
+                      ? "var(--red)"
+                      : "var(--text3)";
+                return `<tr>
+                <td class="hm-team">${escapeHtml(p.name)}</td>
+                <td class="hm-cat">${p.avgExitVeloAgainst.toFixed(1)}</td>
+                <td class="hm-cat">${p.barrelPctAgainst.toFixed(1)}</td>
+                <td class="hm-cat">${p.hardHitPctAgainst.toFixed(1)}</td>
+                <td class="hm-cat">${p.xBA.toFixed(3)}</td>
+                <td class="hm-cat">${p.xSLG.toFixed(3)}</td>
+                <td class="hm-cat">${p.xwOBA.toFixed(3)}</td>
+                <td class="hm-cat" style="color:${luckColor};">${p.wobaDiff > 0 ? "+" : ""}${p.wobaDiff.toFixed(3)}</td>
+              </tr>`;
+              })
+              .join("")}
+          </tbody>
+        </table>
+      </div>`
+          : ""
+      }
+    </div>
+
     </div><!-- /tab-analysis -->
 
     <!-- ═══ TAB: Activity ═══ -->
@@ -1498,6 +1647,90 @@ async function generateHtmlReport(week: number) {
     <div id="activity-weekly" class="tab-content active">${buildActivityBlock(weekTxns, "w")}</div>
     <div id="activity-season" class="tab-content">${buildActivityBlock(transactions, "s")}</div>`;
     })()}
+
+    <!-- Statcast Leaders -->
+    ${
+      savantBatters.length > 0
+        ? `
+    <div class="card fade-in" style="padding:16px;margin-top:16px;">
+      <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">Statcast Leaders (Season)</div>
+      <div class="row-2col" style="gap:16px;">
+        <div>
+          <div class="text-xs fw-600" style="color:var(--accent);margin-bottom:6px;">Exit Velo Top 10</div>
+          ${[...savantBatters]
+            .sort((a, b) => b.avgExitVelo - a.avgExitVelo)
+            .slice(0, 10)
+            .map((p, i) => {
+              const isMine = myRosterNames.some(
+                (r) => normalizePlayerName(r) === normalizePlayerName(p.name),
+              );
+              return `<div style="display:flex;align-items:center;gap:6px;padding:3px 0;">
+              <span class="mono text-xs" style="color:var(--text3);width:16px;">${i + 1}</span>
+              <span class="text-xs truncate ${isMine ? "fw-700" : "fw-600"}" style="flex:1;color:${isMine ? "var(--accent)" : "var(--text2)"};">${escapeHtml(p.name)}</span>
+              <span class="mono text-xs fw-600" style="color:var(--text);">${p.avgExitVelo.toFixed(1)}</span>
+            </div>`;
+            })
+            .join("")}
+        </div>
+        <div>
+          <div class="text-xs fw-600" style="color:var(--amber);margin-bottom:6px;">Barrel% Top 10</div>
+          ${[...savantBatters]
+            .sort((a, b) => b.barrelPct - a.barrelPct)
+            .slice(0, 10)
+            .map((p, i) => {
+              const isMine = myRosterNames.some(
+                (r) => normalizePlayerName(r) === normalizePlayerName(p.name),
+              );
+              return `<div style="display:flex;align-items:center;gap:6px;padding:3px 0;">
+              <span class="mono text-xs" style="color:var(--text3);width:16px;">${i + 1}</span>
+              <span class="text-xs truncate ${isMine ? "fw-700" : "fw-600"}" style="flex:1;color:${isMine ? "var(--accent)" : "var(--text2)"};">${escapeHtml(p.name)}</span>
+              <span class="mono text-xs fw-600" style="color:var(--text);">${p.barrelPct.toFixed(1)}%</span>
+            </div>`;
+            })
+            .join("")}
+        </div>
+      </div>
+      <div class="row-2col" style="gap:16px;margin-top:12px;">
+        <div>
+          <div class="text-xs fw-600" style="color:var(--green);margin-bottom:6px;">xwOBA Top 10</div>
+          ${[...savantBatters]
+            .sort((a, b) => b.xwOBA - a.xwOBA)
+            .slice(0, 10)
+            .map((p, i) => {
+              const isMine = myRosterNames.some(
+                (r) => normalizePlayerName(r) === normalizePlayerName(p.name),
+              );
+              return `<div style="display:flex;align-items:center;gap:6px;padding:3px 0;">
+              <span class="mono text-xs" style="color:var(--text3);width:16px;">${i + 1}</span>
+              <span class="text-xs truncate ${isMine ? "fw-700" : "fw-600"}" style="flex:1;color:${isMine ? "var(--accent)" : "var(--text2)"};">${escapeHtml(p.name)}</span>
+              <span class="mono text-xs fw-600" style="color:var(--text);">${p.xwOBA.toFixed(3)}</span>
+            </div>`;
+            })
+            .join("")}
+        </div>
+        <div>
+          <div class="text-xs fw-600" style="color:var(--red);margin-bottom:6px;">Most Unlucky (Buy Low)</div>
+          ${[...savantBatters]
+            .filter((p) => p.attempts >= 20)
+            .sort((a, b) => b.wobaDiff - a.wobaDiff)
+            .slice(0, 10)
+            .map((p, i) => {
+              const isMine = myRosterNames.some(
+                (r) => normalizePlayerName(r) === normalizePlayerName(p.name),
+              );
+              return `<div style="display:flex;align-items:center;gap:6px;padding:3px 0;">
+              <span class="mono text-xs" style="color:var(--text3);width:16px;">${i + 1}</span>
+              <span class="text-xs truncate ${isMine ? "fw-700" : "fw-600"}" style="flex:1;color:${isMine ? "var(--accent)" : "var(--text2)"};">${escapeHtml(p.name)}</span>
+              <span class="mono text-xs fw-600" style="color:var(--green);">+${p.wobaDiff.toFixed(3)}</span>
+            </div>`;
+            })
+            .join("")}
+        </div>
+      </div>
+    </div>
+    `
+        : ""
+    }
 
     </div><!-- /tab-activity -->
 
