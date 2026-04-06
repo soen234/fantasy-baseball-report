@@ -1419,9 +1419,55 @@ async function generateHtmlReport(week: number) {
     <!-- ═══ TAB: Activity ═══ -->
     <div id="tab-activity" class="main-tab">
 
+    <!-- Team Activity Summary -->
+    <div class="card fade-in" style="padding:16px;margin-bottom:16px;">
+      <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">Team Activity</div>
+      ${(() => {
+        // Count adds/drops per team
+        const teamActivity: Record<
+          string,
+          { adds: number; drops: number; total: number }
+        > = {};
+        for (const txn of weekTxns) {
+          for (const a of txn.adds) {
+            const t = a.team;
+            if (!teamActivity[t])
+              teamActivity[t] = { adds: 0, drops: 0, total: 0 };
+            teamActivity[t].adds++;
+            teamActivity[t].total++;
+          }
+          for (const d of txn.drops) {
+            const t = d.team;
+            if (!teamActivity[t])
+              teamActivity[t] = { adds: 0, drops: 0, total: 0 };
+            teamActivity[t].drops++;
+            teamActivity[t].total++;
+          }
+        }
+        const sorted = Object.entries(teamActivity).sort(
+          (a, b) => b[1].total - a[1].total,
+        );
+        const maxTotal = sorted[0]?.[1].total || 1;
+        return sorted
+          .map(([name, stat]) => {
+            const pct = ((stat.total / maxTotal) * 100).toFixed(0);
+            return `<div style="display:flex;align-items:center;gap:8px;padding:4px 0;">
+            <span class="text-xs fw-600 truncate" style="color:var(--text2);width:140px;">${escapeHtml(name)}</span>
+            <div style="flex:1;display:flex;height:16px;border-radius:3px;overflow:hidden;background:var(--surface2);">
+              <div style="width:${((stat.adds / maxTotal) * 100).toFixed(0)}%;background:var(--green);opacity:0.6;"></div>
+              <div style="width:${((stat.drops / maxTotal) * 100).toFixed(0)}%;background:var(--red);opacity:0.6;"></div>
+            </div>
+            <span class="mono text-xs" style="width:60px;text-align:right;"><span class="w">${stat.adds}</span><span style="color:var(--text3);"> / </span><span class="l">${stat.drops}</span></span>
+          </div>`;
+          })
+          .join("\n      ");
+      })()}
+    </div>
+
+    <!-- Transaction Log -->
     <div class="card fade-in" style="padding:16px;">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-        <div class="text-xs fw-600" style="color:var(--text3);text-transform:uppercase;letter-spacing:1px;">Transactions</div>
+        <div class="text-xs fw-600" style="color:var(--text3);text-transform:uppercase;letter-spacing:1px;">Transaction Log</div>
         <span class="mono text-xs" style="color:var(--text3);">${weekTxns.length}건</span>
       </div>
       ${
