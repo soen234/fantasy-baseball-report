@@ -1600,31 +1600,23 @@ async function generateHtmlReport(week: number) {
     ${
       savantBatters.length > 0
         ? (() => {
-            // Helper: render a leaderboard row with mine/FA/rostered colors
+            // Helper: render a leaderboard row — team highlight done by JS
             function scRow(
               p: { name: string },
               i: number,
               valHtml: string,
             ): string {
               const norm = (n: string) => normalizePlayerName(n);
-              const isMine = myRosterNames.some(
-                (r) => norm(r) === norm(p.name),
-              );
               const isRostered = [...allRosteredNames].some(
                 (r) => norm(r) === norm(p.name),
               );
               const isFa = !isRostered;
-              // mine=blue, FA=amber, other=default
-              const nameColor = isMine
-                ? "var(--accent)"
-                : isFa
-                  ? "var(--amber)"
-                  : "var(--text2)";
-              const weight = isMine || isFa ? "fw-700" : "fw-600";
+              const nameColor = isFa ? "var(--amber)" : "var(--text2)";
+              const weight = isFa ? "fw-700" : "fw-600";
               const tag = isFa
-                ? ` <span style="font-size:9px;color:var(--amber);opacity:0.7;">FA</span>`
+                ? ` <span class="sc-fa-tag" style="font-size:9px;color:var(--amber);opacity:0.7;">FA</span>`
                 : "";
-              return `<div class="sc-row" data-player-name="${escapeHtml(p.name)}" style="display:flex;align-items:center;gap:6px;padding:3px 0;">
+              return `<div class="sc-row" data-player-name="${escapeHtml(p.name)}" data-is-fa="${isFa ? "1" : "0"}" style="display:flex;align-items:center;gap:6px;padding:3px 0;">
           <span class="mono text-xs" style="color:var(--text3);width:16px;">${i + 1}</span>
           <span class="text-xs truncate ${weight} sc-name" style="flex:1;color:${nameColor};">${escapeHtml(p.name)}${tag}</span>
           ${valHtml}
@@ -1635,7 +1627,7 @@ async function generateHtmlReport(week: number) {
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
         <div class="text-xs fw-600" style="color:var(--text3);text-transform:uppercase;letter-spacing:1px;">Statcast Leaders</div>
         <span class="text-xs" style="color:var(--amber);">■</span><span class="text-xs" style="color:var(--text3);">= FA</span>
-        <span class="text-xs" style="color:var(--accent);">■</span><span class="text-xs" style="color:var(--text3);">= My Team</span>
+        <span class="text-xs" style="color:var(--accent);">■</span><span class="text-xs" style="color:var(--text3);" id="sc-legend-team">= Selected Team</span>
       </div>
       <div class="row-2col" style="gap:16px;">
         <div>
@@ -2171,9 +2163,12 @@ async function generateHtmlReport(week: number) {
       var roster = ROSTER_BY_TEAM[teamKey] || [];
       var norm = function(n) { return n.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s*\(.*\)/,'').toLowerCase().trim(); };
       var rosterNorm = roster.map(norm);
+      var legendEl = document.getElementById('sc-legend-team');
+      if (legendEl) legendEl.textContent = '= ' + (TEAM_NAMES[teamKey] || 'Selected');
       document.querySelectorAll('.sc-row').forEach(function(row) {
         var pName = row.dataset.playerName || '';
         var isTeamPlayer = rosterNorm.some(function(r) { return r === norm(pName); });
+        var isFa = row.dataset.isFa === '1';
         var nameEl = row.querySelector('.sc-name');
         if (isTeamPlayer) {
           row.style.background = 'rgba(59,130,246,0.1)';
@@ -2182,11 +2177,7 @@ async function generateHtmlReport(week: number) {
         } else {
           row.style.background = '';
           row.style.borderRadius = '';
-          // Restore original color (FA=amber, rostered=text2)
-          if (nameEl) {
-            var isFa = nameEl.textContent.includes('FA');
-            nameEl.style.color = isFa ? 'var(--amber)' : '';
-          }
+          if (nameEl) nameEl.style.color = isFa ? 'var(--amber)' : 'var(--text2)';
         }
       });
     }
