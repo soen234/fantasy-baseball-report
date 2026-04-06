@@ -2,8 +2,8 @@ name: Fantasy Baseball Report
 
 on:
   schedule:
-    # Every hour
-    - cron: '0 * * * *'
+    # KST 07:00~16:00 (= UTC 22:00~07:00), hourly
+    - cron: '0 22-23,0-7 * * *'
   workflow_dispatch: # 수동 실행 가능
 
 permissions:
