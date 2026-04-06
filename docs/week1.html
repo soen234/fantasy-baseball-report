@@ -416,11 +416,11 @@
       <div style="display:flex;flex-direction:column;gap:16px;">
         <div class="card fade-in" style="padding:14px;">
           <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">H2H Rank Trend</div>
-          <div style="position:relative;height:160px;"><canvas id="chartRank"></canvas></div>
+          <div style="position:relative;height:320px;"><canvas id="chartRank"></canvas></div>
         </div>
         <div class="card fade-in" style="padding:14px;">
           <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">Roto Points Trend</div>
-          <div style="position:relative;height:160px;"><canvas id="chartRoto"></canvas></div>
+          <div style="position:relative;height:320px;"><canvas id="chartRoto"></canvas></div>
         </div>
       </div>
     </div>
@@ -492,6 +492,10 @@
 
     <!-- ═══ TAB: Analysis ═══ -->
     <div id="tab-analysis" class="main-tab">
+
+    <div style="margin-bottom:16px;">
+      <select id="analysis-team-select" style="min-width:240px;"></select>
+    </div>
 
     <!-- Radar + Rankings -->
     <div class="row-2col" style="margin-bottom:20px;">
@@ -1018,6 +1022,20 @@
     var STAT_META = {"3":{"abbr":"AVG","group":"batting"},"4":{"abbr":"OBP","group":"batting"},"5":{"abbr":"SLG","group":"batting"},"7":{"abbr":"R","group":"batting"},"8":{"abbr":"H","group":"batting"},"12":{"abbr":"HR","group":"batting"},"13":{"abbr":"RBI","group":"batting"},"18":{"abbr":"BB","group":"batting"},"21":{"abbr":"K","group":"batting"},"23":{"abbr":"TB","group":"batting"},"26":{"abbr":"ERA","group":"pitching"},"27":{"abbr":"WHIP","group":"pitching"},"28":{"abbr":"W","group":"pitching"},"29":{"abbr":"L","group":"pitching"},"30":{"abbr":"CG","group":"pitching"},"42":{"abbr":"K(P)","group":"pitching"},"46":{"abbr":"GIDP","group":"pitching"},"49":{"abbr":"TB(P)","group":"pitching"},"52":{"abbr":"A","group":"batting"},"56":{"abbr":"K/BB","group":"pitching"},"62":{"abbr":"NSB","group":"batting"},"66":{"abbr":"SLAM","group":"batting"},"73":{"abbr":"RAPP","group":"pitching"},"83":{"abbr":"QS","group":"pitching"},"90":{"abbr":"NSVH","group":"pitching"}};
     var TEAM_NAMES = {"469.l.18247.t.4":"UTU_무네타카 무라콴호","469.l.18247.t.10":"🏆 ProfeSuh","469.l.18247.t.11":"💥 JeongWoo's Shockers","469.l.18247.t.2":"xXxAIxXx","469.l.18247.t.9":"JJ yoogwanholt","469.l.18247.t.1":"2026 MVP Mike Trout","469.l.18247.t.6":"독후감 신속히 제출해주세요.","469.l.18247.t.3":"TRUCK","469.l.18247.t.8":"응노","469.l.18247.t.5":"✌️ Yeonwoo's Double Play","469.l.18247.t.12":"💥 JongHun's Busters","469.l.18247.t.7":"커츠. 나"};
     var sel = document.getElementById('matchup-select');
+    var selAnalysis = document.getElementById('analysis-team-select');
+    var STORAGE_KEY = 'fb-selected-team';
+
+    // Populate both selects
+    function populateSelect(selectEl) {
+      TEAMS.forEach(function(t) {
+        var o = document.createElement('option');
+        o.value = t.key; o.textContent = t.name;
+        if (t.key === MY_KEY) o.selected = true;
+        selectEl.appendChild(o);
+      });
+    }
+    populateSelect(sel);
+    populateSelect(selAnalysis);
 
     // Radar charts (stored for dynamic update)
     // Radar tooltip
@@ -1191,13 +1209,6 @@
       chartRoto.data.datasets = buildTrendDatasets(teamKey, 'rotoPoints');
       chartRoto.update();
     }
-
-    TEAMS.forEach(function(t) {
-      var o = document.createElement('option');
-      o.value = t.key; o.textContent = t.name;
-      if (t.key === MY_KEY) o.selected = true;
-      sel.appendChild(o);
-    });
 
     function findMatchupByTeam(k) { return MATCHUPS.findIndex(function(m){return m.t1Key===k||m.t2Key===k;}); }
 
@@ -1414,15 +1425,18 @@
 
     function selectTeam(k) {
       sel.value = k;
+      selAnalysis.value = k;
       var i = findMatchupByTeam(k);
       if (i >= 0) renderMatchup(i);
       updateRadar(k);
       updateRankings(k);
       highlightStandings(k);
       updateTrend(k);
+      try { localStorage.setItem(STORAGE_KEY, k); } catch(e) {}
     }
 
     sel.addEventListener('change', function(){selectTeam(sel.value);});
+    selAnalysis.addEventListener('change', function(){selectTeam(selAnalysis.value);});
     document.querySelectorAll('.matchup-card').forEach(function(card){
       card.addEventListener('click', function(){
         var m = MATCHUPS[parseInt(card.dataset.idx)];
@@ -1430,7 +1444,15 @@
         document.getElementById('matchup-detail').scrollIntoView({behavior:'smooth',block:'nearest'});
       });
     });
-    selectTeam(MY_KEY);
+
+    // Restore from localStorage or default to MY_KEY
+    var savedTeam = null;
+    try { savedTeam = localStorage.getItem(STORAGE_KEY); } catch(e) {}
+    if (savedTeam && TEAM_NAMES[savedTeam]) {
+      selectTeam(savedTeam);
+    } else {
+      selectTeam(MY_KEY);
+    }
   </script>
 </body>
 </html>
