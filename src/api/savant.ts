@@ -16,6 +16,7 @@ export interface BatterStatcast {
   xBA: number;
   xSLG: number;
   xwOBA: number;
+  wOBA: number;
   baDiff: number;
   wobaDiff: number;
 }
@@ -108,6 +109,7 @@ export async function fetchBatterStatcast(
       xBA: parseFloat(x["est_ba"]) || 0,
       xSLG: parseFloat(x["est_slg"]) || 0,
       xwOBA: parseFloat(x["est_woba"]) || 0,
+      wOBA: parseFloat(x["woba"]) || 0,
       baDiff: parseFloat(x["est_ba_minus_ba_diff"]) || 0,
       wobaDiff: parseFloat(x["est_woba_minus_woba_diff"]) || 0,
     };

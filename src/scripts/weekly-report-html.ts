@@ -1606,7 +1606,7 @@ async function generateHtmlReport(week: number) {
         const summaryHtml = sorted
           .map(
             ([name, adds]) =>
-              `<div style="display:flex;align-items:center;gap:8px;padding:3px 0;">
+              `<div class="txn-summary-row" data-txn-team="${escapeHtml(name)}" style="display:flex;align-items:center;gap:8px;padding:3px 0;">
             <span class="text-xs fw-600 truncate" style="color:var(--text2);width:140px;">${escapeHtml(name)}</span>
             <div style="flex:1;height:14px;border-radius:3px;overflow:hidden;background:var(--surface2);">
               <div style="width:${((adds / maxAdds) * 100).toFixed(0)}%;height:100%;background:var(--accent);opacity:0.5;"></div>
@@ -1642,7 +1642,7 @@ async function generateHtmlReport(week: number) {
                           `<span class="l">${escapeHtml(d.player)}</span> <span style="color:var(--text3);">${d.mlb}</span>`,
                       )
                       .join(", ") || "";
-                  return `<div style="display:grid;grid-template-columns:40px 120px 1fr 1fr;gap:6px;padding:6px 8px;font-size:11px;border-bottom:1px solid var(--border);align-items:center;">
+                  return `<div class="txn-log-row" data-txn-team="${escapeHtml(team)}" style="display:grid;grid-template-columns:40px 120px 1fr 1fr;gap:6px;padding:6px 8px;font-size:11px;border-bottom:1px solid var(--border);align-items:center;">
                 <span style="color:var(--text3);">${date}</span>
                 <span class="fw-600 truncate" style="color:var(--text2);">${escapeHtml(team)}</span>
                 <div>${addStr ? "+" + addStr : ""}</div>
@@ -1757,7 +1757,7 @@ async function generateHtmlReport(week: number) {
             .join("")}
         </div>
         <div>
-          <div class="text-xs fw-600" style="color:var(--green);margin-bottom:6px;">Most Unlucky (Buy Low)</div>
+          <div class="text-xs fw-600" style="color:var(--red);margin-bottom:6px;">Most Unlucky (Buy Low)</div>
           ${[...savantBatters]
             .filter((p) => p.attempts >= 20)
             .sort((a, b) => a.wobaDiff - b.wobaDiff)
@@ -1766,7 +1766,7 @@ async function generateHtmlReport(week: number) {
               scRow(
                 p,
                 i,
-                `<span class="mono text-xs fw-600" style="color:var(--green);">${p.wobaDiff.toFixed(3)}</span>`,
+                `<span class="mono text-xs" style="color:var(--text2);">${p.wOBA.toFixed(3)}</span><span class="mono text-xs fw-600" style="color:var(--red);margin-left:3px;">(${p.wobaDiff.toFixed(3)})</span>`,
               ),
             )
             .join("")}
@@ -2222,6 +2222,20 @@ async function generateHtmlReport(week: number) {
       btns[2].classList.toggle('active', tab === 'pit');
     }
 
+    function highlightActivity(teamKey) {
+      var teamName = TEAM_NAMES[teamKey] || '';
+      document.querySelectorAll('.txn-log-row').forEach(function(row) {
+        var match = row.dataset.txnTeam === teamName;
+        row.style.background = match ? 'rgba(59,130,246,0.08)' : '';
+        row.style.borderLeft = match ? '2px solid var(--accent)' : '';
+      });
+      document.querySelectorAll('.txn-summary-row').forEach(function(row) {
+        var match = row.dataset.txnTeam === teamName;
+        row.style.background = match ? 'rgba(59,130,246,0.08)' : '';
+        row.style.borderRadius = match ? '4px' : '';
+      });
+    }
+
     function selectTeam(k) {
       allSelects.forEach(function(s) { s.value = k; });
       var i = findMatchupByTeam(k);
@@ -2229,6 +2243,7 @@ async function generateHtmlReport(week: number) {
       updateRadar(k);
       updateRankings(k);
       highlightStandings(k);
+      highlightActivity(k);
       updateTrend(k);
       try { localStorage.setItem(STORAGE_KEY, k); } catch(e) {}
     }
