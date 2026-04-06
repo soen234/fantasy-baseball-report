@@ -472,6 +472,13 @@ async function generateHtmlReport(week: number) {
     `📋 Rosters: ${allRosteredNames.size} total, ${myRosterNames.length} mine`,
   );
 
+  // player name → fantasy team name (reverse lookup)
+  const playerFantasyTeam: Record<string, string> = {};
+  for (const t of teams) {
+    const names = rosterByTeam[t.key] || [];
+    for (const n of names) playerFantasyTeam[n] = t.name;
+  }
+
   // Match roster to Statcast
   function normalizePlayerName(name: string): string {
     return name
@@ -1053,6 +1060,9 @@ async function generateHtmlReport(week: number) {
     .txn-row { display: grid; grid-template-columns: 52px 1fr 1fr; gap: 8px; padding: 5px 10px; font-size: 12px; border-bottom: 1px solid var(--border); }
     .txn-row:last-child { border-bottom: none; }
 
+    /* Player row tooltip */
+    .player-tip { position:absolute; right:0; top:50%; transform:translateY(-50%); background:#1e293b; border:1px solid rgba(255,255,255,0.12); border-radius:6px; padding:3px 8px; font-family:var(--mono); font-size:10px; color:#e2e8f0; white-space:nowrap; z-index:10; pointer-events:none; opacity:0; transition:opacity 0.12s ease; box-shadow:0 4px 12px rgba(0,0,0,0.3); }
+    .player-tip.show { opacity:1; }
     /* Custom tooltip */
     .ct { position: absolute; pointer-events: none; z-index: 50; opacity: 0; transition: opacity 0.15s ease, transform 0.15s ease; transform: translateY(4px); }
     .ct.show { opacity: 1; transform: translateY(0); }
@@ -1573,14 +1583,14 @@ async function generateHtmlReport(week: number) {
                     txn.adds
                       .map(
                         (a) =>
-                          `<span class="w">${escapeHtml(a.player)}</span>${a.pos ? ` <span class="mono" style="font-size:9px;color:var(--text3);">${a.pos}</span>` : ""} <span style="color:var(--text3);">${a.mlb}</span>`,
+                          `<span class="w">${escapeHtml(a.player)}</span>${a.pos ? ` <span class="mono" style="font-size:9px;color:var(--text3);">${a.pos}</span>` : ""}`,
                       )
                       .join(", ") || "";
                   const dropStr =
                     txn.drops
                       .map(
                         (d) =>
-                          `<span class="l">${escapeHtml(d.player)}</span>${d.pos ? ` <span class="mono" style="font-size:9px;color:var(--text3);">${d.pos}</span>` : ""} <span style="color:var(--text3);">${d.mlb}</span>`,
+                          `<span class="l">${escapeHtml(d.player)}</span>${d.pos ? ` <span class="mono" style="font-size:9px;color:var(--text3);">${d.pos}</span>` : ""}`,
                       )
                       .join(", ") || "";
                   return `<div class="txn-log-row" data-txn-team="${escapeHtml(team)}" style="display:grid;grid-template-columns:40px 120px 1fr 1fr;gap:6px;padding:6px 8px;font-size:11px;border-bottom:1px solid var(--border);align-items:center;">
@@ -1628,6 +1638,7 @@ async function generateHtmlReport(week: number) {
               const isFa = !isRostered;
               const nameColor = isFa ? "var(--amber)" : "var(--text2)";
               const weight = isFa ? "fw-700" : "fw-600";
+              const fTeam = playerFantasyTeam[p.name] || "";
               const tag = isFa
                 ? ` <span class="sc-fa-tag" style="font-size:9px;color:var(--amber);opacity:0.7;">FA</span>`
                 : "";
@@ -1635,7 +1646,7 @@ async function generateHtmlReport(week: number) {
               const posTag = pos
                 ? `<span class="mono" style="font-size:9px;color:var(--text3);width:28px;text-align:right;flex-shrink:0;">${pos}</span>`
                 : `<span style="width:28px;flex-shrink:0;"></span>`;
-              return `<div class="sc-row" data-player-name="${escapeHtml(p.name)}" data-is-fa="${isFa ? "1" : "0"}" style="display:flex;align-items:center;gap:6px;padding:3px 0;">
+              return `<div class="sc-row player-tip-row" data-player-name="${escapeHtml(p.name)}" data-is-fa="${isFa ? "1" : "0"}" data-fteam="${escapeHtml(fTeam || "FA")}" style="display:flex;align-items:center;gap:6px;padding:3px 0;cursor:pointer;position:relative;">
           <span class="mono text-xs" style="color:var(--text3);width:16px;">${i + 1}</span>
           ${posTag}
           <span class="text-xs truncate ${weight} sc-name" style="flex:1;color:${nameColor};">${escapeHtml(p.name)}${tag}</span>
@@ -1740,12 +1751,13 @@ async function generateHtmlReport(week: number) {
                 ? "var(--amber)"
                 : "var(--text2)";
             const weight = isFa || isMine ? "fw-700" : "fw-600";
+            const fTeam = playerFantasyTeam[p.name] || "";
             const statusTag = isMine
               ? ` <span style="font-size:9px;color:var(--accent);opacity:0.7;">MY</span>`
               : isFa
                 ? ` <span style="font-size:9px;color:var(--amber);opacity:0.7;">FA</span>`
                 : "";
-            return `<div style="display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid var(--border);">
+            return `<div class="player-tip-row" data-fteam="${escapeHtml(fTeam || "FA")}" style="display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid var(--border);cursor:pointer;position:relative;">
           <span class="mono text-xs" style="color:var(--text3);width:20px;text-align:right;">${i + 1}</span>
           <span class="mono" style="font-size:9px;color:var(--text3);width:28px;text-align:right;">${escapeHtml(p.position)}</span>
           <span class="text-xs truncate ${weight}" style="flex:1;color:${nameColor};">${escapeHtml(p.name)}${statusTag}</span>
@@ -1796,6 +1808,52 @@ async function generateHtmlReport(week: number) {
     allSelects.forEach(populateSelect);
 
     // Radar charts (stored for dynamic update)
+    // Click-to-dismiss tooltip: tap same point twice to hide (mobile-safe)
+    function addTooltipToggle(chart) {
+      var lastKey = null;
+      var suppress = false;
+      // Wrap external tooltip to respect suppress flag
+      var origExt = chart.options.plugins.tooltip.external;
+      chart.options.plugins.tooltip.external = function(ctx) {
+        if (suppress) {
+          var el = ctx.chart.canvas.parentNode.querySelector('.ct');
+          if (el) el.classList.remove('show');
+          return;
+        }
+        origExt(ctx);
+      };
+      // Use Chart.js onClick (handles touch natively)
+      chart.options.onClick = function(evt, elems) {
+        var iMode = (chart.options.interaction && chart.options.interaction.mode) || 'nearest';
+        if (!elems || elems.length === 0) {
+          suppress = true;
+          lastKey = null;
+          var ct = chart.canvas.parentNode.querySelector('.ct');
+          if (ct) ct.classList.remove('show');
+          chart.setActiveElements([]);
+          chart.tooltip.setActiveElements([]);
+          chart.update('none');
+          setTimeout(function() { suppress = false; }, 300);
+          return;
+        }
+        var key = iMode === 'index' ? 'idx-' + elems[0].index : elems[0].datasetIndex + '-' + elems[0].index;
+        if (key === lastKey) {
+          suppress = true;
+          lastKey = null;
+          var ct = chart.canvas.parentNode.querySelector('.ct');
+          if (ct) ct.classList.remove('show');
+          chart.setActiveElements([]);
+          chart.tooltip.setActiveElements([]);
+          chart.update('none');
+          setTimeout(function() { suppress = false; }, 300);
+        } else {
+          lastKey = key;
+          suppress = false;
+        }
+      };
+      chart.update('none');
+    }
+
     // Radar tooltip
     function radarTooltip(context) {
       var chart = context.chart;
@@ -1833,6 +1891,8 @@ async function generateHtmlReport(week: number) {
     var pitLabels = ${JSON.stringify(radarPitLabels)};
     var chartBat = new Chart(document.getElementById('radarBat'),{type:'radar',data:{labels:batLabels,datasets:[{data:${JSON.stringify(radarBatData)},backgroundColor:'rgba(59,130,246,0.1)',borderColor:'rgba(59,130,246,0.6)',borderWidth:1.5,pointBackgroundColor:'#3b82f6',pointRadius:3}]},options:ro});
     var chartPit = new Chart(document.getElementById('radarPit'),{type:'radar',data:{labels:pitLabels,datasets:[{data:${JSON.stringify(radarPitData)},backgroundColor:'rgba(167,139,250,0.1)',borderColor:'rgba(167,139,250,0.6)',borderWidth:1.5,pointBackgroundColor:'#a78bfa',pointRadius:3}]},options:ro});
+    addTooltipToggle(chartBat);
+    addTooltipToggle(chartPit);
 
     // Trend charts
     var HISTORY = ${historyJson};
@@ -1972,6 +2032,8 @@ async function generateHtmlReport(week: number) {
       data: { labels: weekLabels, datasets: buildTrendDatasets(MY_KEY, 'rotoPoints') },
       options: rotoOpts,
     });
+    addTooltipToggle(chartRank);
+    addTooltipToggle(chartRoto);
 
     function updateTrend(teamKey) {
       chartRank.data.datasets = buildTrendDatasets(teamKey, 'rank');
@@ -2247,6 +2309,38 @@ async function generateHtmlReport(week: number) {
         }
       });
     }
+
+    // Player row tooltip (click to show, click again to hide)
+    (function() {
+      var activeTip = null;
+      document.addEventListener('click', function(e) {
+        var row = e.target.closest('.player-tip-row');
+        if (!row) {
+          // clicked outside — dismiss
+          if (activeTip) { activeTip.classList.remove('show'); activeTip = null; }
+          return;
+        }
+        var existing = row.querySelector('.player-tip');
+        if (existing && existing.classList.contains('show')) {
+          // second click on same row — dismiss
+          existing.classList.remove('show');
+          activeTip = null;
+          return;
+        }
+        // dismiss previous
+        if (activeTip) { activeTip.classList.remove('show'); activeTip = null; }
+        // create or reuse
+        var tip = row.querySelector('.player-tip');
+        if (!tip) {
+          tip = document.createElement('span');
+          tip.className = 'player-tip';
+          tip.textContent = row.dataset.fteam || 'FA';
+          row.appendChild(tip);
+        }
+        tip.classList.add('show');
+        activeTip = tip;
+      });
+    })();
 
     // Statcast table for selected team
     function normName(n) { return n.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/\\s*\\(.*\\)/,'').toLowerCase().trim(); }
