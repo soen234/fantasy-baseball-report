@@ -346,44 +346,7 @@ async function generateHtmlReport(week: number) {
     `⚡ Statcast: ${savantBatters.length}B + ${savantPitchers.length}P`,
   );
 
-  // ─── Fetch my roster for Statcast matching ───
-  const myRosterNames: string[] = [];
-  try {
-    const myRosterRaw = await yahooApi(`/team/${MY_TEAM_KEY}/roster/players`);
-    const rosterPlayers =
-      myRosterRaw?.fantasy_content?.team?.[1]?.roster?.["0"]?.players;
-    if (rosterPlayers) {
-      for (const idx of Object.keys(rosterPlayers)) {
-        if (idx === "count") continue;
-        for (const item of rosterPlayers[idx].player[0]) {
-          if (item?.name?.full) myRosterNames.push(item.name.full);
-        }
-      }
-    }
-  } catch {}
-
-  // Match roster to Statcast
-  function normalizePlayerName(name: string): string {
-    return name
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/\s*\(.*\)/, "")
-      .toLowerCase()
-      .trim();
-  }
-  const myBatterStatcast = savantBatters.filter((s) =>
-    myRosterNames.some(
-      (r) => normalizePlayerName(r) === normalizePlayerName(s.name),
-    ),
-  );
-  const myPitcherStatcast = savantPitchers.filter((s) =>
-    myRosterNames.some(
-      (r) => normalizePlayerName(r) === normalizePlayerName(s.name),
-    ),
-  );
-  console.log(
-    `⚡ My Statcast: ${myBatterStatcast.length}B + ${myPitcherStatcast.length}P (roster: ${myRosterNames.length})`,
-  );
+  // (roster fetch + statcast matching moved after teams parsing)
 
   // ─── Parse hot players ──────────────────────
   interface HotPlayer {
@@ -451,6 +414,64 @@ async function generateHtmlReport(week: number) {
     });
   }
   teams.sort((a, b) => a.standings.rank - b.standings.rank);
+
+  // ─── Fetch rosters for Statcast matching ───
+  const myRosterNames: string[] = [];
+  const allRosteredNames: Set<string> = new Set();
+
+  function extractRosterNames(rosterRaw: any): string[] {
+    const names: string[] = [];
+    const players =
+      rosterRaw?.fantasy_content?.team?.[1]?.roster?.["0"]?.players;
+    if (players) {
+      for (const idx of Object.keys(players)) {
+        if (idx === "count") continue;
+        for (const item of players[idx].player[0]) {
+          if (item?.name?.full) names.push(item.name.full);
+        }
+      }
+    }
+    return names;
+  }
+
+  try {
+    const rosterPromises = teams.map((t) =>
+      yahooApi(`/team/${t.key}/roster/players`).catch(() => null),
+    );
+    const rosterResults = await Promise.all(rosterPromises);
+    for (let ri = 0; ri < rosterResults.length; ri++) {
+      if (!rosterResults[ri]) continue;
+      const names = extractRosterNames(rosterResults[ri]);
+      names.forEach((n) => allRosteredNames.add(n));
+      if (teams[ri].key === MY_TEAM_KEY) myRosterNames.push(...names);
+    }
+  } catch {}
+  console.log(
+    `📋 Rosters: ${allRosteredNames.size} total, ${myRosterNames.length} mine`,
+  );
+
+  // Match roster to Statcast
+  function normalizePlayerName(name: string): string {
+    return name
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/\s*\(.*\)/, "")
+      .toLowerCase()
+      .trim();
+  }
+  const myBatterStatcast = savantBatters.filter((s) =>
+    myRosterNames.some(
+      (r) => normalizePlayerName(r) === normalizePlayerName(s.name),
+    ),
+  );
+  const myPitcherStatcast = savantPitchers.filter((s) =>
+    myRosterNames.some(
+      (r) => normalizePlayerName(r) === normalizePlayerName(s.name),
+    ),
+  );
+  console.log(
+    `⚡ My Statcast: ${myBatterStatcast.length}B + ${myPitcherStatcast.length}P`,
+  );
 
   // Parse matchups
   interface CatResult {
@@ -1652,25 +1673,57 @@ async function generateHtmlReport(week: number) {
     <!-- Statcast Leaders -->
     ${
       savantBatters.length > 0
-        ? `
+        ? (() => {
+            // Helper: render a leaderboard row with mine/FA/rostered colors
+            function scRow(
+              p: { name: string },
+              i: number,
+              valHtml: string,
+            ): string {
+              const norm = (n: string) => normalizePlayerName(n);
+              const isMine = myRosterNames.some(
+                (r) => norm(r) === norm(p.name),
+              );
+              const isRostered = [...allRosteredNames].some(
+                (r) => norm(r) === norm(p.name),
+              );
+              const isFa = !isRostered;
+              // mine=blue, FA=amber, other=default
+              const nameColor = isMine
+                ? "var(--accent)"
+                : isFa
+                  ? "var(--amber)"
+                  : "var(--text2)";
+              const weight = isMine || isFa ? "fw-700" : "fw-600";
+              const tag = isFa
+                ? ` <span style="font-size:9px;color:var(--amber);opacity:0.7;">FA</span>`
+                : "";
+              return `<div style="display:flex;align-items:center;gap:6px;padding:3px 0;">
+          <span class="mono text-xs" style="color:var(--text3);width:16px;">${i + 1}</span>
+          <span class="text-xs truncate ${weight}" style="flex:1;color:${nameColor};">${escapeHtml(p.name)}${tag}</span>
+          ${valHtml}
+        </div>`;
+            }
+            return `
     <div class="card fade-in" style="padding:16px;margin-top:16px;">
-      <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">Statcast Leaders (Season)</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <div class="text-xs fw-600" style="color:var(--text3);text-transform:uppercase;letter-spacing:1px;">Statcast Leaders</div>
+        <span class="text-xs" style="color:var(--amber);">■</span><span class="text-xs" style="color:var(--text3);">= FA</span>
+        <span class="text-xs" style="color:var(--accent);">■</span><span class="text-xs" style="color:var(--text3);">= My Team</span>
+      </div>
       <div class="row-2col" style="gap:16px;">
         <div>
           <div class="text-xs fw-600" style="color:var(--accent);margin-bottom:6px;">Exit Velo Top 10</div>
           ${[...savantBatters]
             .sort((a, b) => b.avgExitVelo - a.avgExitVelo)
             .slice(0, 10)
-            .map((p, i) => {
-              const isMine = myRosterNames.some(
-                (r) => normalizePlayerName(r) === normalizePlayerName(p.name),
-              );
-              return `<div style="display:flex;align-items:center;gap:6px;padding:3px 0;">
-              <span class="mono text-xs" style="color:var(--text3);width:16px;">${i + 1}</span>
-              <span class="text-xs truncate ${isMine ? "fw-700" : "fw-600"}" style="flex:1;color:${isMine ? "var(--accent)" : "var(--text2)"};">${escapeHtml(p.name)}</span>
-              <span class="mono text-xs fw-600" style="color:var(--text);">${p.avgExitVelo.toFixed(1)}</span>
-            </div>`;
-            })
+            .map((p, i) =>
+              scRow(
+                p,
+                i,
+                `<span class="mono text-xs fw-600" style="color:var(--text);">${p.avgExitVelo.toFixed(1)}</span>`,
+              ),
+            )
             .join("")}
         </div>
         <div>
@@ -1678,16 +1731,13 @@ async function generateHtmlReport(week: number) {
           ${[...savantBatters]
             .sort((a, b) => b.barrelPct - a.barrelPct)
             .slice(0, 10)
-            .map((p, i) => {
-              const isMine = myRosterNames.some(
-                (r) => normalizePlayerName(r) === normalizePlayerName(p.name),
-              );
-              return `<div style="display:flex;align-items:center;gap:6px;padding:3px 0;">
-              <span class="mono text-xs" style="color:var(--text3);width:16px;">${i + 1}</span>
-              <span class="text-xs truncate ${isMine ? "fw-700" : "fw-600"}" style="flex:1;color:${isMine ? "var(--accent)" : "var(--text2)"};">${escapeHtml(p.name)}</span>
-              <span class="mono text-xs fw-600" style="color:var(--text);">${p.barrelPct.toFixed(1)}%</span>
-            </div>`;
-            })
+            .map((p, i) =>
+              scRow(
+                p,
+                i,
+                `<span class="mono text-xs fw-600" style="color:var(--text);">${p.barrelPct.toFixed(1)}%</span>`,
+              ),
+            )
             .join("")}
         </div>
       </div>
@@ -1697,16 +1747,13 @@ async function generateHtmlReport(week: number) {
           ${[...savantBatters]
             .sort((a, b) => b.xwOBA - a.xwOBA)
             .slice(0, 10)
-            .map((p, i) => {
-              const isMine = myRosterNames.some(
-                (r) => normalizePlayerName(r) === normalizePlayerName(p.name),
-              );
-              return `<div style="display:flex;align-items:center;gap:6px;padding:3px 0;">
-              <span class="mono text-xs" style="color:var(--text3);width:16px;">${i + 1}</span>
-              <span class="text-xs truncate ${isMine ? "fw-700" : "fw-600"}" style="flex:1;color:${isMine ? "var(--accent)" : "var(--text2)"};">${escapeHtml(p.name)}</span>
-              <span class="mono text-xs fw-600" style="color:var(--text);">${p.xwOBA.toFixed(3)}</span>
-            </div>`;
-            })
+            .map((p, i) =>
+              scRow(
+                p,
+                i,
+                `<span class="mono text-xs fw-600" style="color:var(--text);">${p.xwOBA.toFixed(3)}</span>`,
+              ),
+            )
             .join("")}
         </div>
         <div>
@@ -1715,21 +1762,18 @@ async function generateHtmlReport(week: number) {
             .filter((p) => p.attempts >= 20)
             .sort((a, b) => a.wobaDiff - b.wobaDiff)
             .slice(0, 10)
-            .map((p, i) => {
-              const isMine = myRosterNames.some(
-                (r) => normalizePlayerName(r) === normalizePlayerName(p.name),
-              );
-              return `<div style="display:flex;align-items:center;gap:6px;padding:3px 0;">
-              <span class="mono text-xs" style="color:var(--text3);width:16px;">${i + 1}</span>
-              <span class="text-xs truncate ${isMine ? "fw-700" : "fw-600"}" style="flex:1;color:${isMine ? "var(--accent)" : "var(--text2)"};">${escapeHtml(p.name)}</span>
-              <span class="mono text-xs fw-600" style="color:var(--green);">${p.wobaDiff.toFixed(3)}</span>
-            </div>`;
-            })
+            .map((p, i) =>
+              scRow(
+                p,
+                i,
+                `<span class="mono text-xs fw-600" style="color:var(--green);">${p.wobaDiff.toFixed(3)}</span>`,
+              ),
+            )
             .join("")}
         </div>
       </div>
-    </div>
-    `
+    </div>`;
+          })()
         : ""
     }
 
