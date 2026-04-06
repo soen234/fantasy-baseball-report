@@ -150,3 +150,54 @@ export async function fetchPitcherStatcast(
     };
   });
 }
+
+// ─── FanGraphs Prospect Rankings ────────────────────────
+
+export interface Prospect {
+  name: string;
+  position: string;
+  team: string;
+  fv: string;
+  eta: string;
+  ovrRank: number;
+  fantasyRank: number;
+}
+
+export async function fetchProspects(
+  year = 2026,
+  limit = 10,
+): Promise<Prospect[]> {
+  const res = await fetch(
+    `https://www.fangraphs.com/prospects/the-board/${year}-prospect-list/summary`,
+    {
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+      },
+    },
+  );
+  const html = await res.text();
+  const match = html.match(/<script id="__NEXT_DATA__"[^>]*>(.*?)<\/script>/);
+  if (!match) return [];
+
+  const data = JSON.parse(match[1]);
+  const prospects: any[] =
+    data?.props?.pageProps?.dehydratedState?.queries?.[0]?.state?.data ?? [];
+
+  return prospects
+    .filter(
+      (p: any) =>
+        typeof p.Fantasy_Redraft === "number" && p.Fantasy_Redraft > 0,
+    )
+    .sort((a: any, b: any) => a.Fantasy_Redraft - b.Fantasy_Redraft)
+    .slice(0, limit)
+    .map((p: any) => ({
+      name: p.playerName || "",
+      position: p.Position || "?",
+      team: p.Team || "?",
+      fv: p.cFV || "?",
+      eta: String(p.cETA || "?"),
+      ovrRank: p.Ovr_Rank || 0,
+      fantasyRank: p.Fantasy_Redraft,
+    }));
+}

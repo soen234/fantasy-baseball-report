@@ -11,8 +11,16 @@ import {
   getHotPlayers,
   yahooApi,
 } from "../api/yahoo.js";
-import { fetchBatterStatcast, fetchPitcherStatcast } from "../api/savant.js";
-import type { BatterStatcast, PitcherStatcast } from "../api/savant.js";
+import {
+  fetchBatterStatcast,
+  fetchPitcherStatcast,
+  fetchProspects,
+} from "../api/savant.js";
+import type {
+  BatterStatcast,
+  PitcherStatcast,
+  Prospect,
+} from "../api/savant.js";
 import * as fs from "fs";
 import * as path from "path";
 
@@ -333,6 +341,7 @@ async function generateHtmlReport(week: number) {
     hotPitRaw,
     savantBatters,
     savantPitchers,
+    prospects,
   ] = await Promise.all([
     getStandings(LEAGUE_KEY),
     getScoreboard(LEAGUE_KEY, week),
@@ -341,9 +350,10 @@ async function generateHtmlReport(week: number) {
     getHotPlayers(LEAGUE_KEY, "P", 3),
     fetchBatterStatcast(2026, 10).catch(() => [] as BatterStatcast[]),
     fetchPitcherStatcast(2026, 10).catch(() => [] as PitcherStatcast[]),
+    fetchProspects(2026, 10).catch(() => [] as Prospect[]),
   ]);
   console.log(
-    `⚡ Statcast: ${savantBatters.length}B + ${savantPitchers.length}P`,
+    `⚡ Statcast: ${savantBatters.length}B + ${savantPitchers.length}P | Prospects: ${prospects.length}`,
   );
 
   // (roster fetch + statcast matching moved after teams parsing)
@@ -420,6 +430,8 @@ async function generateHtmlReport(week: number) {
   const allRosteredNames: Set<string> = new Set();
   // teamKey → player names
   const rosterByTeam: Record<string, string[]> = {};
+  // player name → fantasy position(s)
+  const playerPositions: Record<string, string> = {};
 
   function extractRosterNames(rosterRaw: any): string[] {
     const names: string[] = [];
@@ -428,8 +440,15 @@ async function generateHtmlReport(week: number) {
     if (players) {
       for (const idx of Object.keys(players)) {
         if (idx === "count") continue;
+        let pName = "";
+        let pPos = "";
         for (const item of players[idx].player[0]) {
-          if (item?.name?.full) names.push(item.name.full);
+          if (item?.name?.full) pName = item.name.full;
+          if (item?.display_position) pPos = item.display_position;
+        }
+        if (pName) {
+          names.push(pName);
+          if (pPos) playerPositions[pName] = pPos;
         }
       }
     }
@@ -1612,8 +1631,13 @@ async function generateHtmlReport(week: number) {
               const tag = isFa
                 ? ` <span class="sc-fa-tag" style="font-size:9px;color:var(--amber);opacity:0.7;">FA</span>`
                 : "";
+              const pos = playerPositions[p.name] || "";
+              const posTag = pos
+                ? `<span class="mono" style="font-size:9px;color:var(--text3);width:28px;text-align:right;flex-shrink:0;">${pos}</span>`
+                : `<span style="width:28px;flex-shrink:0;"></span>`;
               return `<div class="sc-row" data-player-name="${escapeHtml(p.name)}" data-is-fa="${isFa ? "1" : "0"}" style="display:flex;align-items:center;gap:6px;padding:3px 0;">
           <span class="mono text-xs" style="color:var(--text3);width:16px;">${i + 1}</span>
+          ${posTag}
           <span class="text-xs truncate ${weight} sc-name" style="flex:1;color:${nameColor};">${escapeHtml(p.name)}${tag}</span>
           ${valHtml}
         </div>`;
@@ -1685,6 +1709,54 @@ async function generateHtmlReport(week: number) {
             )
             .join("")}
         </div>
+      </div>
+    </div>`;
+          })()
+        : ""
+    }
+
+    <!-- Prospect Rankings (FanGraphs) -->
+    ${
+      prospects.length > 0
+        ? (() => {
+            const norm = (n: string) => normalizePlayerName(n);
+            return `
+    <div class="card fade-in" style="padding:16px;margin-top:16px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <div class="text-xs fw-600" style="color:var(--text3);text-transform:uppercase;letter-spacing:1px;">Prospect Rankings</div>
+        <span class="text-xs" style="color:var(--text3);">FanGraphs · Fantasy Redraft</span>
+      </div>
+      <div>
+        ${prospects
+          .map((p, i) => {
+            const isRostered = [...allRosteredNames].some(
+              (r) => norm(r) === norm(p.name),
+            );
+            const isMine = myRosterNames.some(
+              (r) => norm(r) === norm(p.name),
+            );
+            const isFa = !isRostered;
+            const nameColor = isMine
+              ? "var(--accent)"
+              : isFa
+                ? "var(--amber)"
+                : "var(--text2)";
+            const weight = isFa || isMine ? "fw-700" : "fw-600";
+            const statusTag = isMine
+              ? \` <span style="font-size:9px;color:var(--accent);opacity:0.7;">MY</span>\`
+              : isFa
+                ? \` <span style="font-size:9px;color:var(--amber);opacity:0.7;">FA</span>\`
+                : "";
+            return \`<div style="display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid var(--border);">
+          <span class="mono text-xs" style="color:var(--text3);width:20px;text-align:right;">\${i + 1}</span>
+          <span class="mono" style="font-size:9px;color:var(--text3);width:28px;text-align:right;">\${escapeHtml(p.position)}</span>
+          <span class="text-xs truncate \${weight}" style="flex:1;color:\${nameColor};">\${escapeHtml(p.name)}\${statusTag}</span>
+          <span class="mono" style="font-size:10px;color:var(--text3);width:28px;text-align:center;">\${escapeHtml(p.team)}</span>
+          <span class="mono text-xs fw-600" style="color:var(--green);width:24px;text-align:right;">FV\${p.fv}</span>
+          <span class="mono text-xs" style="color:var(--text3);width:32px;text-align:right;">ETA \${p.eta}</span>
+        </div>\`;
+          })
+          .join("")}
       </div>
     </div>`;
           })()
@@ -2157,11 +2229,10 @@ async function generateHtmlReport(week: number) {
     // Statcast Leaders: highlight selected team's players
     function highlightStatcastLeaders(teamKey) {
       var roster = ROSTER_BY_TEAM[teamKey] || [];
-      var norm = function(n) { return n.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s*\(.*\)/,'').toLowerCase().trim(); };
-      var rosterNorm = roster.map(norm);
+      var rosterLower = roster.map(function(n) { return n.toLowerCase().trim(); });
       document.querySelectorAll('.sc-row').forEach(function(row) {
-        var pName = row.dataset.playerName || '';
-        var isTeamPlayer = rosterNorm.some(function(r) { return r === norm(pName); });
+        var pName = (row.dataset.playerName || '').toLowerCase().trim();
+        var isTeamPlayer = rosterLower.some(function(r) { return r === pName; });
         var nameEl = row.querySelector('.sc-name');
         if (isTeamPlayer) {
           row.style.background = 'rgba(59,130,246,0.1)';
