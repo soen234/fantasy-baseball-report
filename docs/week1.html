@@ -37,7 +37,7 @@
     .row-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 
     /* Header */
-    .header-grid { display: flex; flex-direction: column; gap: 6px; }
+    .header-grid { display: flex; flex-direction: column; gap: 10px; }
     .header-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 
     @media (max-width: 768px) {
@@ -95,8 +95,8 @@
 
     /* Tabs */
     .tab-bar { display: flex; gap: 2px; background: var(--surface); border-radius: 8px; padding: 3px; border: 1px solid var(--border); }
-    .header-top .tab-bar { padding: 2px; }
-    .header-top .tab-btn { padding: 4px 10px; font-size: 11px; }
+    .header-top .tab-bar { padding: 3px; }
+    .header-top .tab-btn { padding: 5px 12px; font-size: 12px; }
     .tab-btn { padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; color: var(--text3); cursor: pointer; border: none; background: none; transition: all 0.15s; white-space: nowrap; }
     .tab-btn:hover { color: var(--text2); }
     .tab-btn.active { background: var(--accent); color: white; }
@@ -153,7 +153,7 @@
 </head>
 <body>
   <!-- Header -->
-  <header style="border-bottom:1px solid var(--border);padding:10px 0;">
+  <header style="border-bottom:1px solid var(--border);padding:14px 0;">
     <div class="container header-grid">
       <div class="header-top">
         <div style="display:flex;align-items:center;gap:10px;">
