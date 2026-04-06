@@ -2192,7 +2192,7 @@ async function generateHtmlReport(week: number) {
     }
 
     // Statcast table for selected team
-    function normName(n) { return n.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s*\(.*\)/,'').toLowerCase().trim(); }
+    function normName(n) { return n.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/\\s*\\(.*\\)/,'').toLowerCase().trim(); }
 
     function updateStatcast(teamKey) {
       var roster = ROSTER_BY_TEAM[teamKey] || [];
