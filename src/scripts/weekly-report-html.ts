@@ -1438,7 +1438,9 @@ async function generateHtmlReport(week: number) {
       el.replaceChildren();
       var tmp = document.createElement('div'); tmp.innerHTML = inner;
       while (tmp.firstChild) el.appendChild(tmp.firstChild);
-      el.style.left = tooltip.caretX + 'px';
+      var cW = chart.canvas.parentNode.offsetWidth;
+      var tW = el.offsetWidth || 180;
+      el.style.left = (tooltip.caretX + tW + 8 > cW ? tooltip.caretX - tW - 8 : tooltip.caretX + 8) + 'px';
       el.style.top = tooltip.caretY + 'px';
       el.classList.add('show');
     }
@@ -1504,7 +1506,9 @@ async function generateHtmlReport(week: number) {
       tmp.innerHTML = inner;
       while (tmp.firstChild) el.appendChild(tmp.firstChild);
 
-      el.style.left = tooltip.caretX + 'px';
+      var cW = chart.canvas.parentNode.offsetWidth;
+      var tW = el.offsetWidth || 180;
+      el.style.left = (tooltip.caretX + tW + 8 > cW ? tooltip.caretX - tW - 8 : tooltip.caretX + 8) + 'px';
       el.style.top = tooltip.caretY + 'px';
       el.classList.add('show');
     }
