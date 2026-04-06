@@ -945,10 +945,13 @@ async function generateHtmlReport(week: number) {
     /* Row layouts */
     .row-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 
+    /* Header */
+    .header-grid { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+
     @media (max-width: 768px) {
       .grid-2, .grid-3, .grid-sidebar, .row-2col, .hot-grid { grid-template-columns: 1fr !important; }
       .container { padding: 0 8px; }
-      header .container { flex-direction: column; gap: 6px; align-items: stretch; }
+      .header-grid { flex-direction: column; gap: 8px; align-items: stretch; }
       .card { border-radius: 8px; overflow: hidden; }
       /* Standings: single-line compact on mobile */
       .standings-row { gap: 6px !important; padding: 5px 4px !important; }
@@ -1056,11 +1059,10 @@ async function generateHtmlReport(week: number) {
 </head>
 <body>
   <!-- Header -->
-  <header style="border-bottom:1px solid var(--border);padding:12px 0;">
-    <div class="container" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
-      <div style="display:flex;align-items:center;gap:12px;">
+  <header style="border-bottom:1px solid var(--border);padding:10px 0;">
+    <div class="container header-grid">
+      <div style="display:flex;align-items:center;gap:10px;">
         <span class="mono fw-700" style="font-size:18px;color:var(--accent);">FB</span>
-        <!-- Week navigation -->
         <div style="display:flex;align-items:center;gap:4px;">
           ${(() => {
             const maxWeek = Math.max(week, ...history.weeks.map((w) => w.week));
@@ -1083,10 +1085,8 @@ async function generateHtmlReport(week: number) {
               : `<span style="padding:4px 6px;color:var(--surface2);font-size:12px;">&gt;</span>`;
           })()}
         </div>
-        <span class="text-xs" style="color:var(--text3);">${new Date().toLocaleDateString("ko-KR")}</span>
       </div>
-      <!-- Main tabs + scope toggle -->
-      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
         <div id="main-tabs" class="tab-bar">
           <button class="tab-btn active" onclick="switchMainTab('overview')">Overview</button>
           <button class="tab-btn" onclick="switchMainTab('matchup')">Matchup</button>
@@ -1514,12 +1514,13 @@ async function generateHtmlReport(week: number) {
             ${myBatterStatcast
               .sort((a, b) => b.xwOBA - a.xwOBA)
               .map((p) => {
-                // wobaDiff = wOBA - xwOBA: negative = unlucky (green, buy), positive = lucky (red, sell)
+                // Batter: wobaDiff = wOBA - xwOBA
+                // negative = unlucky = red, positive = lucky = green
                 const luckColor =
                   p.wobaDiff < -0.02
-                    ? "var(--green)"
+                    ? "var(--red)"
                     : p.wobaDiff > 0.02
-                      ? "var(--red)"
+                      ? "var(--green)"
                       : "var(--text3)";
                 return `<tr>
                 <td class="hm-team">${escapeHtml(p.name)}</td>
@@ -1560,11 +1561,14 @@ async function generateHtmlReport(week: number) {
             ${myPitcherStatcast
               .sort((a, b) => a.xwOBA - b.xwOBA)
               .map((p) => {
+                // Pitcher: wobaDiff is opponent's wOBA - xwOBA (inverted perspective)
+                // positive = opponents hit better than expected = pitcher unlucky = red
+                // negative = opponents hit worse than expected = pitcher lucky = green
                 const luckColor =
-                  p.wobaDiff < -0.02
-                    ? "var(--green)"
-                    : p.wobaDiff > 0.02
-                      ? "var(--red)"
+                  p.wobaDiff > 0.02
+                    ? "var(--red)"
+                    : p.wobaDiff < -0.02
+                      ? "var(--green)"
                       : "var(--text3)";
                 return `<tr>
                 <td class="hm-team">${escapeHtml(p.name)}</td>
