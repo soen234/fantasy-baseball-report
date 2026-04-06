@@ -471,48 +471,69 @@ async function generateHtmlReport(week: number) {
   );
   const isT1 = myMatch?.t1.key === MY_TEAM_KEY;
 
-  // Category rankings
-  const catRankings: Record<
-    string,
-    { teamName: string; value: string; rank: number }[]
-  > = {};
-  for (const [statId, meta] of Object.entries(STAT_MAP)) {
-    if (meta.displayOnly) continue;
-    const entries = teams.map((t) => ({
-      teamName: t.name,
-      value: t.stats[statId] ?? "0",
-      rank: 0,
-    }));
-    // Check if all values are identical (e.g., all 0)
-    const allValues = entries.map((e) => parseFloat(e.value) || 0);
-    const allSame = allValues.every((v) => v === allValues[0]);
-    if (allSame) {
-      // Everyone gets average rank: (1+N)/2
-      const avgRank = (teams.length + 1) / 2;
-      entries.forEach((e) => (e.rank = avgRank));
-    } else {
-      entries.sort((a, b) => {
-        const va = parseFloat(a.value) || 0,
-          vb = parseFloat(b.value) || 0;
-        return meta.higherBetter ? vb - va : va - vb;
-      });
-      // Tied values get average rank
-      let i = 0;
-      while (i < entries.length) {
-        let j = i;
-        while (
-          j < entries.length &&
-          (parseFloat(entries[j].value) || 0) ===
-            (parseFloat(entries[i].value) || 0)
-        )
-          j++;
-        const avgRank = (i + 1 + j) / 2; // average of 1-indexed positions
-        for (let k = i; k < j; k++) entries[k].rank = avgRank;
-        i = j;
-      }
-    }
-    catRankings[statId] = entries;
+  // Build team weekly stats from scoreboard
+  const weeklyTeamStats: Record<string, Record<string, string>> = {};
+  for (const m of matchups) {
+    weeklyTeamStats[m.t1.name] = m.t1.stats;
+    weeklyTeamStats[m.t2.name] = m.t2.stats;
   }
+
+  // Generic category ranking function
+  type CatRankEntry = { teamName: string; value: string; rank: number };
+  function computeCatRankings(
+    statSource: (teamName: string, statId: string) => string,
+  ): Record<string, CatRankEntry[]> {
+    const rankings: Record<string, CatRankEntry[]> = {};
+    for (const [statId, meta] of Object.entries(STAT_MAP)) {
+      if (meta.displayOnly) continue;
+      const entries = teams.map((t) => ({
+        teamName: t.name,
+        value: statSource(t.name, statId),
+        rank: 0,
+      }));
+      const allValues = entries.map((e) => parseFloat(e.value) || 0);
+      const allSame = allValues.every((v) => v === allValues[0]);
+      if (allSame) {
+        const avgRank = (teams.length + 1) / 2;
+        entries.forEach((e) => (e.rank = avgRank));
+      } else {
+        entries.sort((a, b) => {
+          const va = parseFloat(a.value) || 0,
+            vb = parseFloat(b.value) || 0;
+          return meta.higherBetter ? vb - va : va - vb;
+        });
+        let i = 0;
+        while (i < entries.length) {
+          let j = i;
+          while (
+            j < entries.length &&
+            (parseFloat(entries[j].value) || 0) ===
+              (parseFloat(entries[i].value) || 0)
+          )
+            j++;
+          const avgRank = (i + 1 + j) / 2;
+          for (let k = i; k < j; k++) entries[k].rank = avgRank;
+          i = j;
+        }
+      }
+      rankings[statId] = entries;
+    }
+    return rankings;
+  }
+
+  // Season cumulative rankings (from standings)
+  const seasonCatRankings = computeCatRankings((name, sid) => {
+    const t = teams.find((t) => t.name === name);
+    return t?.stats[sid] ?? "0";
+  });
+
+  // Weekly rankings (from scoreboard)
+  const weeklyCatRankings = computeCatRankings(
+    (name, sid) => weeklyTeamStats[name]?.[sid] ?? "0",
+  );
+
+  // Default catRankings = weekly (used for roto/heatmap/radar)
+  const catRankings = weeklyCatRankings;
 
   // ─── History: accumulate week data ──────────
   interface HistoryWeek {
