@@ -804,6 +804,10 @@ async function generateHtmlReport(week: number) {
     .mono { font-family: var(--mono); }
     .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 
+    /* Standings row */
+    .standings-row { display: flex; align-items: center; gap: 10px; padding: 6px 8px; border-radius: 6px; cursor: pointer; }
+    .standings-row:hover { background: var(--surface2); }
+
     /* Cards */
     .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
     .card-flush { background: transparent; border: 1px solid var(--border); border-radius: 12px; }
@@ -1330,10 +1334,6 @@ async function generateHtmlReport(week: number) {
     <div class="card fade-in" style="padding:16px;margin-bottom:20px;animation-delay:0.18s;">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
         <div class="text-xs fw-600" style="color:var(--text3);text-transform:uppercase;letter-spacing:1px;">Category Heatmap</div>
-        <div id="hm-scope" class="tab-bar" style="margin-left:8px;">
-          <button class="tab-btn active" onclick="switchHeatmapScope('weekly')">Weekly</button>
-          <button class="tab-btn" onclick="switchHeatmapScope('season')">Season</button>
-        </div>
         <div id="hm-tabs" class="tab-bar" style="margin-left:auto;">
           <button class="tab-btn active" onclick="switchHeatmap('overview')">Overview</button>
           <button class="tab-btn" onclick="switchHeatmap('bat')">Batting</button>
@@ -1722,14 +1722,21 @@ async function generateHtmlReport(week: number) {
     }
 
     // Get rankings for a team by key
+    var globalScope = 'weekly'; // 'weekly' or 'season'
+
+    function getActiveCatRankings() {
+      return globalScope === 'season' ? SEASON_CAT_RANKINGS : CAT_RANKINGS;
+    }
+
     function getTeamRankings(teamKey) {
       var teamName = TEAM_NAMES[teamKey];
+      var rankings = getActiveCatRankings();
       var results = [];
       for (var statId in STAT_META) {
         var meta = STAT_META[statId];
-        var rankings = CAT_RANKINGS[statId];
-        if (!rankings) continue;
-        var entry = rankings.find(function(e) { return e.teamName === teamName; });
+        var r = rankings[statId];
+        if (!r) continue;
+        var entry = r.find(function(e) { return e.teamName === teamName; });
         if (entry) results.push({ statId: statId, abbr: meta.abbr, group: meta.group, value: entry.value, rank: entry.rank });
       }
       return results;
@@ -1808,15 +1815,22 @@ async function generateHtmlReport(week: number) {
     var hmCurrentScope = 'weekly';
     var hmCurrentTab = 'overview';
 
-    function switchHeatmapScope(scope) {
+    function switchGlobalScope(scope) {
+      globalScope = scope;
       hmCurrentScope = scope;
-      document.getElementById('hm-weekly').classList.toggle('active', scope === 'weekly');
-      document.getElementById('hm-season').classList.toggle('active', scope === 'season');
-      var btns = document.getElementById('hm-scope').querySelectorAll('.tab-btn');
+      // Update scope toggle buttons
+      var btns = document.getElementById('scope-toggle').querySelectorAll('.tab-btn');
       btns[0].classList.toggle('active', scope === 'weekly');
       btns[1].classList.toggle('active', scope === 'season');
-      // Re-apply current tab within scope
+      // Heatmap
+      document.getElementById('hm-weekly').classList.toggle('active', scope === 'weekly');
+      document.getElementById('hm-season').classList.toggle('active', scope === 'season');
       switchHeatmap(hmCurrentTab);
+      // Re-render Radar + Rankings for current team
+      var currentTeam = sel.value;
+      updateRadar(currentTeam);
+      updateRankings(currentTeam);
+      try { localStorage.setItem('fb-scope', scope); } catch(e) {}
     }
 
     function switchHeatmap(tab) {
@@ -1854,14 +1868,15 @@ async function generateHtmlReport(week: number) {
       });
     });
 
-    // Restore from localStorage or default to MY_KEY
+    // Restore scope from localStorage
+    var savedScope = null;
+    try { savedScope = localStorage.getItem('fb-scope'); } catch(e) {}
+    if (savedScope === 'season') switchGlobalScope('season');
+
+    // Restore team from localStorage or default to MY_KEY
     var savedTeam = null;
     try { savedTeam = localStorage.getItem(STORAGE_KEY); } catch(e) {}
-    if (savedTeam && TEAM_NAMES[savedTeam]) {
-      selectTeam(savedTeam);
-    } else {
-      selectTeam(MY_KEY);
-    }
+    selectTeam(savedTeam && TEAM_NAMES[savedTeam] ? savedTeam : MY_KEY);
   </script>
 </body>
 </html>`;
