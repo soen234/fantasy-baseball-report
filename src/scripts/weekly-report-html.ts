@@ -1098,11 +1098,11 @@ async function generateHtmlReport(week: number) {
       <div style="display:flex;flex-direction:column;gap:16px;">
         <div class="card fade-in" style="padding:14px;">
           <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">H2H Rank Trend</div>
-          <div style="position:relative;height:160px;"><canvas id="chartRank"></canvas></div>
+          <div style="position:relative;height:320px;"><canvas id="chartRank"></canvas></div>
         </div>
         <div class="card fade-in" style="padding:14px;">
           <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">Roto Points Trend</div>
-          <div style="position:relative;height:160px;"><canvas id="chartRoto"></canvas></div>
+          <div style="position:relative;height:320px;"><canvas id="chartRoto"></canvas></div>
         </div>
       </div>
     </div>
@@ -1148,6 +1148,10 @@ async function generateHtmlReport(week: number) {
 
     <!-- ═══ TAB: Analysis ═══ -->
     <div id="tab-analysis" class="main-tab">
+
+    <div style="margin-bottom:16px;">
+      <select id="analysis-team-select" style="min-width:240px;"></select>
+    </div>
 
     <!-- Radar + Rankings -->
     <div class="row-2col" style="margin-bottom:20px;">
@@ -1370,6 +1374,20 @@ async function generateHtmlReport(week: number) {
     var STAT_META = ${statMetaJson};
     var TEAM_NAMES = ${teamNameByKeyJson};
     var sel = document.getElementById('matchup-select');
+    var selAnalysis = document.getElementById('analysis-team-select');
+    var STORAGE_KEY = 'fb-selected-team';
+
+    // Populate both selects
+    function populateSelect(selectEl) {
+      TEAMS.forEach(function(t) {
+        var o = document.createElement('option');
+        o.value = t.key; o.textContent = t.name;
+        if (t.key === MY_KEY) o.selected = true;
+        selectEl.appendChild(o);
+      });
+    }
+    populateSelect(sel);
+    populateSelect(selAnalysis);
 
     // Radar charts (stored for dynamic update)
     // Radar tooltip
@@ -1543,13 +1561,6 @@ async function generateHtmlReport(week: number) {
       chartRoto.data.datasets = buildTrendDatasets(teamKey, 'rotoPoints');
       chartRoto.update();
     }
-
-    TEAMS.forEach(function(t) {
-      var o = document.createElement('option');
-      o.value = t.key; o.textContent = t.name;
-      if (t.key === MY_KEY) o.selected = true;
-      sel.appendChild(o);
-    });
 
     function findMatchupByTeam(k) { return MATCHUPS.findIndex(function(m){return m.t1Key===k||m.t2Key===k;}); }
 
@@ -1766,15 +1777,18 @@ async function generateHtmlReport(week: number) {
 
     function selectTeam(k) {
       sel.value = k;
+      selAnalysis.value = k;
       var i = findMatchupByTeam(k);
       if (i >= 0) renderMatchup(i);
       updateRadar(k);
       updateRankings(k);
       highlightStandings(k);
       updateTrend(k);
+      try { localStorage.setItem(STORAGE_KEY, k); } catch(e) {}
     }
 
     sel.addEventListener('change', function(){selectTeam(sel.value);});
+    selAnalysis.addEventListener('change', function(){selectTeam(selAnalysis.value);});
     document.querySelectorAll('.matchup-card').forEach(function(card){
       card.addEventListener('click', function(){
         var m = MATCHUPS[parseInt(card.dataset.idx)];
@@ -1782,7 +1796,15 @@ async function generateHtmlReport(week: number) {
         document.getElementById('matchup-detail').scrollIntoView({behavior:'smooth',block:'nearest'});
       });
     });
-    selectTeam(MY_KEY);
+
+    // Restore from localStorage or default to MY_KEY
+    var savedTeam = null;
+    try { savedTeam = localStorage.getItem(STORAGE_KEY); } catch(e) {}
+    if (savedTeam && TEAM_NAMES[savedTeam]) {
+      selectTeam(savedTeam);
+    } else {
+      selectTeam(MY_KEY);
+    }
   </script>
 </body>
 </html>`;
