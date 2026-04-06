@@ -6,6 +6,7 @@
 export interface BatterStatcast {
   name: string;
   playerId: string;
+  pos: string;
   attempts: number;
   avgExitVelo: number;
   maxExitVelo: number;
@@ -24,6 +25,7 @@ export interface BatterStatcast {
 export interface PitcherStatcast {
   name: string;
   playerId: string;
+  pos: string;
   attempts: number;
   avgExitVeloAgainst: number;
   barrelPctAgainst: number;
@@ -76,6 +78,28 @@ function savantNameToFull(savantName: string): string {
   return parts.length === 2 ? `${parts[1]} ${parts[0]}` : savantName;
 }
 
+
+// Batch-fetch positions from MLB Stats API
+async function fetchPositions(
+  playerIds: string[],
+): Promise<Record<string, string>> {
+  const posMap: Record<string, string> = {};
+  // MLB API supports batch via comma-separated IDs (chunks of 100)
+  for (let i = 0; i < playerIds.length; i += 100) {
+    const chunk = playerIds.slice(i, i + 100);
+    try {
+      const res = await fetch(
+        `https://statsapi.mlb.com/api/v1/people?personIds=${chunk.join(",")}`,
+      );
+      const data = (await res.json()) as any;
+      for (const p of data.people || []) {
+        posMap[String(p.id)] = p.primaryPosition?.abbreviation || "";
+      }
+    } catch {}
+  }
+  return posMap;
+}
+
 export async function fetchBatterStatcast(
   year = 2026,
   minPA = 10,
@@ -94,11 +118,14 @@ export async function fetchBatterStatcast(
   const xMap = new Map<string, Record<string, string>>();
   for (const row of xData) xMap.set(row["player_id"], row);
 
+  const posMap = await fetchPositions(scData.map((r) => r["player_id"]));
+
   return scData.map((row) => {
     const x = xMap.get(row["player_id"]) || {};
     return {
       name: savantNameToFull(row["last_name, first_name"] || ""),
       playerId: row["player_id"],
+      pos: posMap[row["player_id"]] || "",
       attempts: parseInt(row["attempts"]) || 0,
       avgExitVelo: parseFloat(row["avg_hit_speed"]) || 0,
       maxExitVelo: parseFloat(row["max_hit_speed"]) || 0,
@@ -133,11 +160,14 @@ export async function fetchPitcherStatcast(
   const xMap = new Map<string, Record<string, string>>();
   for (const row of xData) xMap.set(row["player_id"], row);
 
+  const posMap = await fetchPositions(scData.map((r) => r["player_id"]));
+
   return scData.map((row) => {
     const x = xMap.get(row["player_id"]) || {};
     return {
       name: savantNameToFull(row["last_name, first_name"] || ""),
       playerId: row["player_id"],
+      pos: posMap[row["player_id"]] || "",
       attempts: parseInt(row["attempts"]) || 0,
       avgExitVeloAgainst: parseFloat(row["avg_hit_speed"]) || 0,
       barrelPctAgainst: parseFloat(row["brl_percent"]) || 0,

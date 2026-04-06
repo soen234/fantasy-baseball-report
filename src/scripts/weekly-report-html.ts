@@ -1573,14 +1573,14 @@ async function generateHtmlReport(week: number) {
                     txn.adds
                       .map(
                         (a) =>
-                          `<span class="w">${escapeHtml(a.player)}</span> <span style="color:var(--text3);">${a.mlb}</span>`,
+                          `<span class="w">${escapeHtml(a.player)}</span>${a.pos ? ` <span class="mono" style="font-size:9px;color:var(--text3);">${a.pos}</span>` : ""} <span style="color:var(--text3);">${a.mlb}</span>`,
                       )
                       .join(", ") || "";
                   const dropStr =
                     txn.drops
                       .map(
                         (d) =>
-                          `<span class="l">${escapeHtml(d.player)}</span> <span style="color:var(--text3);">${d.mlb}</span>`,
+                          `<span class="l">${escapeHtml(d.player)}</span>${d.pos ? ` <span class="mono" style="font-size:9px;color:var(--text3);">${d.pos}</span>` : ""} <span style="color:var(--text3);">${d.mlb}</span>`,
                       )
                       .join(", ") || "";
                   return `<div class="txn-log-row" data-txn-team="${escapeHtml(team)}" style="display:grid;grid-template-columns:40px 120px 1fr 1fr;gap:6px;padding:6px 8px;font-size:11px;border-bottom:1px solid var(--border);align-items:center;">
@@ -1617,7 +1617,7 @@ async function generateHtmlReport(week: number) {
         ? (() => {
             // Helper: render a leaderboard row — FA tagged, team highlight done by JS
             function scRow(
-              p: { name: string },
+              p: { name: string; pos?: string },
               i: number,
               valHtml: string,
             ): string {
@@ -1631,7 +1631,7 @@ async function generateHtmlReport(week: number) {
               const tag = isFa
                 ? ` <span class="sc-fa-tag" style="font-size:9px;color:var(--amber);opacity:0.7;">FA</span>`
                 : "";
-              const pos = playerPositions[p.name] || "";
+              const pos = p.pos || playerPositions[p.name] || "";
               const posTag = pos
                 ? `<span class="mono" style="font-size:9px;color:var(--text3);width:28px;text-align:right;flex-shrink:0;">${pos}</span>`
                 : `<span style="width:28px;flex-shrink:0;"></span>`;
@@ -1732,9 +1732,7 @@ async function generateHtmlReport(week: number) {
             const isRostered = [...allRosteredNames].some(
               (r) => norm(r) === norm(p.name),
             );
-            const isMine = myRosterNames.some(
-              (r) => norm(r) === norm(p.name),
-            );
+            const isMine = myRosterNames.some((r) => norm(r) === norm(p.name));
             const isFa = !isRostered;
             const nameColor = isMine
               ? "var(--accent)"
@@ -1743,18 +1741,18 @@ async function generateHtmlReport(week: number) {
                 : "var(--text2)";
             const weight = isFa || isMine ? "fw-700" : "fw-600";
             const statusTag = isMine
-              ? \` <span style="font-size:9px;color:var(--accent);opacity:0.7;">MY</span>\`
+              ? ` <span style="font-size:9px;color:var(--accent);opacity:0.7;">MY</span>`
               : isFa
-                ? \` <span style="font-size:9px;color:var(--amber);opacity:0.7;">FA</span>\`
+                ? ` <span style="font-size:9px;color:var(--amber);opacity:0.7;">FA</span>`
                 : "";
-            return \`<div style="display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid var(--border);">
-          <span class="mono text-xs" style="color:var(--text3);width:20px;text-align:right;">\${i + 1}</span>
-          <span class="mono" style="font-size:9px;color:var(--text3);width:28px;text-align:right;">\${escapeHtml(p.position)}</span>
-          <span class="text-xs truncate \${weight}" style="flex:1;color:\${nameColor};">\${escapeHtml(p.name)}\${statusTag}</span>
-          <span class="mono" style="font-size:10px;color:var(--text3);width:28px;text-align:center;">\${escapeHtml(p.team)}</span>
-          <span class="mono text-xs fw-600" style="color:var(--green);width:24px;text-align:right;">FV\${p.fv}</span>
-          <span class="mono text-xs" style="color:var(--text3);width:32px;text-align:right;">ETA \${p.eta}</span>
-        </div>\`;
+            return `<div style="display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid var(--border);">
+          <span class="mono text-xs" style="color:var(--text3);width:20px;text-align:right;">${i + 1}</span>
+          <span class="mono" style="font-size:9px;color:var(--text3);width:28px;text-align:right;">${escapeHtml(p.position)}</span>
+          <span class="text-xs truncate ${weight}" style="flex:1;color:${nameColor};">${escapeHtml(p.name)}${statusTag}</span>
+          <span class="mono" style="font-size:10px;color:var(--text3);width:28px;text-align:center;">${escapeHtml(p.team)}</span>
+          <span class="mono text-xs fw-600" style="color:var(--green);width:24px;text-align:right;">FV${p.fv}</span>
+          <span class="mono text-xs" style="color:var(--text3);width:32px;text-align:right;">ETA ${p.eta}</span>
+        </div>`;
           })
           .join("")}
       </div>
