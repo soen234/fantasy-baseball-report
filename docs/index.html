@@ -901,25 +901,21 @@
       // For rank: sort ascending (lower is better). For roto: sort descending
       var isRank = chart.options.scales && chart.options.scales.y && chart.options.scales.y.reverse;
       others.sort(function(a, b) { return isRank ? a.raw - b.raw : b.raw - a.raw; });
-      // Show top 3 others + highlighted
-      var top3 = others.slice(0, 3);
-      var display = highlighted.concat(top3);
-      // Sort final display
+      // Show all teams sorted
+      var display = highlighted.concat(others);
       display.sort(function(a, b) { return isRank ? a.raw - b.raw : b.raw - a.raw; });
 
-      var inner = '<div class="ct-inner">';
+      var inner = '<div class="ct-inner" style="max-height:320px;overflow-y:auto;">';
       inner += '<div class="ct-title">' + (tooltip.title[0] || '') + '</div>';
-      display.forEach(function(r) {
+      display.forEach(function(r, i) {
         var hl = r.highlight ? ' highlight' : '';
         inner += '<div class="ct-row' + hl + '">';
+        inner += '<span class="mono text-xs" style="color:var(--text3);width:16px;">' + (i+1) + '</span>';
         inner += '<div class="ct-dot" style="background:' + r.color + ';"></div>';
         inner += '<span class="ct-name">' + r.name + '</span>';
         inner += '<span class="ct-val" style="color:' + r.color + ';">' + r.value + '</span>';
         inner += '</div>';
       });
-      if (others.length > 3) {
-        inner += '<div class="ct-row"><span class="ct-name" style="font-size:10px;color:var(--text3);">+' + (others.length - 3) + ' more</span></div>';
-      }
       inner += '</div>';
       el.replaceChildren();
       var tmp = document.createElement('div');
@@ -938,22 +934,23 @@
         y: { grid: { color: 'rgba(148,163,184,0.08)' }, ticks: { color: '#64748b', font: { size: 10, family: 'JetBrains Mono' }, stepSize: 1 } }
       },
       plugins: {
-        legend: { display: false },
+        legend: { display: true, position: 'bottom', labels: { color: '#94a3b8', font: { size: 9, family: 'DM Sans' }, boxWidth: 10, padding: 6, usePointStyle: true, pointStyle: 'circle' } },
         tooltip: { enabled: false, external: externalTooltip }
       },
       interaction: { mode: 'index', intersect: false },
-      elements: { point: { radius: 4, hoverRadius: 6 }, line: { tension: 0.3 } }
+      elements: { point: { radius: 3, hoverRadius: 5 }, line: { tension: 0.3 } }
     };
 
     var rankOpts = JSON.parse(JSON.stringify(trendLineOpts));
     rankOpts.scales.y.reverse = true;
     rankOpts.scales.y.min = 1;
     rankOpts.scales.y.max = 12;
-    // Re-attach external fn (lost in JSON.parse)
     rankOpts.plugins.tooltip = { enabled: false, external: externalTooltip };
+    rankOpts.plugins.legend = trendLineOpts.plugins.legend;
 
     var rotoOpts = JSON.parse(JSON.stringify(trendLineOpts));
     rotoOpts.plugins.tooltip = { enabled: false, external: externalTooltip };
+    rotoOpts.plugins.legend = trendLineOpts.plugins.legend;
 
     function getTeamTrendData(teamKey, field) {
       return HISTORY.weeks.map(function(w) {
@@ -972,31 +969,21 @@
     // Initialize with selected team + all others as faint background
     function buildTrendDatasets(teamKey, field) {
       var datasets = [];
-      // Background: all teams faint
       TEAMS.forEach(function(t) {
-        if (t.key === teamKey) return;
+        var color = teamColor(t.key);
+        var isSelected = t.key === teamKey;
         datasets.push({
           label: t.name,
           data: getTeamTrendData(t.key, field),
-          borderColor: 'rgba(148,163,184,0.12)',
-          backgroundColor: 'transparent',
-          borderWidth: 1,
-          pointRadius: 0,
+          borderColor: isSelected ? color : color + '99',
+          backgroundColor: isSelected ? color + '1a' : 'transparent',
+          borderWidth: isSelected ? 3 : 1.5,
+          pointRadius: isSelected ? 5 : 2.5,
+          pointBackgroundColor: color,
           tension: 0.3,
+          fill: isSelected,
+          order: isSelected ? 0 : 1,
         });
-      });
-      // Foreground: selected team bold
-      var color = teamColor(teamKey);
-      datasets.push({
-        label: TEAM_NAMES[teamKey] || '',
-        data: getTeamTrendData(teamKey, field),
-        borderColor: color,
-        backgroundColor: color + '1a',
-        borderWidth: 2.5,
-        pointRadius: 5,
-        pointBackgroundColor: color,
-        tension: 0.3,
-        fill: true,
       });
       return datasets;
     }
