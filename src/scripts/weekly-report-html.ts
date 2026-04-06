@@ -807,6 +807,7 @@ async function generateHtmlReport(week: number) {
     /* Standings row */
     .standings-row { display: flex; align-items: center; gap: 10px; padding: 6px 8px; border-radius: 6px; cursor: pointer; }
     .standings-row:hover { background: var(--surface2); }
+    .standings-name { flex: 1; min-width: 0; color: var(--text); }
 
     /* Cards */
     .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
@@ -826,7 +827,7 @@ async function generateHtmlReport(week: number) {
       .card { border-radius: 8px; overflow: hidden; }
       /* Standings: compact 2-line layout on mobile */
       .standings-row { flex-wrap: wrap !important; gap: 2px 8px !important; padding: 5px 6px !important; }
-      .standings-row .standings-name { flex-basis: calc(100% - 28px); font-size: 11px; }
+      .standings-row .standings-name { flex: 0 0 calc(100% - 28px) !important; font-size: 11px; }
       .standings-row .standings-pct { margin-left: 28px; font-size: 10px; }
       .standings-row .standings-record { font-size: 10px; }
       /* Hot zone */
@@ -959,12 +960,18 @@ async function generateHtmlReport(week: number) {
         </div>
         <span class="text-xs" style="color:var(--text3);">${new Date().toLocaleDateString("ko-KR")}</span>
       </div>
-      <!-- Main tabs -->
-      <div id="main-tabs" class="tab-bar">
-        <button class="tab-btn active" onclick="switchMainTab('overview')">Overview</button>
-        <button class="tab-btn" onclick="switchMainTab('matchup')">Matchup</button>
-        <button class="tab-btn" onclick="switchMainTab('analysis')">Analysis</button>
-        <button class="tab-btn" onclick="switchMainTab('activity')">Activity</button>
+      <!-- Main tabs + scope toggle -->
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <div id="main-tabs" class="tab-bar">
+          <button class="tab-btn active" onclick="switchMainTab('overview')">Overview</button>
+          <button class="tab-btn" onclick="switchMainTab('matchup')">Matchup</button>
+          <button class="tab-btn" onclick="switchMainTab('analysis')">Analysis</button>
+          <button class="tab-btn" onclick="switchMainTab('activity')">Activity</button>
+        </div>
+        <div id="scope-toggle" class="tab-bar">
+          <button class="tab-btn active" onclick="switchGlobalScope('weekly')">Weekly</button>
+          <button class="tab-btn" onclick="switchGlobalScope('season')">Season</button>
+        </div>
       </div>
     </div>
   </header>
@@ -993,9 +1000,9 @@ async function generateHtmlReport(week: number) {
                   : i < 3
                     ? "var(--text2)"
                     : "var(--text3)";
-              return `<div class="standings-row" data-team-key="${t.key}" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('${t.key}')">
+              return `<div class="standings-row" data-team-key="${t.key}" onclick="selectTeam('${t.key}')">
               <span class="mono fw-700 text-sm" style="color:${rankColor};width:18px;text-align:right;">${t.standings.rank}</span>
-              <span class="text-sm truncate fw-600 standings-name" style="flex:1;color:var(--text);">${escapeHtml(t.name)}</span>
+              <span class="text-sm truncate fw-600 standings-name">${escapeHtml(t.name)}</span>
               <span class="mono text-xs standings-pct" style="color:var(--text2);">${t.standings.pct}</span>
               <span class="mono text-xs standings-record" style="color:var(--text3);text-align:right;">${t.standings.wins}-${t.standings.losses}-${t.standings.ties}</span>
             </div>`;
@@ -1016,9 +1023,9 @@ async function generateHtmlReport(week: number) {
               const rotoStr = Number.isInteger(t.roto)
                 ? String(t.roto)
                 : t.roto.toFixed(1);
-              return `<div class="standings-row" data-team-key="${t.key}" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('${t.key}')">
+              return `<div class="standings-row" data-team-key="${t.key}" onclick="selectTeam('${t.key}')">
               <span class="mono fw-700 text-sm" style="color:${rankColor};width:18px;text-align:right;">${i + 1}</span>
-              <span class="text-sm truncate fw-600 standings-name" style="flex:1;color:var(--text);">${escapeHtml(t.name)}</span>
+              <span class="text-sm truncate fw-600 standings-name">${escapeHtml(t.name)}</span>
               <span class="mono text-xs fw-700 standings-pct" style="color:var(--accent);">${rotoStr}</span>
               <span class="mono text-xs standings-record" style="color:var(--text3);text-align:right;">${t.standings.wins}-${t.standings.losses}-${t.standings.ties}</span>
             </div>`;
