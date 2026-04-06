@@ -801,16 +801,37 @@ async function generateHtmlReport(week: number) {
 
     @media (max-width: 768px) {
       .grid-2, .grid-3, .grid-sidebar, .row-2col, .hot-grid { grid-template-columns: 1fr !important; }
-      .container { padding: 0 10px; }
-      header .container { flex-direction: column; gap: 8px; align-items: flex-start; }
-      .mg { grid-template-columns: 1fr 56px 1fr; padding: 7px 8px; font-size: 12px; }
-      .cat-row { grid-template-columns: 40px 1fr auto 1fr 40px; font-size: 11px; padding: 4px 6px; }
-      .rank-pill { font-size: 10px; padding: 2px 6px; }
-      .ct-inner { min-width: 140px; padding: 8px 10px; }
+      .container { padding: 0 8px; }
+      header .container { flex-direction: column; gap: 6px; align-items: stretch; }
+      .card { border-radius: 8px; overflow: hidden; }
+      /* Standings: hide PCT + W-L-T on narrow */
+      .standings-pct, .standings-record { display: none !important; }
+      /* Hot zone */
+      .hot-grid .card { padding: 10px !important; }
+      /* Matchup */
+      .mg { grid-template-columns: 1fr 50px 1fr; padding: 6px 6px; font-size: 11px; }
+      .cat-row { grid-template-columns: 36px 1fr auto 1fr 36px; font-size: 10px; padding: 3px 4px; }
+      .rank-pill { font-size: 9px; padding: 1px 5px; }
+      /* Selects */
       select { min-width: 0 !important; width: 100%; font-size: 12px; }
-      .card { border-radius: 8px; }
-      .scroll-y { max-height: 300px; }
-      .txn-row { grid-template-columns: 40px 1fr 1fr; font-size: 11px; gap: 4px; }
+      /* Tabs */
+      .tab-bar { flex-wrap: wrap; }
+      .tab-btn { padding: 5px 10px; font-size: 11px; }
+      /* Tooltips */
+      .ct-inner { min-width: 120px; padding: 6px 8px; font-size: 11px; }
+      .ct-row { gap: 4px; }
+      .ct-name { font-size: 10px; }
+      .ct-val { font-size: 10px; }
+      /* Scroll areas */
+      .scroll-y { max-height: 280px; }
+      .txn-row { grid-template-columns: 36px 1fr 1fr; font-size: 10px; gap: 4px; }
+      /* Heatmap */
+      .heatmap { font-size: 9px; }
+      .hm-team { font-size: 10px; max-width: 100px; }
+      .hm-avg { min-width: 36px; font-size: 9px; }
+      .hm-cat { min-width: 28px; font-size: 9px; }
+      /* Chart containers: prevent overflow */
+      canvas { max-width: 100% !important; }
     }
 
     /* Matchup grid */
@@ -930,6 +951,73 @@ async function generateHtmlReport(week: number) {
     <!-- ═══ TAB: Overview ═══ -->
     <div id="tab-overview" class="main-tab active">
 
+    <div style="margin-bottom:16px;">
+      <select id="overview-team-select" style="min-width:240px;"></select>
+    </div>
+
+    <div class="row-2col" style="margin-bottom:20px;">
+      <div class="card fade-in" style="padding:16px;">
+        <div id="board-tabs" class="tab-bar" style="margin-bottom:10px;">
+          <button class="tab-btn active" onclick="switchBoard('h2h')">H2H</button>
+          <button class="tab-btn" onclick="switchBoard('roto')">Roto</button>
+        </div>
+        <div id="board-h2h" class="tab-content active">
+          ${teams
+            .map((t, i) => {
+              const rankColor =
+                i === 0
+                  ? "var(--amber)"
+                  : i < 3
+                    ? "var(--text2)"
+                    : "var(--text3)";
+              return `<div data-team-key="${t.key}" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('${t.key}')">
+              <span class="mono fw-700 text-sm" style="color:${rankColor};width:18px;text-align:right;">${t.standings.rank}</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">${escapeHtml(t.name)}</span>
+              <span class="mono text-xs standings-pct" style="color:var(--text2);">${t.standings.pct}</span>
+              <span class="mono text-xs standings-record" style="color:var(--text3);width:52px;text-align:right;">${t.standings.wins}-${t.standings.losses}-${t.standings.ties}</span>
+            </div>`;
+            })
+            .join("\n          ")}
+        </div>
+        <div id="board-roto" class="tab-content">
+          ${[...teams]
+            .map((t) => ({ ...t, roto: rotoByTeam[t.name] || 0 }))
+            .sort((a, b) => b.roto - a.roto)
+            .map((t, i) => {
+              const rankColor =
+                i === 0
+                  ? "var(--amber)"
+                  : i < 3
+                    ? "var(--text2)"
+                    : "var(--text3)";
+              const rotoStr = Number.isInteger(t.roto)
+                ? String(t.roto)
+                : t.roto.toFixed(1);
+              return `<div data-team-key="${t.key}" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('${t.key}')">
+              <span class="mono fw-700 text-sm" style="color:${rankColor};width:18px;text-align:right;">${i + 1}</span>
+              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">${escapeHtml(t.name)}</span>
+              <span class="mono text-xs fw-700" style="color:var(--accent);">${rotoStr}</span>
+              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">${t.standings.wins}-${t.standings.losses}-${t.standings.ties}</span>
+            </div>`;
+            })
+            .join("\n          ")}
+        </div>
+      </div>
+
+      <!-- Trend Charts stacked -->
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div class="card fade-in" style="padding:14px;">
+          <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">H2H Rank Trend</div>
+          <div style="position:relative;height:320px;"><canvas id="chartRank"></canvas></div>
+        </div>
+        <div class="card fade-in" style="padding:14px;">
+          <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">Roto Points Trend</div>
+          <div style="position:relative;height:320px;"><canvas id="chartRoto"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+
     <!-- Hot Zone: Players + Team -->
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px;" class="hot-grid">
       <!-- Hot Batters -->
@@ -1041,69 +1129,6 @@ async function generateHtmlReport(week: number) {
             })
             .join("\n        ");
         })()}
-      </div>
-    </div>
-
-    <!-- Standings (H2H + Roto) -->
-    <div class="row-2col" style="margin-bottom:20px;">
-      <div class="card fade-in" style="padding:16px;">
-        <div id="board-tabs" class="tab-bar" style="margin-bottom:10px;">
-          <button class="tab-btn active" onclick="switchBoard('h2h')">H2H</button>
-          <button class="tab-btn" onclick="switchBoard('roto')">Roto</button>
-        </div>
-        <div id="board-h2h" class="tab-content active">
-          ${teams
-            .map((t, i) => {
-              const rankColor =
-                i === 0
-                  ? "var(--amber)"
-                  : i < 3
-                    ? "var(--text2)"
-                    : "var(--text3)";
-              return `<div data-team-key="${t.key}" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('${t.key}')">
-              <span class="mono fw-700 text-sm" style="color:${rankColor};width:18px;text-align:right;">${t.standings.rank}</span>
-              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">${escapeHtml(t.name)}</span>
-              <span class="mono text-xs" style="color:var(--text2);">${t.standings.pct}</span>
-              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">${t.standings.wins}-${t.standings.losses}-${t.standings.ties}</span>
-            </div>`;
-            })
-            .join("\n          ")}
-        </div>
-        <div id="board-roto" class="tab-content">
-          ${[...teams]
-            .map((t) => ({ ...t, roto: rotoByTeam[t.name] || 0 }))
-            .sort((a, b) => b.roto - a.roto)
-            .map((t, i) => {
-              const rankColor =
-                i === 0
-                  ? "var(--amber)"
-                  : i < 3
-                    ? "var(--text2)"
-                    : "var(--text3)";
-              const rotoStr = Number.isInteger(t.roto)
-                ? String(t.roto)
-                : t.roto.toFixed(1);
-              return `<div data-team-key="${t.key}" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('${t.key}')">
-              <span class="mono fw-700 text-sm" style="color:${rankColor};width:18px;text-align:right;">${i + 1}</span>
-              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">${escapeHtml(t.name)}</span>
-              <span class="mono text-xs fw-700" style="color:var(--accent);">${rotoStr}</span>
-              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">${t.standings.wins}-${t.standings.losses}-${t.standings.ties}</span>
-            </div>`;
-            })
-            .join("\n          ")}
-        </div>
-      </div>
-
-      <!-- Trend Charts stacked -->
-      <div style="display:flex;flex-direction:column;gap:16px;">
-        <div class="card fade-in" style="padding:14px;">
-          <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">H2H Rank Trend</div>
-          <div style="position:relative;height:320px;"><canvas id="chartRank"></canvas></div>
-        </div>
-        <div class="card fade-in" style="padding:14px;">
-          <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">Roto Points Trend</div>
-          <div style="position:relative;height:320px;"><canvas id="chartRoto"></canvas></div>
-        </div>
       </div>
     </div>
 
@@ -1375,9 +1400,11 @@ async function generateHtmlReport(week: number) {
     var TEAM_NAMES = ${teamNameByKeyJson};
     var sel = document.getElementById('matchup-select');
     var selAnalysis = document.getElementById('analysis-team-select');
+    var selOverview = document.getElementById('overview-team-select');
+    var allSelects = [sel, selAnalysis, selOverview];
     var STORAGE_KEY = 'fb-selected-team';
 
-    // Populate both selects
+    // Populate all selects
     function populateSelect(selectEl) {
       TEAMS.forEach(function(t) {
         var o = document.createElement('option');
@@ -1386,8 +1413,7 @@ async function generateHtmlReport(week: number) {
         selectEl.appendChild(o);
       });
     }
-    populateSelect(sel);
-    populateSelect(selAnalysis);
+    allSelects.forEach(populateSelect);
 
     // Radar charts (stored for dynamic update)
     // Radar tooltip
@@ -1490,7 +1516,7 @@ async function generateHtmlReport(week: number) {
         y: { grid: { color: 'rgba(148,163,184,0.08)' }, ticks: { color: '#64748b', font: { size: 10, family: 'JetBrains Mono' }, stepSize: 1 } }
       },
       plugins: {
-        legend: { display: true, position: 'bottom', labels: { color: '#94a3b8', font: { size: 9, family: 'DM Sans' }, boxWidth: 10, padding: 6, usePointStyle: true, pointStyle: 'circle' } },
+        legend: { display: window.innerWidth > 768, position: 'bottom', labels: { color: '#94a3b8', font: { size: 9, family: 'DM Sans' }, boxWidth: 8, padding: 4, usePointStyle: true, pointStyle: 'circle' } },
         tooltip: { enabled: false, external: externalTooltip }
       },
       interaction: { mode: 'index', intersect: false },
@@ -1776,8 +1802,7 @@ async function generateHtmlReport(week: number) {
     }
 
     function selectTeam(k) {
-      sel.value = k;
-      selAnalysis.value = k;
+      allSelects.forEach(function(s) { s.value = k; });
       var i = findMatchupByTeam(k);
       if (i >= 0) renderMatchup(i);
       updateRadar(k);
@@ -1787,8 +1812,9 @@ async function generateHtmlReport(week: number) {
       try { localStorage.setItem(STORAGE_KEY, k); } catch(e) {}
     }
 
-    sel.addEventListener('change', function(){selectTeam(sel.value);});
-    selAnalysis.addEventListener('change', function(){selectTeam(selAnalysis.value);});
+    allSelects.forEach(function(s) {
+      s.addEventListener('change', function() { selectTeam(s.value); });
+    });
     document.querySelectorAll('.matchup-card').forEach(function(card){
       card.addEventListener('click', function(){
         var m = MATCHUPS[parseInt(card.dataset.idx)];
