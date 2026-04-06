@@ -738,6 +738,19 @@ async function generateHtmlReport(week: number) {
       ]),
     ),
   );
+  // Season cumulative rankings JSON (for heatmap season toggle)
+  const seasonCatRankingsJson = JSON.stringify(
+    Object.fromEntries(
+      Object.entries(seasonCatRankings).map(([statId, entries]) => [
+        statId,
+        entries.map((e) => ({
+          teamName: e.teamName,
+          value: e.value,
+          rank: e.rank,
+        })),
+      ]),
+    ),
+  );
   // Stat metadata for client
   const statMetaJson = JSON.stringify(
     Object.fromEntries(
@@ -1191,6 +1204,24 @@ async function generateHtmlReport(week: number) {
         return { name: t.name, key: t.key, ranks, batAvg, pitAvg, allAvg };
       });
 
+      // Season cumulative rows
+      const seasonHmRows = teams.map((t) => {
+        const ranks: Record<string, number> = {};
+        for (const sid of allIds) {
+          const entry = seasonCatRankings[sid].find(
+            (e) => e.teamName === t.name,
+          );
+          ranks[sid] = entry ? entry.rank : 6.5;
+        }
+        const batAvg =
+          battingIds.reduce((s, id) => s + ranks[id], 0) / battingIds.length;
+        const pitAvg =
+          pitchingIds.reduce((s, id) => s + ranks[id], 0) / pitchingIds.length;
+        const allAvg =
+          allIds.reduce((s, id) => s + ranks[id], 0) / allIds.length;
+        return { name: t.name, key: t.key, ranks, batAvg, pitAvg, allAvg };
+      });
+
       function hmc(rank: number): string {
         const p = (rank - 1) / 11;
         const h = (1 - p) * 120;
@@ -1208,12 +1239,14 @@ async function generateHtmlReport(week: number) {
           : m.abbr;
       }
 
+      type HmRow = (typeof hmRows)[0];
       function buildTable(
+        rows: HmRow[],
         ids: string[],
         sortKey: "allAvg" | "batAvg" | "pitAvg",
         avgLabel: string,
       ) {
-        const sorted = [...hmRows].sort((a, b) => a[sortKey] - b[sortKey]);
+        const sorted = [...rows].sort((a, b) => a[sortKey] - b[sortKey]);
         let h = `<table class="heatmap"><thead><tr><th class="hm-team">Team</th><th class="hm-avg">${avgLabel}</th>`;
         for (const sid of ids) h += `<th class="hm-cat">${abbr(sid)}</th>`;
         h += `</tr></thead><tbody>`;
@@ -1222,8 +1255,7 @@ async function generateHtmlReport(week: number) {
           h += `<td class="hm-team">${escapeHtml(r.name)}</td>`;
           h += `<td class="hm-avg" style="background:${hmc(r[sortKey])};"><b>${r[sortKey].toFixed(2)}</b></td>`;
           for (const sid of ids) {
-            const rank = r.ranks[sid];
-            h += `<td class="hm-cat" style="background:${hmc(rank)};">${fr(rank)}</td>`;
+            h += `<td class="hm-cat" style="background:${hmc(r.ranks[sid])};">${fr(r.ranks[sid])}</td>`;
           }
           h += `</tr>`;
         }
@@ -1231,9 +1263,8 @@ async function generateHtmlReport(week: number) {
         return h;
       }
 
-      // Overview table: just 3 summary columns
-      function buildOverview() {
-        const sorted = [...hmRows].sort((a, b) => a.allAvg - b.allAvg);
+      function buildOverview(rows: HmRow[]) {
+        const sorted = [...rows].sort((a, b) => a.allAvg - b.allAvg);
         let h = `<table class="heatmap"><thead><tr><th class="hm-team">Team</th><th class="hm-avg">AVG<br>Rank</th><th class="hm-avg">BAT<br>Avg</th><th class="hm-avg">PIT<br>Avg</th></tr></thead><tbody>`;
         for (const r of sorted) {
           h += `<tr onclick="selectTeam('${r.key}')" style="cursor:pointer;" data-team-key="${r.key}">`;
@@ -1249,8 +1280,12 @@ async function generateHtmlReport(week: number) {
 
       return `
     <div class="card fade-in" style="padding:16px;margin-bottom:20px;animation-delay:0.18s;">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
         <div class="text-xs fw-600" style="color:var(--text3);text-transform:uppercase;letter-spacing:1px;">Category Heatmap</div>
+        <div id="hm-scope" class="tab-bar" style="margin-left:8px;">
+          <button class="tab-btn active" onclick="switchHeatmapScope('weekly')">Weekly</button>
+          <button class="tab-btn" onclick="switchHeatmapScope('season')">Season</button>
+        </div>
         <div id="hm-tabs" class="tab-bar" style="margin-left:auto;">
           <button class="tab-btn active" onclick="switchHeatmap('overview')">Overview</button>
           <button class="tab-btn" onclick="switchHeatmap('bat')">Batting</button>
@@ -1258,9 +1293,18 @@ async function generateHtmlReport(week: number) {
         </div>
       </div>
       <div style="overflow-x:auto;">
-        <div id="hm-overview" class="tab-content active">${buildOverview()}</div>
-        <div id="hm-bat" class="tab-content">${buildTable(battingIds, "batAvg", "BAT<br>Avg")}</div>
-        <div id="hm-pit" class="tab-content">${buildTable(pitchingIds, "pitAvg", "PIT<br>Avg")}</div>
+        <!-- Weekly -->
+        <div id="hm-weekly" class="tab-content active">
+          <div id="hm-overview" class="tab-content active">${buildOverview(hmRows)}</div>
+          <div id="hm-bat" class="tab-content">${buildTable(hmRows, battingIds, "batAvg", "BAT<br>Avg")}</div>
+          <div id="hm-pit" class="tab-content">${buildTable(hmRows, pitchingIds, "pitAvg", "PIT<br>Avg")}</div>
+        </div>
+        <!-- Season -->
+        <div id="hm-season" class="tab-content">
+          <div id="hm-s-overview" class="tab-content active">${buildOverview(seasonHmRows)}</div>
+          <div id="hm-s-bat" class="tab-content">${buildTable(seasonHmRows, battingIds, "batAvg", "BAT<br>Avg")}</div>
+          <div id="hm-s-pit" class="tab-content">${buildTable(seasonHmRows, pitchingIds, "pitAvg", "PIT<br>Avg")}</div>
+        </div>
       </div>
     </div>`;
     })()}
@@ -1322,6 +1366,7 @@ async function generateHtmlReport(week: number) {
     var TEAMS = ${teamsJson};
     var MY_KEY = ${myTeamKeyJson};
     var CAT_RANKINGS = ${catRankingsJson};
+    var SEASON_CAT_RANKINGS = ${seasonCatRankingsJson};
     var STAT_META = ${statMetaJson};
     var TEAM_NAMES = ${teamNameByKeyJson};
     var sel = document.getElementById('matchup-select');
@@ -1705,9 +1750,26 @@ async function generateHtmlReport(week: number) {
       btns[1].classList.toggle('active', tab === 'roto');
     }
 
+    var hmCurrentScope = 'weekly';
+    var hmCurrentTab = 'overview';
+
+    function switchHeatmapScope(scope) {
+      hmCurrentScope = scope;
+      document.getElementById('hm-weekly').classList.toggle('active', scope === 'weekly');
+      document.getElementById('hm-season').classList.toggle('active', scope === 'season');
+      var btns = document.getElementById('hm-scope').querySelectorAll('.tab-btn');
+      btns[0].classList.toggle('active', scope === 'weekly');
+      btns[1].classList.toggle('active', scope === 'season');
+      // Re-apply current tab within scope
+      switchHeatmap(hmCurrentTab);
+    }
+
     function switchHeatmap(tab) {
+      hmCurrentTab = tab;
+      var prefix = hmCurrentScope === 'weekly' ? 'hm-' : 'hm-s-';
       ['overview','bat','pit'].forEach(function(t) {
-        document.getElementById('hm-' + t).classList.toggle('active', t === tab);
+        var el = document.getElementById(prefix + t);
+        if (el) el.classList.toggle('active', t === tab);
       });
       var btns = document.getElementById('hm-tabs').querySelectorAll('.tab-btn');
       btns[0].classList.toggle('active', tab === 'overview');
