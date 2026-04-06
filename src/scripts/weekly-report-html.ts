@@ -1495,12 +1495,6 @@ async function generateHtmlReport(week: number) {
       }
 
       return `
-    <div style="margin-bottom:12px;">
-      <div id="activity-tabs" class="tab-bar" style="display:inline-flex;">
-        <button class="tab-btn active" onclick="switchActivity('weekly')">Weekly</button>
-        <button class="tab-btn" onclick="switchActivity('season')">Season</button>
-      </div>
-    </div>
     <div id="activity-weekly" class="tab-content active">${buildActivityBlock(weekTxns, "w")}</div>
     <div id="activity-season" class="tab-content">${buildActivityBlock(transactions, "s")}</div>`;
     })()}
@@ -1893,14 +1887,6 @@ async function generateHtmlReport(week: number) {
 
     // Main tab switching
     var mainTabNames = ['overview','matchup','analysis','activity'];
-    function switchActivity(scope) {
-      document.getElementById('activity-weekly').classList.toggle('active', scope === 'weekly');
-      document.getElementById('activity-season').classList.toggle('active', scope === 'season');
-      var btns = document.getElementById('activity-tabs').querySelectorAll('.tab-btn');
-      btns[0].classList.toggle('active', scope === 'weekly');
-      btns[1].classList.toggle('active', scope === 'season');
-    }
-
     function switchMainTab(tab) {
       mainTabNames.forEach(function(t) {
         var el = document.getElementById('tab-' + t);
@@ -1935,6 +1921,9 @@ async function generateHtmlReport(week: number) {
       document.getElementById('hm-weekly').classList.toggle('active', scope === 'weekly');
       document.getElementById('hm-season').classList.toggle('active', scope === 'season');
       switchHeatmap(hmCurrentTab);
+      // Activity
+      document.getElementById('activity-weekly').classList.toggle('active', scope === 'weekly');
+      document.getElementById('activity-season').classList.toggle('active', scope === 'season');
       // Re-render Radar + Rankings for current team
       var currentTeam = sel.value;
       updateRadar(currentTeam);
