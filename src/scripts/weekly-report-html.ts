@@ -418,6 +418,8 @@ async function generateHtmlReport(week: number) {
   // ─── Fetch rosters for Statcast matching ───
   const myRosterNames: string[] = [];
   const allRosteredNames: Set<string> = new Set();
+  // teamKey → player names
+  const rosterByTeam: Record<string, string[]> = {};
 
   function extractRosterNames(rosterRaw: any): string[] {
     const names: string[] = [];
@@ -442,6 +444,7 @@ async function generateHtmlReport(week: number) {
     for (let ri = 0; ri < rosterResults.length; ri++) {
       if (!rosterResults[ri]) continue;
       const names = extractRosterNames(rosterResults[ri]);
+      rosterByTeam[teams[ri].key] = names;
       names.forEach((n) => allRosteredNames.add(n));
       if (teams[ri].key === MY_TEAM_KEY) myRosterNames.push(...names);
     }
@@ -906,6 +909,14 @@ async function generateHtmlReport(week: number) {
   );
   // History for trend charts
   const historyJson = JSON.stringify(history);
+  // Savant + roster for client-side Statcast rendering
+  const savantBatJson = JSON.stringify(savantBatters);
+  const savantPitJson = JSON.stringify(savantPitchers);
+  const rosterByTeamJson = JSON.stringify(
+    Object.fromEntries(
+      Object.entries(rosterByTeam).map(([k, names]) => [k, names]),
+    ),
+  );
 
   const html = `<!DOCTYPE html>
 <html lang="ko">
@@ -1489,104 +1500,11 @@ async function generateHtmlReport(week: number) {
     </div>`;
     })()}
 
-    <!-- Statcast: My Team -->
+    <!-- Statcast: Team (dynamic, rendered by JS) -->
     <div class="card fade-in" style="padding:16px;margin-top:20px;">
-      <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">My Team Statcast</div>
-      ${
-        myBatterStatcast.length > 0
-          ? `
-      <div class="text-xs fw-600" style="color:var(--accent);margin-bottom:6px;">Batters (by xwOBA)</div>
-      <div style="overflow-x:auto;margin-bottom:16px;">
-        <table class="heatmap">
-          <thead><tr>
-            <th class="hm-team">Player</th>
-            <th class="hm-cat">EV</th>
-            <th class="hm-cat">MaxEV</th>
-            <th class="hm-cat">LA</th>
-            <th class="hm-cat">Brl%</th>
-            <th class="hm-cat">HH%</th>
-            <th class="hm-cat">xBA</th>
-            <th class="hm-cat">xSLG</th>
-            <th class="hm-cat">xwOBA</th>
-            <th class="hm-cat">Luck</th>
-          </tr></thead>
-          <tbody>
-            ${myBatterStatcast
-              .sort((a, b) => b.xwOBA - a.xwOBA)
-              .map((p) => {
-                // Batter: wobaDiff = wOBA - xwOBA
-                // negative = unlucky = red, positive = lucky = green
-                const luckColor =
-                  p.wobaDiff < -0.02
-                    ? "var(--red)"
-                    : p.wobaDiff > 0.02
-                      ? "var(--green)"
-                      : "var(--text3)";
-                return `<tr>
-                <td class="hm-team">${escapeHtml(p.name)}</td>
-                <td class="hm-cat">${p.avgExitVelo.toFixed(1)}</td>
-                <td class="hm-cat">${p.maxExitVelo.toFixed(1)}</td>
-                <td class="hm-cat">${p.avgLaunchAngle.toFixed(1)}</td>
-                <td class="hm-cat">${p.barrelPct.toFixed(1)}</td>
-                <td class="hm-cat">${p.hardHitPct.toFixed(1)}</td>
-                <td class="hm-cat">${p.xBA.toFixed(3)}</td>
-                <td class="hm-cat">${p.xSLG.toFixed(3)}</td>
-                <td class="hm-cat">${p.xwOBA.toFixed(3)}</td>
-                <td class="hm-cat" style="color:${luckColor};">${p.wobaDiff > 0 ? "+" : ""}${p.wobaDiff.toFixed(3)}</td>
-              </tr>`;
-              })
-              .join("")}
-          </tbody>
-        </table>
-      </div>`
-          : `<div class="text-sm" style="color:var(--text3);margin-bottom:12px;">No batter Statcast data</div>`
-      }
-      ${
-        myPitcherStatcast.length > 0
-          ? `
-      <div class="text-xs fw-600" style="color:#a78bfa;margin-bottom:6px;">Pitchers (by xwOBA against, lower = better)</div>
-      <div style="overflow-x:auto;">
-        <table class="heatmap">
-          <thead><tr>
-            <th class="hm-team">Player</th>
-            <th class="hm-cat">EV Ag.</th>
-            <th class="hm-cat">Brl% Ag.</th>
-            <th class="hm-cat">HH% Ag.</th>
-            <th class="hm-cat">xBA</th>
-            <th class="hm-cat">xSLG</th>
-            <th class="hm-cat">xwOBA</th>
-            <th class="hm-cat">Luck</th>
-          </tr></thead>
-          <tbody>
-            ${myPitcherStatcast
-              .sort((a, b) => a.xwOBA - b.xwOBA)
-              .map((p) => {
-                // Pitcher: wobaDiff is opponent's wOBA - xwOBA (inverted perspective)
-                // positive = opponents hit better than expected = pitcher unlucky = red
-                // negative = opponents hit worse than expected = pitcher lucky = green
-                const luckColor =
-                  p.wobaDiff > 0.02
-                    ? "var(--red)"
-                    : p.wobaDiff < -0.02
-                      ? "var(--green)"
-                      : "var(--text3)";
-                return `<tr>
-                <td class="hm-team">${escapeHtml(p.name)}</td>
-                <td class="hm-cat">${p.avgExitVeloAgainst.toFixed(1)}</td>
-                <td class="hm-cat">${p.barrelPctAgainst.toFixed(1)}</td>
-                <td class="hm-cat">${p.hardHitPctAgainst.toFixed(1)}</td>
-                <td class="hm-cat">${p.xBA.toFixed(3)}</td>
-                <td class="hm-cat">${p.xSLG.toFixed(3)}</td>
-                <td class="hm-cat">${p.xwOBA.toFixed(3)}</td>
-                <td class="hm-cat" style="color:${luckColor};">${p.wobaDiff > 0 ? "+" : ""}${p.wobaDiff.toFixed(3)}</td>
-              </tr>`;
-              })
-              .join("")}
-          </tbody>
-        </table>
-      </div>`
-          : ""
-      }
+      <div class="text-xs fw-600" style="color:var(--text3);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;" id="statcast-title">Team Statcast</div>
+      <div id="statcast-batters" style="margin-bottom:16px;"></div>
+      <div id="statcast-pitchers"></div>
     </div>
 
     </div><!-- /tab-analysis -->
@@ -1794,6 +1712,9 @@ async function generateHtmlReport(week: number) {
     var SEASON_CAT_RANKINGS = ${seasonCatRankingsJson};
     var STAT_META = ${statMetaJson};
     var TEAM_NAMES = ${teamNameByKeyJson};
+    var SAVANT_BAT = ${savantBatJson};
+    var SAVANT_PIT = ${savantPitJson};
+    var ROSTER_BY_TEAM = ${rosterByTeamJson};
     var sel = document.getElementById('matchup-select');
     var selAnalysis = document.getElementById('analysis-team-select');
     var selOverview = document.getElementById('overview-team-select');
@@ -2240,6 +2161,76 @@ async function generateHtmlReport(week: number) {
       });
     }
 
+    // Statcast table for selected team
+    function normName(n) { return n.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s*\(.*\)/,'').toLowerCase().trim(); }
+
+    function updateStatcast(teamKey) {
+      var roster = ROSTER_BY_TEAM[teamKey] || [];
+      var teamName = TEAM_NAMES[teamKey] || '';
+      document.getElementById('statcast-title').textContent = teamName + ' Statcast';
+
+      // Match batters
+      var batters = SAVANT_BAT.filter(function(s) {
+        return roster.some(function(r) { return normName(r) === normName(s.name); });
+      }).sort(function(a,b) { return b.xwOBA - a.xwOBA; });
+
+      var batEl = document.getElementById('statcast-batters');
+      if (batters.length > 0) {
+        var h = '<div class="text-xs fw-600" style="color:var(--accent);margin-bottom:6px;">Batters (by xwOBA)</div>';
+        h += '<div style="overflow-x:auto;"><table class="heatmap"><thead><tr>';
+        h += '<th class="hm-team">Player</th><th class="hm-cat">EV</th><th class="hm-cat">MaxEV</th><th class="hm-cat">LA</th>';
+        h += '<th class="hm-cat">Brl%</th><th class="hm-cat">HH%</th><th class="hm-cat">xBA</th><th class="hm-cat">xSLG</th>';
+        h += '<th class="hm-cat">xwOBA</th><th class="hm-cat">Luck</th></tr></thead><tbody>';
+        batters.forEach(function(p) {
+          var lc = p.wobaDiff < -0.02 ? 'var(--red)' : p.wobaDiff > 0.02 ? 'var(--green)' : 'var(--text3)';
+          h += '<tr><td class="hm-team">' + p.name + '</td>';
+          h += '<td class="hm-cat">' + p.avgExitVelo.toFixed(1) + '</td>';
+          h += '<td class="hm-cat">' + p.maxExitVelo.toFixed(1) + '</td>';
+          h += '<td class="hm-cat">' + p.avgLaunchAngle.toFixed(1) + '</td>';
+          h += '<td class="hm-cat">' + p.barrelPct.toFixed(1) + '</td>';
+          h += '<td class="hm-cat">' + p.hardHitPct.toFixed(1) + '</td>';
+          h += '<td class="hm-cat">' + p.xBA.toFixed(3) + '</td>';
+          h += '<td class="hm-cat">' + p.xSLG.toFixed(3) + '</td>';
+          h += '<td class="hm-cat">' + p.xwOBA.toFixed(3) + '</td>';
+          h += '<td class="hm-cat" style="color:' + lc + ';">' + (p.wobaDiff > 0 ? '+' : '') + p.wobaDiff.toFixed(3) + '</td></tr>';
+        });
+        h += '</tbody></table></div>';
+        batEl.innerHTML = h;
+      } else {
+        batEl.innerHTML = '<div class="text-sm" style="color:var(--text3);">No batter Statcast data</div>';
+      }
+
+      // Match pitchers
+      var pitchers = SAVANT_PIT.filter(function(s) {
+        return roster.some(function(r) { return normName(r) === normName(s.name); });
+      }).sort(function(a,b) { return a.xwOBA - b.xwOBA; });
+
+      var pitEl = document.getElementById('statcast-pitchers');
+      if (pitchers.length > 0) {
+        var h2 = '<div class="text-xs fw-600" style="color:#a78bfa;margin-bottom:6px;">Pitchers (by xwOBA against)</div>';
+        h2 += '<div style="overflow-x:auto;"><table class="heatmap"><thead><tr>';
+        h2 += '<th class="hm-team">Player</th><th class="hm-cat">EV Ag.</th><th class="hm-cat">Brl% Ag.</th>';
+        h2 += '<th class="hm-cat">HH% Ag.</th><th class="hm-cat">xBA</th><th class="hm-cat">xSLG</th>';
+        h2 += '<th class="hm-cat">xwOBA</th><th class="hm-cat">Luck</th></tr></thead><tbody>';
+        pitchers.forEach(function(p) {
+          // Pitcher: positive diff = unlucky (red), negative = lucky (green)
+          var lc = p.wobaDiff > 0.02 ? 'var(--red)' : p.wobaDiff < -0.02 ? 'var(--green)' : 'var(--text3)';
+          h2 += '<tr><td class="hm-team">' + p.name + '</td>';
+          h2 += '<td class="hm-cat">' + p.avgExitVeloAgainst.toFixed(1) + '</td>';
+          h2 += '<td class="hm-cat">' + p.barrelPctAgainst.toFixed(1) + '</td>';
+          h2 += '<td class="hm-cat">' + p.hardHitPctAgainst.toFixed(1) + '</td>';
+          h2 += '<td class="hm-cat">' + p.xBA.toFixed(3) + '</td>';
+          h2 += '<td class="hm-cat">' + p.xSLG.toFixed(3) + '</td>';
+          h2 += '<td class="hm-cat">' + p.xwOBA.toFixed(3) + '</td>';
+          h2 += '<td class="hm-cat" style="color:' + lc + ';">' + (p.wobaDiff > 0 ? '+' : '') + p.wobaDiff.toFixed(3) + '</td></tr>';
+        });
+        h2 += '</tbody></table></div>';
+        pitEl.innerHTML = h2;
+      } else {
+        pitEl.innerHTML = '';
+      }
+    }
+
     function selectTeam(k) {
       allSelects.forEach(function(s) { s.value = k; });
       var i = findMatchupByTeam(k);
@@ -2249,6 +2240,7 @@ async function generateHtmlReport(week: number) {
       highlightStandings(k);
       highlightActivity(k);
       updateTrend(k);
+      updateStatcast(k);
       try { localStorage.setItem(STORAGE_KEY, k); } catch(e) {}
     }
 
