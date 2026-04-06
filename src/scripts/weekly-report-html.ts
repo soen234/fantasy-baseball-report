@@ -571,16 +571,66 @@ async function generateHtmlReport(week: number) {
     }
   }
 
-  const weekEntry: HistoryWeek = {
-    week,
-    teams: teams.map((t) => ({
+  // Compute live standings: Yahoo standings + this week's scoreboard (if current/future week)
+  // Yahoo standings only reflect completed weeks. For current week, we add scoreboard results.
+  // For past (completed) weeks, Yahoo standings already include them — don't add.
+  const apiCurrentWeek = parseInt(
+    standingsRaw.fantasy_content.league[0].current_week,
+  );
+  const isCurrentOrFutureWeek = week >= apiCurrentWeek;
+
+  const weekCatWLT: Record<string, { w: number; l: number; t: number }> = {};
+  for (const t of teams) weekCatWLT[t.key] = { w: 0, l: 0, t: 0 };
+  if (isCurrentOrFutureWeek) {
+    for (const m of matchups) {
+      for (const c of m.cats) {
+        if (c.winner === "t1") {
+          weekCatWLT[m.t1.key].w++;
+          weekCatWLT[m.t2.key].l++;
+        } else if (c.winner === "t2") {
+          weekCatWLT[m.t2.key].w++;
+          weekCatWLT[m.t1.key].l++;
+        } else {
+          weekCatWLT[m.t1.key].t++;
+          weekCatWLT[m.t2.key].t++;
+        }
+      }
+    }
+  }
+
+  const liveTeams = teams.map((t) => {
+    const wk = weekCatWLT[t.key];
+    const totalW = t.standings.wins + wk.w;
+    const totalL = t.standings.losses + wk.l;
+    const totalT = t.standings.ties + wk.t;
+    const totalGames = totalW + totalL + totalT;
+    const pct =
+      totalGames > 0
+        ? ((totalW + totalT * 0.5) / totalGames).toFixed(3)
+        : ".000";
+    return {
       key: t.key,
       name: t.name,
-      rank: t.standings.rank,
-      wins: t.standings.wins,
-      losses: t.standings.losses,
-      ties: t.standings.ties,
-      pct: t.standings.pct,
+      wins: totalW,
+      losses: totalL,
+      ties: totalT,
+      pct,
+      rank: 0,
+    };
+  });
+  liveTeams.sort((a, b) => parseFloat(b.pct) - parseFloat(a.pct));
+  liveTeams.forEach((t, i) => (t.rank = i + 1));
+
+  const weekEntry: HistoryWeek = {
+    week,
+    teams: liveTeams.map((t) => ({
+      key: t.key,
+      name: t.name,
+      rank: t.rank,
+      wins: t.wins,
+      losses: t.losses,
+      ties: t.ties,
+      pct: t.pct,
       rotoPoints: rotoByTeam[t.name] || 0,
     })),
   };
@@ -825,11 +875,11 @@ async function generateHtmlReport(week: number) {
       .container { padding: 0 8px; }
       header .container { flex-direction: column; gap: 6px; align-items: stretch; }
       .card { border-radius: 8px; overflow: hidden; }
-      /* Standings: compact 2-line layout on mobile */
-      .standings-row { flex-wrap: wrap !important; gap: 2px 8px !important; padding: 5px 6px !important; }
-      .standings-row .standings-name { flex: 0 0 calc(100% - 28px) !important; font-size: 11px; }
-      .standings-row .standings-pct { margin-left: 28px; font-size: 10px; }
-      .standings-row .standings-record { font-size: 10px; }
+      /* Standings: single-line compact on mobile */
+      .standings-row { gap: 6px !important; padding: 5px 4px !important; }
+      .standings-name { font-size: 11px !important; }
+      .standings-pct { font-size: 10px !important; }
+      .standings-record { font-size: 9px !important; width: auto !important; }
       /* Hot zone */
       .hot-grid .card { padding: 10px !important; }
       /* Matchup */
