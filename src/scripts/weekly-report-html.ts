@@ -585,10 +585,26 @@ async function generateHtmlReport(week: number) {
     })),
   };
 
-  // Upsert: replace existing week or append
+  // Upsert: only update rank/pct/wlt for the CURRENT week (live data)
+  // Past weeks keep their recorded standings to preserve historical rank trend
   const existingIdx = history.weeks.findIndex((w) => w.week === week);
-  if (existingIdx >= 0) history.weeks[existingIdx] = weekEntry;
-  else history.weeks.push(weekEntry);
+  if (existingIdx >= 0) {
+    // Always update roto (recalculated from scoreboard), but only update
+    // standings (rank/pct/wlt) if this is the latest week
+    const isLatestWeek = !history.weeks.some((w) => w.week > week);
+    if (isLatestWeek) {
+      history.weeks[existingIdx] = weekEntry;
+    } else {
+      // Past week: only update rotoPoints (weekly scoreboard), keep rank/pct/wlt
+      const existing = history.weeks[existingIdx];
+      for (const te of existing.teams) {
+        const fresh = weekEntry.teams.find((t) => t.key === te.key);
+        if (fresh) te.rotoPoints = fresh.rotoPoints;
+      }
+    }
+  } else {
+    history.weeks.push(weekEntry);
+  }
   history.weeks.sort((a, b) => a.week - b.week);
 
   fs.writeFileSync(historyPath, JSON.stringify(history, null, 2), "utf-8");
@@ -804,8 +820,11 @@ async function generateHtmlReport(week: number) {
       .container { padding: 0 8px; }
       header .container { flex-direction: column; gap: 6px; align-items: stretch; }
       .card { border-radius: 8px; overflow: hidden; }
-      /* Standings: hide PCT + W-L-T on narrow */
-      .standings-pct, .standings-record { display: none !important; }
+      /* Standings: compact 2-line layout on mobile */
+      .standings-row { flex-wrap: wrap !important; gap: 2px 8px !important; padding: 5px 6px !important; }
+      .standings-row .standings-name { flex-basis: calc(100% - 28px); font-size: 11px; }
+      .standings-row .standings-pct { margin-left: 28px; font-size: 10px; }
+      .standings-row .standings-record { font-size: 10px; }
       /* Hot zone */
       .hot-grid .card { padding: 10px !important; }
       /* Matchup */
@@ -970,11 +989,11 @@ async function generateHtmlReport(week: number) {
                   : i < 3
                     ? "var(--text2)"
                     : "var(--text3)";
-              return `<div data-team-key="${t.key}" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('${t.key}')">
+              return `<div class="standings-row" data-team-key="${t.key}" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('${t.key}')">
               <span class="mono fw-700 text-sm" style="color:${rankColor};width:18px;text-align:right;">${t.standings.rank}</span>
-              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">${escapeHtml(t.name)}</span>
+              <span class="text-sm truncate fw-600 standings-name" style="flex:1;color:var(--text);">${escapeHtml(t.name)}</span>
               <span class="mono text-xs standings-pct" style="color:var(--text2);">${t.standings.pct}</span>
-              <span class="mono text-xs standings-record" style="color:var(--text3);width:52px;text-align:right;">${t.standings.wins}-${t.standings.losses}-${t.standings.ties}</span>
+              <span class="mono text-xs standings-record" style="color:var(--text3);text-align:right;">${t.standings.wins}-${t.standings.losses}-${t.standings.ties}</span>
             </div>`;
             })
             .join("\n          ")}
@@ -993,11 +1012,11 @@ async function generateHtmlReport(week: number) {
               const rotoStr = Number.isInteger(t.roto)
                 ? String(t.roto)
                 : t.roto.toFixed(1);
-              return `<div data-team-key="${t.key}" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('${t.key}')">
+              return `<div class="standings-row" data-team-key="${t.key}" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('${t.key}')">
               <span class="mono fw-700 text-sm" style="color:${rankColor};width:18px;text-align:right;">${i + 1}</span>
-              <span class="text-sm truncate fw-600" style="flex:1;color:var(--text);">${escapeHtml(t.name)}</span>
-              <span class="mono text-xs fw-700" style="color:var(--accent);">${rotoStr}</span>
-              <span class="mono text-xs" style="color:var(--text3);width:52px;text-align:right;">${t.standings.wins}-${t.standings.losses}-${t.standings.ties}</span>
+              <span class="text-sm truncate fw-600 standings-name" style="flex:1;color:var(--text);">${escapeHtml(t.name)}</span>
+              <span class="mono text-xs fw-700 standings-pct" style="color:var(--accent);">${rotoStr}</span>
+              <span class="mono text-xs standings-record" style="color:var(--text3);text-align:right;">${t.standings.wins}-${t.standings.losses}-${t.standings.ties}</span>
             </div>`;
             })
             .join("\n          ")}
