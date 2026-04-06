@@ -2674,11 +2674,10 @@
     // Statcast Leaders: highlight selected team's players
     function highlightStatcastLeaders(teamKey) {
       var roster = ROSTER_BY_TEAM[teamKey] || [];
-      var norm = function(n) { return n.normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/s*(.*)/,'').toLowerCase().trim(); };
-      var rosterNorm = roster.map(norm);
+      var rosterLower = roster.map(function(n) { return n.toLowerCase().trim(); });
       document.querySelectorAll('.sc-row').forEach(function(row) {
-        var pName = row.dataset.playerName || '';
-        var isTeamPlayer = rosterNorm.some(function(r) { return r === norm(pName); });
+        var pName = (row.dataset.playerName || '').toLowerCase().trim();
+        var isTeamPlayer = rosterLower.some(function(r) { return r === pName; });
         var nameEl = row.querySelector('.sc-name');
         if (isTeamPlayer) {
           row.style.background = 'rgba(59,130,246,0.1)';
