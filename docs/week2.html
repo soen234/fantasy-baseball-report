@@ -20,11 +20,6 @@
     .mono { font-family: var(--mono); }
     .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 
-    /* Standings row */
-    .standings-row { display: flex; align-items: center; gap: 10px; padding: 6px 8px; border-radius: 6px; cursor: pointer; }
-    .standings-row:hover { background: var(--surface2); }
-    .standings-name { flex: 1; min-width: 0; color: var(--text); }
-
     /* Cards */
     .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
     .card-flush { background: transparent; border: 1px solid var(--border); border-radius: 12px; }
@@ -43,7 +38,7 @@
       .card { border-radius: 8px; overflow: hidden; }
       /* Standings: compact 2-line layout on mobile */
       .standings-row { flex-wrap: wrap !important; gap: 2px 8px !important; padding: 5px 6px !important; }
-      .standings-row .standings-name { flex: 0 0 calc(100% - 28px) !important; font-size: 11px; }
+      .standings-row .standings-name { flex-basis: calc(100% - 28px); font-size: 11px; }
       .standings-row .standings-pct { margin-left: 28px; font-size: 10px; }
       .standings-row .standings-record { font-size: 10px; }
       /* Hot zone */
@@ -161,18 +156,12 @@
         </div>
         <span class="text-xs" style="color:var(--text3);">2026. 4. 6.</span>
       </div>
-      <!-- Main tabs + scope toggle -->
-      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-        <div id="main-tabs" class="tab-bar">
-          <button class="tab-btn active" onclick="switchMainTab('overview')">Overview</button>
-          <button class="tab-btn" onclick="switchMainTab('matchup')">Matchup</button>
-          <button class="tab-btn" onclick="switchMainTab('analysis')">Analysis</button>
-          <button class="tab-btn" onclick="switchMainTab('activity')">Activity</button>
-        </div>
-        <div id="scope-toggle" class="tab-bar">
-          <button class="tab-btn active" onclick="switchGlobalScope('weekly')">Weekly</button>
-          <button class="tab-btn" onclick="switchGlobalScope('season')">Season</button>
-        </div>
+      <!-- Main tabs -->
+      <div id="main-tabs" class="tab-bar">
+        <button class="tab-btn active" onclick="switchMainTab('overview')">Overview</button>
+        <button class="tab-btn" onclick="switchMainTab('matchup')">Matchup</button>
+        <button class="tab-btn" onclick="switchMainTab('analysis')">Analysis</button>
+        <button class="tab-btn" onclick="switchMainTab('activity')">Activity</button>
       </div>
     </div>
   </header>
@@ -193,149 +182,149 @@
           <button class="tab-btn" onclick="switchBoard('roto')">Roto</button>
         </div>
         <div id="board-h2h" class="tab-content active">
-          <div class="standings-row" data-team-key="469.l.18247.t.4" onclick="selectTeam('469.l.18247.t.4')">
+          <div class="standings-row" data-team-key="469.l.18247.t.4" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.4')">
               <span class="mono fw-700 text-sm" style="color:var(--amber);width:18px;text-align:right;">1</span>
-              <span class="text-sm truncate fw-600 standings-name">UTU_무네타카 무라콴호</span>
+              <span class="text-sm truncate fw-600 standings-name" style="flex:1;color:var(--text);">UTU_무네타카 무라콴호</span>
               <span class="mono text-xs standings-pct" style="color:var(--text2);">.700</span>
               <span class="mono text-xs standings-record" style="color:var(--text3);text-align:right;">15-5-5</span>
             </div>
-          <div class="standings-row" data-team-key="469.l.18247.t.10" onclick="selectTeam('469.l.18247.t.10')">
+          <div class="standings-row" data-team-key="469.l.18247.t.10" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.10')">
               <span class="mono fw-700 text-sm" style="color:var(--text2);width:18px;text-align:right;">2</span>
-              <span class="text-sm truncate fw-600 standings-name">🏆 ProfeSuh</span>
+              <span class="text-sm truncate fw-600 standings-name" style="flex:1;color:var(--text);">🏆 ProfeSuh</span>
               <span class="mono text-xs standings-pct" style="color:var(--text2);">.560</span>
               <span class="mono text-xs standings-record" style="color:var(--text3);text-align:right;">13-10-2</span>
             </div>
-          <div class="standings-row" data-team-key="469.l.18247.t.11" onclick="selectTeam('469.l.18247.t.11')">
+          <div class="standings-row" data-team-key="469.l.18247.t.11" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.11')">
               <span class="mono fw-700 text-sm" style="color:var(--text2);width:18px;text-align:right;">3</span>
-              <span class="text-sm truncate fw-600 standings-name">💥 JeongWoo's Shockers</span>
+              <span class="text-sm truncate fw-600 standings-name" style="flex:1;color:var(--text);">💥 JeongWoo's Shockers</span>
               <span class="mono text-xs standings-pct" style="color:var(--text2);">.540</span>
               <span class="mono text-xs standings-record" style="color:var(--text3);text-align:right;">12-10-3</span>
             </div>
-          <div class="standings-row" data-team-key="469.l.18247.t.2" onclick="selectTeam('469.l.18247.t.2')">
+          <div class="standings-row" data-team-key="469.l.18247.t.2" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.2')">
               <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">4</span>
-              <span class="text-sm truncate fw-600 standings-name">xXxAIxXx</span>
+              <span class="text-sm truncate fw-600 standings-name" style="flex:1;color:var(--text);">xXxAIxXx</span>
               <span class="mono text-xs standings-pct" style="color:var(--text2);">.520</span>
               <span class="mono text-xs standings-record" style="color:var(--text3);text-align:right;">11-10-4</span>
             </div>
-          <div class="standings-row" data-team-key="469.l.18247.t.9" onclick="selectTeam('469.l.18247.t.9')">
+          <div class="standings-row" data-team-key="469.l.18247.t.9" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.9')">
               <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">5</span>
-              <span class="text-sm truncate fw-600 standings-name">JJ yoogwanholt</span>
+              <span class="text-sm truncate fw-600 standings-name" style="flex:1;color:var(--text);">JJ yoogwanholt</span>
               <span class="mono text-xs standings-pct" style="color:var(--text2);">.520</span>
               <span class="mono text-xs standings-record" style="color:var(--text3);text-align:right;">12-11-2</span>
             </div>
-          <div class="standings-row" data-team-key="469.l.18247.t.1" onclick="selectTeam('469.l.18247.t.1')">
+          <div class="standings-row" data-team-key="469.l.18247.t.1" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.1')">
               <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">6</span>
-              <span class="text-sm truncate fw-600 standings-name">2026 MVP Mike Trout</span>
+              <span class="text-sm truncate fw-600 standings-name" style="flex:1;color:var(--text);">2026 MVP Mike Trout</span>
               <span class="mono text-xs standings-pct" style="color:var(--text2);">.500</span>
               <span class="mono text-xs standings-record" style="color:var(--text3);text-align:right;">10-10-5</span>
             </div>
-          <div class="standings-row" data-team-key="469.l.18247.t.6" onclick="selectTeam('469.l.18247.t.6')">
+          <div class="standings-row" data-team-key="469.l.18247.t.6" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.6')">
               <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">7</span>
-              <span class="text-sm truncate fw-600 standings-name">독후감 신속히 제출해주세요.</span>
+              <span class="text-sm truncate fw-600 standings-name" style="flex:1;color:var(--text);">독후감 신속히 제출해주세요.</span>
               <span class="mono text-xs standings-pct" style="color:var(--text2);">.500</span>
               <span class="mono text-xs standings-record" style="color:var(--text3);text-align:right;">10-10-5</span>
             </div>
-          <div class="standings-row" data-team-key="469.l.18247.t.3" onclick="selectTeam('469.l.18247.t.3')">
+          <div class="standings-row" data-team-key="469.l.18247.t.3" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.3')">
               <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">8</span>
-              <span class="text-sm truncate fw-600 standings-name">TRUCK</span>
+              <span class="text-sm truncate fw-600 standings-name" style="flex:1;color:var(--text);">TRUCK</span>
               <span class="mono text-xs standings-pct" style="color:var(--text2);">.480</span>
               <span class="mono text-xs standings-record" style="color:var(--text3);text-align:right;">10-11-4</span>
             </div>
-          <div class="standings-row" data-team-key="469.l.18247.t.8" onclick="selectTeam('469.l.18247.t.8')">
+          <div class="standings-row" data-team-key="469.l.18247.t.8" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.8')">
               <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">9</span>
-              <span class="text-sm truncate fw-600 standings-name">응노</span>
+              <span class="text-sm truncate fw-600 standings-name" style="flex:1;color:var(--text);">응노</span>
               <span class="mono text-xs standings-pct" style="color:var(--text2);">.480</span>
               <span class="mono text-xs standings-record" style="color:var(--text3);text-align:right;">11-12-2</span>
             </div>
-          <div class="standings-row" data-team-key="469.l.18247.t.5" onclick="selectTeam('469.l.18247.t.5')">
+          <div class="standings-row" data-team-key="469.l.18247.t.5" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.5')">
               <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">10</span>
-              <span class="text-sm truncate fw-600 standings-name">✌️ Yeonwoo's Double Play</span>
+              <span class="text-sm truncate fw-600 standings-name" style="flex:1;color:var(--text);">✌️ Yeonwoo's Double Play</span>
               <span class="mono text-xs standings-pct" style="color:var(--text2);">.460</span>
               <span class="mono text-xs standings-record" style="color:var(--text3);text-align:right;">10-12-3</span>
             </div>
-          <div class="standings-row" data-team-key="469.l.18247.t.12" onclick="selectTeam('469.l.18247.t.12')">
+          <div class="standings-row" data-team-key="469.l.18247.t.12" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.12')">
               <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">11</span>
-              <span class="text-sm truncate fw-600 standings-name">💥 JongHun's Busters</span>
+              <span class="text-sm truncate fw-600 standings-name" style="flex:1;color:var(--text);">💥 JongHun's Busters</span>
               <span class="mono text-xs standings-pct" style="color:var(--text2);">.440</span>
               <span class="mono text-xs standings-record" style="color:var(--text3);text-align:right;">10-13-2</span>
             </div>
-          <div class="standings-row" data-team-key="469.l.18247.t.7" onclick="selectTeam('469.l.18247.t.7')">
+          <div class="standings-row" data-team-key="469.l.18247.t.7" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.7')">
               <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">12</span>
-              <span class="text-sm truncate fw-600 standings-name">커츠. 나</span>
+              <span class="text-sm truncate fw-600 standings-name" style="flex:1;color:var(--text);">커츠. 나</span>
               <span class="mono text-xs standings-pct" style="color:var(--text2);">.300</span>
               <span class="mono text-xs standings-record" style="color:var(--text3);text-align:right;">5-15-5</span>
             </div>
         </div>
         <div id="board-roto" class="tab-content">
-          <div class="standings-row" data-team-key="469.l.18247.t.12" onclick="selectTeam('469.l.18247.t.12')">
+          <div class="standings-row" data-team-key="469.l.18247.t.12" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.12')">
               <span class="mono fw-700 text-sm" style="color:var(--amber);width:18px;text-align:right;">1</span>
-              <span class="text-sm truncate fw-600 standings-name">💥 JongHun's Busters</span>
+              <span class="text-sm truncate fw-600 standings-name" style="flex:1;color:var(--text);">💥 JongHun's Busters</span>
               <span class="mono text-xs fw-700 standings-pct" style="color:var(--accent);">211</span>
               <span class="mono text-xs standings-record" style="color:var(--text3);text-align:right;">10-13-2</span>
             </div>
-          <div class="standings-row" data-team-key="469.l.18247.t.5" onclick="selectTeam('469.l.18247.t.5')">
+          <div class="standings-row" data-team-key="469.l.18247.t.5" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.5')">
               <span class="mono fw-700 text-sm" style="color:var(--text2);width:18px;text-align:right;">2</span>
-              <span class="text-sm truncate fw-600 standings-name">✌️ Yeonwoo's Double Play</span>
+              <span class="text-sm truncate fw-600 standings-name" style="flex:1;color:var(--text);">✌️ Yeonwoo's Double Play</span>
               <span class="mono text-xs fw-700 standings-pct" style="color:var(--accent);">204.5</span>
               <span class="mono text-xs standings-record" style="color:var(--text3);text-align:right;">10-12-3</span>
             </div>
-          <div class="standings-row" data-team-key="469.l.18247.t.4" onclick="selectTeam('469.l.18247.t.4')">
+          <div class="standings-row" data-team-key="469.l.18247.t.4" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.4')">
               <span class="mono fw-700 text-sm" style="color:var(--text2);width:18px;text-align:right;">3</span>
-              <span class="text-sm truncate fw-600 standings-name">UTU_무네타카 무라콴호</span>
+              <span class="text-sm truncate fw-600 standings-name" style="flex:1;color:var(--text);">UTU_무네타카 무라콴호</span>
               <span class="mono text-xs fw-700 standings-pct" style="color:var(--accent);">192.5</span>
               <span class="mono text-xs standings-record" style="color:var(--text3);text-align:right;">15-5-5</span>
             </div>
-          <div class="standings-row" data-team-key="469.l.18247.t.7" onclick="selectTeam('469.l.18247.t.7')">
+          <div class="standings-row" data-team-key="469.l.18247.t.7" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.7')">
               <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">4</span>
-              <span class="text-sm truncate fw-600 standings-name">커츠. 나</span>
+              <span class="text-sm truncate fw-600 standings-name" style="flex:1;color:var(--text);">커츠. 나</span>
               <span class="mono text-xs fw-700 standings-pct" style="color:var(--accent);">190.5</span>
               <span class="mono text-xs standings-record" style="color:var(--text3);text-align:right;">5-15-5</span>
             </div>
-          <div class="standings-row" data-team-key="469.l.18247.t.6" onclick="selectTeam('469.l.18247.t.6')">
+          <div class="standings-row" data-team-key="469.l.18247.t.6" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.6')">
               <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">5</span>
-              <span class="text-sm truncate fw-600 standings-name">독후감 신속히 제출해주세요.</span>
+              <span class="text-sm truncate fw-600 standings-name" style="flex:1;color:var(--text);">독후감 신속히 제출해주세요.</span>
               <span class="mono text-xs fw-700 standings-pct" style="color:var(--accent);">178.5</span>
               <span class="mono text-xs standings-record" style="color:var(--text3);text-align:right;">10-10-5</span>
             </div>
-          <div class="standings-row" data-team-key="469.l.18247.t.9" onclick="selectTeam('469.l.18247.t.9')">
+          <div class="standings-row" data-team-key="469.l.18247.t.9" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.9')">
               <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">6</span>
-              <span class="text-sm truncate fw-600 standings-name">JJ yoogwanholt</span>
+              <span class="text-sm truncate fw-600 standings-name" style="flex:1;color:var(--text);">JJ yoogwanholt</span>
               <span class="mono text-xs fw-700 standings-pct" style="color:var(--accent);">173.5</span>
               <span class="mono text-xs standings-record" style="color:var(--text3);text-align:right;">12-11-2</span>
             </div>
-          <div class="standings-row" data-team-key="469.l.18247.t.8" onclick="selectTeam('469.l.18247.t.8')">
+          <div class="standings-row" data-team-key="469.l.18247.t.8" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.8')">
               <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">7</span>
-              <span class="text-sm truncate fw-600 standings-name">응노</span>
+              <span class="text-sm truncate fw-600 standings-name" style="flex:1;color:var(--text);">응노</span>
               <span class="mono text-xs fw-700 standings-pct" style="color:var(--accent);">169.5</span>
               <span class="mono text-xs standings-record" style="color:var(--text3);text-align:right;">11-12-2</span>
             </div>
-          <div class="standings-row" data-team-key="469.l.18247.t.10" onclick="selectTeam('469.l.18247.t.10')">
+          <div class="standings-row" data-team-key="469.l.18247.t.10" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.10')">
               <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">8</span>
-              <span class="text-sm truncate fw-600 standings-name">🏆 ProfeSuh</span>
+              <span class="text-sm truncate fw-600 standings-name" style="flex:1;color:var(--text);">🏆 ProfeSuh</span>
               <span class="mono text-xs fw-700 standings-pct" style="color:var(--accent);">155.5</span>
               <span class="mono text-xs standings-record" style="color:var(--text3);text-align:right;">13-10-2</span>
             </div>
-          <div class="standings-row" data-team-key="469.l.18247.t.2" onclick="selectTeam('469.l.18247.t.2')">
+          <div class="standings-row" data-team-key="469.l.18247.t.2" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.2')">
               <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">9</span>
-              <span class="text-sm truncate fw-600 standings-name">xXxAIxXx</span>
+              <span class="text-sm truncate fw-600 standings-name" style="flex:1;color:var(--text);">xXxAIxXx</span>
               <span class="mono text-xs fw-700 standings-pct" style="color:var(--accent);">151.5</span>
               <span class="mono text-xs standings-record" style="color:var(--text3);text-align:right;">11-10-4</span>
             </div>
-          <div class="standings-row" data-team-key="469.l.18247.t.11" onclick="selectTeam('469.l.18247.t.11')">
+          <div class="standings-row" data-team-key="469.l.18247.t.11" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.11')">
               <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">10</span>
-              <span class="text-sm truncate fw-600 standings-name">💥 JeongWoo's Shockers</span>
+              <span class="text-sm truncate fw-600 standings-name" style="flex:1;color:var(--text);">💥 JeongWoo's Shockers</span>
               <span class="mono text-xs fw-700 standings-pct" style="color:var(--accent);">112</span>
               <span class="mono text-xs standings-record" style="color:var(--text3);text-align:right;">12-10-3</span>
             </div>
-          <div class="standings-row" data-team-key="469.l.18247.t.1" onclick="selectTeam('469.l.18247.t.1')">
+          <div class="standings-row" data-team-key="469.l.18247.t.1" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.1')">
               <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">11</span>
-              <span class="text-sm truncate fw-600 standings-name">2026 MVP Mike Trout</span>
+              <span class="text-sm truncate fw-600 standings-name" style="flex:1;color:var(--text);">2026 MVP Mike Trout</span>
               <span class="mono text-xs fw-700 standings-pct" style="color:var(--accent);">106.5</span>
               <span class="mono text-xs standings-record" style="color:var(--text3);text-align:right;">10-10-5</span>
             </div>
-          <div class="standings-row" data-team-key="469.l.18247.t.3" onclick="selectTeam('469.l.18247.t.3')">
+          <div class="standings-row" data-team-key="469.l.18247.t.3" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:6px;cursor:pointer;" onclick="selectTeam('469.l.18247.t.3')">
               <span class="mono fw-700 text-sm" style="color:var(--text3);width:18px;text-align:right;">12</span>
-              <span class="text-sm truncate fw-600 standings-name">TRUCK</span>
+              <span class="text-sm truncate fw-600 standings-name" style="flex:1;color:var(--text);">TRUCK</span>
               <span class="mono text-xs fw-700 standings-pct" style="color:var(--accent);">104.5</span>
               <span class="mono text-xs standings-record" style="color:var(--text3);text-align:right;">10-11-4</span>
             </div>
