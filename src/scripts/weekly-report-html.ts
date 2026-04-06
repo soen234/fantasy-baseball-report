@@ -1512,6 +1512,10 @@ async function generateHtmlReport(week: number) {
     <!-- ═══ TAB: Activity ═══ -->
     <div id="tab-activity" class="main-tab">
 
+    <div style="margin-bottom:16px;">
+      <select id="activity-team-select" style="min-width:240px;"></select>
+    </div>
+
     ${(() => {
       // Helper: build activity summary + transaction log for a set of txns
       function buildActivityBlock(txnList: typeof weekTxns, idPrefix: string) {
@@ -1620,9 +1624,9 @@ async function generateHtmlReport(week: number) {
               const tag = isFa
                 ? ` <span style="font-size:9px;color:var(--amber);opacity:0.7;">FA</span>`
                 : "";
-              return `<div style="display:flex;align-items:center;gap:6px;padding:3px 0;">
+              return `<div class="sc-row" data-player-name="${escapeHtml(p.name)}" style="display:flex;align-items:center;gap:6px;padding:3px 0;">
           <span class="mono text-xs" style="color:var(--text3);width:16px;">${i + 1}</span>
-          <span class="text-xs truncate ${weight}" style="flex:1;color:${nameColor};">${escapeHtml(p.name)}${tag}</span>
+          <span class="text-xs truncate ${weight} sc-name" style="flex:1;color:${nameColor};">${escapeHtml(p.name)}${tag}</span>
           ${valHtml}
         </div>`;
             }
@@ -1718,7 +1722,8 @@ async function generateHtmlReport(week: number) {
     var sel = document.getElementById('matchup-select');
     var selAnalysis = document.getElementById('analysis-team-select');
     var selOverview = document.getElementById('overview-team-select');
-    var allSelects = [sel, selAnalysis, selOverview];
+    var selActivity = document.getElementById('activity-team-select');
+    var allSelects = [sel, selAnalysis, selOverview, selActivity];
     var STORAGE_KEY = 'fb-selected-team';
 
     // Populate all selects
@@ -2161,6 +2166,31 @@ async function generateHtmlReport(week: number) {
       });
     }
 
+    // Statcast Leaders: highlight selected team's players
+    function highlightStatcastLeaders(teamKey) {
+      var roster = ROSTER_BY_TEAM[teamKey] || [];
+      var norm = function(n) { return n.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s*\(.*\)/,'').toLowerCase().trim(); };
+      var rosterNorm = roster.map(norm);
+      document.querySelectorAll('.sc-row').forEach(function(row) {
+        var pName = row.dataset.playerName || '';
+        var isTeamPlayer = rosterNorm.some(function(r) { return r === norm(pName); });
+        var nameEl = row.querySelector('.sc-name');
+        if (isTeamPlayer) {
+          row.style.background = 'rgba(59,130,246,0.1)';
+          row.style.borderRadius = '4px';
+          if (nameEl) nameEl.style.color = 'var(--accent)';
+        } else {
+          row.style.background = '';
+          row.style.borderRadius = '';
+          // Restore original color (FA=amber, rostered=text2)
+          if (nameEl) {
+            var isFa = nameEl.textContent.includes('FA');
+            nameEl.style.color = isFa ? 'var(--amber)' : '';
+          }
+        }
+      });
+    }
+
     // Statcast table for selected team
     function normName(n) { return n.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s*\(.*\)/,'').toLowerCase().trim(); }
 
@@ -2239,6 +2269,7 @@ async function generateHtmlReport(week: number) {
       updateRankings(k);
       highlightStandings(k);
       highlightActivity(k);
+      highlightStatcastLeaders(k);
       updateTrend(k);
       updateStatcast(k);
       try { localStorage.setItem(STORAGE_KEY, k); } catch(e) {}
