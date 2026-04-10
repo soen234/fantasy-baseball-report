@@ -261,7 +261,7 @@
           "losses": 24,
           "ties": 14,
           "pct": "0.587",
-          "rotoPoints": 198
+          "rotoPoints": 196
         },
         {
           "key": "469.l.18247.t.12",
@@ -271,7 +271,7 @@
           "losses": 27,
           "ties": 10,
           "pct": "0.573",
-          "rotoPoints": 183
+          "rotoPoints": 186.5
         },
         {
           "key": "469.l.18247.t.4",
@@ -281,7 +281,7 @@
           "losses": 27,
           "ties": 15,
           "pct": "0.540",
-          "rotoPoints": 148.5
+          "rotoPoints": 147
         },
         {
           "key": "469.l.18247.t.3",
@@ -291,37 +291,37 @@
           "losses": 30,
           "ties": 10,
           "pct": "0.533",
-          "rotoPoints": 163.5
-        },
-        {
-          "key": "469.l.18247.t.7",
-          "name": "커츠. 나",
-          "rank": 5,
-          "wins": 32,
-          "losses": 27,
-          "ties": 16,
-          "pct": "0.533",
-          "rotoPoints": 170.5
+          "rotoPoints": 164
         },
         {
           "key": "469.l.18247.t.8",
           "name": "응노",
-          "rank": 6,
+          "rank": 5,
           "wins": 35,
           "losses": 30,
           "ties": 10,
           "pct": "0.533",
-          "rotoPoints": 139.5
+          "rotoPoints": 139
         },
         {
           "key": "469.l.18247.t.6",
           "name": "정후야 야구가 어려워?",
-          "rank": 7,
+          "rank": 6,
           "wins": 33,
           "losses": 30,
           "ties": 12,
           "pct": "0.520",
-          "rotoPoints": 189.5
+          "rotoPoints": 188.5
+        },
+        {
+          "key": "469.l.18247.t.7",
+          "name": "커츠. 나",
+          "rank": 7,
+          "wins": 32,
+          "losses": 29,
+          "ties": 14,
+          "pct": "0.520",
+          "rotoPoints": 169.5
         },
         {
           "key": "469.l.18247.t.10",
@@ -331,7 +331,7 @@
           "losses": 35,
           "ties": 7,
           "pct": "0.487",
-          "rotoPoints": 153.5
+          "rotoPoints": 153
         },
         {
           "key": "469.l.18247.t.2",
@@ -341,17 +341,17 @@
           "losses": 33,
           "ties": 13,
           "pct": "0.473",
-          "rotoPoints": 181
+          "rotoPoints": 181.5
         },
         {
           "key": "469.l.18247.t.1",
           "name": "2026 MVP Mike Trout",
           "rank": 10,
-          "wins": 25,
+          "wins": 27,
           "losses": 35,
-          "ties": 15,
-          "pct": "0.433",
-          "rotoPoints": 147.5
+          "ties": 13,
+          "pct": "0.447",
+          "rotoPoints": 146
         },
         {
           "key": "469.l.18247.t.9",
@@ -361,7 +361,7 @@
           "losses": 39,
           "ties": 10,
           "pct": "0.413",
-          "rotoPoints": 150
+          "rotoPoints": 156.5
         },
         {
           "key": "469.l.18247.t.11",
@@ -371,7 +371,7 @@
           "losses": 42,
           "ties": 10,
           "pct": "0.373",
-          "rotoPoints": 125.5
+          "rotoPoints": 122.5
         }
       ]
     }
