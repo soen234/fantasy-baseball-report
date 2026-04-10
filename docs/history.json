@@ -257,11 +257,11 @@
           "key": "469.l.18247.t.5",
           "name": "✌️ Yeonwoo's Double Play",
           "rank": 1,
-          "wins": 37,
-          "losses": 24,
-          "ties": 14,
-          "pct": "0.587",
-          "rotoPoints": 196
+          "wins": 38,
+          "losses": 26,
+          "ties": 11,
+          "pct": "0.580",
+          "rotoPoints": 197.5
         },
         {
           "key": "469.l.18247.t.12",
@@ -271,37 +271,37 @@
           "losses": 27,
           "ties": 10,
           "pct": "0.573",
-          "rotoPoints": 186.5
-        },
-        {
-          "key": "469.l.18247.t.4",
-          "name": "UTU‘s triple IL",
-          "rank": 3,
-          "wins": 33,
-          "losses": 27,
-          "ties": 15,
-          "pct": "0.540",
-          "rotoPoints": 147
-        },
-        {
-          "key": "469.l.18247.t.3",
-          "name": "TRUCK",
-          "rank": 4,
-          "wins": 35,
-          "losses": 30,
-          "ties": 10,
-          "pct": "0.533",
-          "rotoPoints": 166.5
+          "rotoPoints": 179.5
         },
         {
           "key": "469.l.18247.t.8",
           "name": "응노",
+          "rank": 3,
+          "wins": 37,
+          "losses": 29,
+          "ties": 9,
+          "pct": "0.553",
+          "rotoPoints": 155.5
+        },
+        {
+          "key": "469.l.18247.t.4",
+          "name": "UTU‘s triple IL",
+          "rank": 4,
+          "wins": 35,
+          "losses": 28,
+          "ties": 12,
+          "pct": "0.547",
+          "rotoPoints": 148.5
+        },
+        {
+          "key": "469.l.18247.t.3",
+          "name": "TRUCK",
           "rank": 5,
           "wins": 35,
           "losses": 30,
           "ties": 10,
           "pct": "0.533",
-          "rotoPoints": 138.5
+          "rotoPoints": 165.5
         },
         {
           "key": "469.l.18247.t.6",
@@ -311,17 +311,17 @@
           "losses": 30,
           "ties": 12,
           "pct": "0.520",
-          "rotoPoints": 189.5
+          "rotoPoints": 184.5
         },
         {
           "key": "469.l.18247.t.7",
           "name": "커츠. 나",
           "rank": 7,
-          "wins": 31,
-          "losses": 29,
-          "ties": 15,
+          "wins": 30,
+          "losses": 28,
+          "ties": 17,
           "pct": "0.513",
-          "rotoPoints": 168
+          "rotoPoints": 167.5
         },
         {
           "key": "469.l.18247.t.10",
@@ -331,47 +331,47 @@
           "losses": 35,
           "ties": 7,
           "pct": "0.487",
-          "rotoPoints": 153
+          "rotoPoints": 151
         },
         {
           "key": "469.l.18247.t.2",
           "name": "xXxAIxXx",
           "rank": 9,
-          "wins": 29,
-          "losses": 33,
+          "wins": 28,
+          "losses": 34,
           "ties": 13,
-          "pct": "0.473",
-          "rotoPoints": 181.5
+          "pct": "0.460",
+          "rotoPoints": 179.5
         },
         {
           "key": "469.l.18247.t.1",
           "name": "2026 MVP Mike Trout",
           "rank": 10,
-          "wins": 27,
-          "losses": 34,
-          "ties": 14,
+          "wins": 26,
+          "losses": 33,
+          "ties": 16,
           "pct": "0.453",
-          "rotoPoints": 146.5
+          "rotoPoints": 148
         },
         {
           "key": "469.l.18247.t.9",
           "name": "JJ yoogwanholt",
           "rank": 11,
-          "wins": 26,
-          "losses": 39,
+          "wins": 27,
+          "losses": 38,
           "ties": 10,
-          "pct": "0.413",
-          "rotoPoints": 156
+          "pct": "0.427",
+          "rotoPoints": 153
         },
         {
           "key": "469.l.18247.t.11",
           "name": "💥 JeongWoo's Shockers",
           "rank": 12,
-          "wins": 23,
-          "losses": 42,
-          "ties": 10,
-          "pct": "0.373",
-          "rotoPoints": 121
+          "wins": 22,
+          "losses": 44,
+          "ties": 9,
+          "pct": "0.353",
+          "rotoPoints": 120
         }
       ]
     }
