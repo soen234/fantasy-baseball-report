@@ -291,7 +291,7 @@
           "losses": 30,
           "ties": 10,
           "pct": "0.533",
-          "rotoPoints": 164
+          "rotoPoints": 166.5
         },
         {
           "key": "469.l.18247.t.8",
@@ -301,7 +301,7 @@
           "losses": 30,
           "ties": 10,
           "pct": "0.533",
-          "rotoPoints": 139
+          "rotoPoints": 138.5
         },
         {
           "key": "469.l.18247.t.6",
@@ -311,17 +311,17 @@
           "losses": 30,
           "ties": 12,
           "pct": "0.520",
-          "rotoPoints": 188.5
+          "rotoPoints": 189.5
         },
         {
           "key": "469.l.18247.t.7",
           "name": "커츠. 나",
           "rank": 7,
-          "wins": 32,
+          "wins": 31,
           "losses": 29,
-          "ties": 14,
-          "pct": "0.520",
-          "rotoPoints": 169.5
+          "ties": 15,
+          "pct": "0.513",
+          "rotoPoints": 168
         },
         {
           "key": "469.l.18247.t.10",
@@ -348,10 +348,10 @@
           "name": "2026 MVP Mike Trout",
           "rank": 10,
           "wins": 27,
-          "losses": 35,
-          "ties": 13,
-          "pct": "0.447",
-          "rotoPoints": 146
+          "losses": 34,
+          "ties": 14,
+          "pct": "0.453",
+          "rotoPoints": 146.5
         },
         {
           "key": "469.l.18247.t.9",
@@ -361,7 +361,7 @@
           "losses": 39,
           "ties": 10,
           "pct": "0.413",
-          "rotoPoints": 156.5
+          "rotoPoints": 156
         },
         {
           "key": "469.l.18247.t.11",
@@ -371,7 +371,7 @@
           "losses": 42,
           "ties": 10,
           "pct": "0.373",
-          "rotoPoints": 122.5
+          "rotoPoints": 121
         }
       ]
     }
