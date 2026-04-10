@@ -257,51 +257,51 @@
           "key": "469.l.18247.t.5",
           "name": "✌️ Yeonwoo's Double Play",
           "rank": 1,
-          "wins": 39,
+          "wins": 37,
           "losses": 24,
-          "ties": 12,
-          "pct": "0.600",
-          "rotoPoints": 201.5
+          "ties": 14,
+          "pct": "0.587",
+          "rotoPoints": 198
         },
         {
           "key": "469.l.18247.t.12",
           "name": "💥 JongHun's Busters",
           "rank": 2,
-          "wins": 37,
-          "losses": 29,
-          "ties": 9,
-          "pct": "0.553",
-          "rotoPoints": 177.5
+          "wins": 38,
+          "losses": 27,
+          "ties": 10,
+          "pct": "0.573",
+          "rotoPoints": 183
         },
         {
-          "key": "469.l.18247.t.6",
-          "name": "정후야 야구가 어려워?",
+          "key": "469.l.18247.t.4",
+          "name": "UTU‘s triple IL",
           "rank": 3,
-          "wins": 35,
-          "losses": 29,
-          "ties": 11,
+          "wins": 33,
+          "losses": 27,
+          "ties": 15,
           "pct": "0.540",
-          "rotoPoints": 182
-        },
-        {
-          "key": "469.l.18247.t.7",
-          "name": "커츠. 나",
-          "rank": 4,
-          "wins": 32,
-          "losses": 26,
-          "ties": 17,
-          "pct": "0.540",
-          "rotoPoints": 170.5
+          "rotoPoints": 148.5
         },
         {
           "key": "469.l.18247.t.3",
           "name": "TRUCK",
-          "rank": 5,
+          "rank": 4,
           "wins": 35,
           "losses": 30,
           "ties": 10,
           "pct": "0.533",
-          "rotoPoints": 160
+          "rotoPoints": 163.5
+        },
+        {
+          "key": "469.l.18247.t.7",
+          "name": "커츠. 나",
+          "rank": 5,
+          "wins": 32,
+          "losses": 27,
+          "ties": 16,
+          "pct": "0.533",
+          "rotoPoints": 170.5
         },
         {
           "key": "469.l.18247.t.8",
@@ -311,17 +311,17 @@
           "losses": 30,
           "ties": 10,
           "pct": "0.533",
-          "rotoPoints": 139
+          "rotoPoints": 139.5
         },
         {
-          "key": "469.l.18247.t.4",
-          "name": "UTU‘s triple IL",
+          "key": "469.l.18247.t.6",
+          "name": "정후야 야구가 어려워?",
           "rank": 7,
           "wins": 33,
-          "losses": 29,
-          "ties": 13,
-          "pct": "0.527",
-          "rotoPoints": 151.5
+          "losses": 30,
+          "ties": 12,
+          "pct": "0.520",
+          "rotoPoints": 189.5
         },
         {
           "key": "469.l.18247.t.10",
@@ -331,7 +331,7 @@
           "losses": 35,
           "ties": 7,
           "pct": "0.487",
-          "rotoPoints": 152
+          "rotoPoints": 153.5
         },
         {
           "key": "469.l.18247.t.2",
@@ -341,17 +341,17 @@
           "losses": 33,
           "ties": 13,
           "pct": "0.473",
-          "rotoPoints": 185
+          "rotoPoints": 181
         },
         {
           "key": "469.l.18247.t.1",
           "name": "2026 MVP Mike Trout",
           "rank": 10,
-          "wins": 24,
+          "wins": 25,
           "losses": 35,
-          "ties": 16,
-          "pct": "0.427",
-          "rotoPoints": 154.5
+          "ties": 15,
+          "pct": "0.433",
+          "rotoPoints": 147.5
         },
         {
           "key": "469.l.18247.t.9",
@@ -361,7 +361,7 @@
           "losses": 39,
           "ties": 10,
           "pct": "0.413",
-          "rotoPoints": 157
+          "rotoPoints": 150
         },
         {
           "key": "469.l.18247.t.11",
@@ -371,7 +371,7 @@
           "losses": 42,
           "ties": 10,
           "pct": "0.373",
-          "rotoPoints": 119.5
+          "rotoPoints": 125.5
         }
       ]
     }
