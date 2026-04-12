@@ -261,7 +261,7 @@
           "losses": 24,
           "ties": 7,
           "pct": "0.633",
-          "rotoPoints": 209.5
+          "rotoPoints": 206
         },
         {
           "key": "469.l.18247.t.4",
@@ -271,7 +271,7 @@
           "losses": 22,
           "ties": 13,
           "pct": "0.620",
-          "rotoPoints": 168
+          "rotoPoints": 174
         },
         {
           "key": "469.l.18247.t.3",
@@ -281,26 +281,26 @@
           "losses": 27,
           "ties": 10,
           "pct": "0.573",
-          "rotoPoints": 183.5
+          "rotoPoints": 184
         },
         {
           "key": "469.l.18247.t.7",
           "name": "커 상 혁",
           "rank": 4,
-          "wins": 36,
+          "wins": 35,
           "losses": 25,
-          "ties": 14,
-          "pct": "0.573",
-          "rotoPoints": 180
+          "ties": 15,
+          "pct": "0.567",
+          "rotoPoints": 179.5
         },
         {
           "key": "469.l.18247.t.8",
           "name": "응노",
           "rank": 5,
           "wins": 36,
-          "losses": 29,
-          "ties": 10,
-          "pct": "0.547",
+          "losses": 28,
+          "ties": 11,
+          "pct": "0.553",
           "rotoPoints": 152
         },
         {
@@ -321,7 +321,7 @@
           "losses": 36,
           "ties": 9,
           "pct": "0.460",
-          "rotoPoints": 164.5
+          "rotoPoints": 160.5
         },
         {
           "key": "469.l.18247.t.10",
@@ -331,7 +331,7 @@
           "losses": 38,
           "ties": 7,
           "pct": "0.447",
-          "rotoPoints": 154.5
+          "rotoPoints": 153
         },
         {
           "key": "469.l.18247.t.2",
@@ -341,7 +341,7 @@
           "losses": 36,
           "ties": 11,
           "pct": "0.447",
-          "rotoPoints": 176.5
+          "rotoPoints": 174
         },
         {
           "key": "469.l.18247.t.9",
@@ -358,20 +358,20 @@
           "name": "2026 MVP Mike Trout",
           "rank": 11,
           "wins": 23,
-          "losses": 39,
-          "ties": 13,
-          "pct": "0.393",
-          "rotoPoints": 135
+          "losses": 38,
+          "ties": 14,
+          "pct": "0.400",
+          "rotoPoints": 139
         },
         {
           "key": "469.l.18247.t.11",
           "name": "💥 JeongWoo's Shockers",
           "rank": 12,
-          "wins": 22,
+          "wins": 21,
           "losses": 43,
-          "ties": 10,
-          "pct": "0.360",
-          "rotoPoints": 104.5
+          "ties": 11,
+          "pct": "0.353",
+          "rotoPoints": 106
         }
       ]
     }
