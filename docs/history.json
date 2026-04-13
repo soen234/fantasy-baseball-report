@@ -254,24 +254,24 @@
       "week": 3,
       "teams": [
         {
-          "key": "469.l.18247.t.12",
-          "name": "💥 JongHun's Busters",
-          "rank": 1,
-          "wins": 44,
-          "losses": 24,
-          "ties": 7,
-          "pct": "0.633",
-          "rotoPoints": 206
-        },
-        {
           "key": "469.l.18247.t.4",
           "name": "UTU‘s triple IL",
-          "rank": 2,
-          "wins": 40,
+          "rank": 1,
+          "wins": 42,
           "losses": 22,
-          "ties": 13,
-          "pct": "0.620",
-          "rotoPoints": 174
+          "ties": 11,
+          "pct": "0.633",
+          "rotoPoints": 169.5
+        },
+        {
+          "key": "469.l.18247.t.12",
+          "name": "💥 JongHun's Busters",
+          "rank": 2,
+          "wins": 43,
+          "losses": 24,
+          "ties": 8,
+          "pct": "0.627",
+          "rotoPoints": 204
         },
         {
           "key": "469.l.18247.t.3",
@@ -281,47 +281,47 @@
           "losses": 27,
           "ties": 10,
           "pct": "0.573",
-          "rotoPoints": 184
-        },
-        {
-          "key": "469.l.18247.t.7",
-          "name": "커 상 혁",
-          "rank": 4,
-          "wins": 35,
-          "losses": 25,
-          "ties": 15,
-          "pct": "0.567",
-          "rotoPoints": 179.5
+          "rotoPoints": 185
         },
         {
           "key": "469.l.18247.t.8",
           "name": "응노",
-          "rank": 5,
-          "wins": 36,
-          "losses": 28,
+          "rank": 4,
+          "wins": 37,
+          "losses": 27,
           "ties": 11,
-          "pct": "0.553",
-          "rotoPoints": 152
+          "pct": "0.567",
+          "rotoPoints": 150.5
+        },
+        {
+          "key": "469.l.18247.t.7",
+          "name": "커 상 혁",
+          "rank": 5,
+          "wins": 34,
+          "losses": 27,
+          "ties": 14,
+          "pct": "0.547",
+          "rotoPoints": 179
         },
         {
           "key": "469.l.18247.t.5",
           "name": "✌️ Yeonwoo's Double Play",
           "rank": 6,
           "wins": 32,
-          "losses": 31,
-          "ties": 12,
-          "pct": "0.507",
-          "rotoPoints": 157.5
+          "losses": 33,
+          "ties": 10,
+          "pct": "0.493",
+          "rotoPoints": 155.5
         },
         {
           "key": "469.l.18247.t.6",
           "name": "정후야 야구가 어려워?",
           "rank": 7,
           "wins": 30,
-          "losses": 36,
-          "ties": 9,
-          "pct": "0.460",
-          "rotoPoints": 160.5
+          "losses": 35,
+          "ties": 10,
+          "pct": "0.467",
+          "rotoPoints": 164
         },
         {
           "key": "469.l.18247.t.10",
@@ -331,7 +331,7 @@
           "losses": 38,
           "ties": 7,
           "pct": "0.447",
-          "rotoPoints": 153
+          "rotoPoints": 157.5
         },
         {
           "key": "469.l.18247.t.2",
@@ -341,7 +341,7 @@
           "losses": 36,
           "ties": 11,
           "pct": "0.447",
-          "rotoPoints": 174
+          "rotoPoints": 171.5
         },
         {
           "key": "469.l.18247.t.9",
@@ -351,27 +351,27 @@
           "losses": 38,
           "ties": 8,
           "pct": "0.440",
-          "rotoPoints": 164.5
+          "rotoPoints": 157
         },
         {
           "key": "469.l.18247.t.1",
           "name": "2026 MVP Mike Trout",
           "rank": 11,
-          "wins": 23,
-          "losses": 38,
-          "ties": 14,
-          "pct": "0.400",
-          "rotoPoints": 139
+          "wins": 25,
+          "losses": 37,
+          "ties": 13,
+          "pct": "0.420",
+          "rotoPoints": 152.5
         },
         {
           "key": "469.l.18247.t.11",
           "name": "💥 JeongWoo's Shockers",
           "rank": 12,
-          "wins": 21,
-          "losses": 43,
+          "wins": 20,
+          "losses": 44,
           "ties": 11,
-          "pct": "0.353",
-          "rotoPoints": 106
+          "pct": "0.340",
+          "rotoPoints": 104
         }
       ]
     }
