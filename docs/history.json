@@ -386,7 +386,7 @@
           "losses": 31,
           "ties": 16,
           "pct": "0.610",
-          "rotoPoints": 198
+          "rotoPoints": 196
         },
         {
           "key": "469.l.18247.t.3",
@@ -396,7 +396,7 @@
           "losses": 34,
           "ties": 17,
           "pct": "0.575",
-          "rotoPoints": 176.5
+          "rotoPoints": 176
         },
         {
           "key": "469.l.18247.t.4",
@@ -406,17 +406,17 @@
           "losses": 35,
           "ties": 19,
           "pct": "0.555",
-          "rotoPoints": 138.5
+          "rotoPoints": 137
         },
         {
           "key": "469.l.18247.t.7",
           "name": "커 상 혁",
           "rank": 4,
-          "wins": 45,
+          "wins": 44,
           "losses": 36,
-          "ties": 19,
-          "pct": "0.545",
-          "rotoPoints": 144.5
+          "ties": 20,
+          "pct": "0.540",
+          "rotoPoints": 143.5
         },
         {
           "key": "469.l.18247.t.12",
@@ -426,7 +426,7 @@
           "losses": 40,
           "ties": 13,
           "pct": "0.535",
-          "rotoPoints": 129
+          "rotoPoints": 128.5
         },
         {
           "key": "469.l.18247.t.2",
@@ -436,27 +436,27 @@
           "losses": 41,
           "ties": 14,
           "pct": "0.520",
-          "rotoPoints": 213.5
+          "rotoPoints": 215
+        },
+        {
+          "key": "469.l.18247.t.10",
+          "name": "🏆 ProfeSuh",
+          "rank": 7,
+          "wins": 39,
+          "losses": 47,
+          "ties": 14,
+          "pct": "0.460",
+          "rotoPoints": 156
         },
         {
           "key": "469.l.18247.t.6",
           "name": "정후야 야구가 어려워?",
-          "rank": 7,
+          "rank": 8,
           "wins": 37,
           "losses": 46,
           "ties": 17,
           "pct": "0.455",
           "rotoPoints": 173
-        },
-        {
-          "key": "469.l.18247.t.10",
-          "name": "🏆 ProfeSuh",
-          "rank": 8,
-          "wins": 39,
-          "losses": 48,
-          "ties": 13,
-          "pct": "0.455",
-          "rotoPoints": 154
         },
         {
           "key": "469.l.18247.t.9",
@@ -476,7 +476,7 @@
           "losses": 48,
           "ties": 16,
           "pct": "0.440",
-          "rotoPoints": 155.5
+          "rotoPoints": 153
         },
         {
           "key": "469.l.18247.t.5",
@@ -486,7 +486,7 @@
           "losses": 50,
           "ties": 13,
           "pct": "0.435",
-          "rotoPoints": 121.5
+          "rotoPoints": 126.5
         },
         {
           "key": "469.l.18247.t.11",
@@ -496,7 +496,7 @@
           "losses": 48,
           "ties": 19,
           "pct": "0.425",
-          "rotoPoints": 209
+          "rotoPoints": 208.5
         }
       ]
     }
