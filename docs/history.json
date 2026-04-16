@@ -386,7 +386,7 @@
           "losses": 29,
           "ties": 15,
           "pct": "0.635",
-          "rotoPoints": 205.5
+          "rotoPoints": 211
         },
         {
           "key": "469.l.18247.t.7",
@@ -396,7 +396,7 @@
           "losses": 33,
           "ties": 16,
           "pct": "0.590",
-          "rotoPoints": 189
+          "rotoPoints": 186
         },
         {
           "key": "469.l.18247.t.4",
@@ -406,17 +406,17 @@
           "losses": 36,
           "ties": 14,
           "pct": "0.570",
-          "rotoPoints": 154.5
+          "rotoPoints": 154
         },
         {
           "key": "469.l.18247.t.3",
           "name": "TRUCK",
           "rank": 4,
-          "wins": 45,
-          "losses": 40,
+          "wins": 46,
+          "losses": 39,
           "ties": 15,
-          "pct": "0.525",
-          "rotoPoints": 149.5
+          "pct": "0.535",
+          "rotoPoints": 151
         },
         {
           "key": "469.l.18247.t.12",
@@ -432,11 +432,11 @@
           "key": "469.l.18247.t.6",
           "name": "정후야 야구가 어려워?",
           "rank": 6,
-          "wins": 43,
-          "losses": 42,
+          "wins": 42,
+          "losses": 43,
           "ties": 15,
-          "pct": "0.505",
-          "rotoPoints": 181.5
+          "pct": "0.495",
+          "rotoPoints": 177.5
         },
         {
           "key": "469.l.18247.t.2",
@@ -446,7 +446,7 @@
           "losses": 44,
           "ties": 14,
           "pct": "0.490",
-          "rotoPoints": 181
+          "rotoPoints": 182.5
         },
         {
           "key": "469.l.18247.t.1",
@@ -456,7 +456,7 @@
           "losses": 46,
           "ties": 14,
           "pct": "0.470",
-          "rotoPoints": 194.5
+          "rotoPoints": 194
         },
         {
           "key": "469.l.18247.t.5",
@@ -466,7 +466,7 @@
           "losses": 47,
           "ties": 13,
           "pct": "0.465",
-          "rotoPoints": 154.5
+          "rotoPoints": 154
         },
         {
           "key": "469.l.18247.t.9",
@@ -476,7 +476,7 @@
           "losses": 53,
           "ties": 10,
           "pct": "0.420",
-          "rotoPoints": 133
+          "rotoPoints": 132.5
         },
         {
           "key": "469.l.18247.t.10",
@@ -486,7 +486,7 @@
           "losses": 54,
           "ties": 10,
           "pct": "0.410",
-          "rotoPoints": 133
+          "rotoPoints": 135
         },
         {
           "key": "469.l.18247.t.11",
@@ -496,7 +496,7 @@
           "losses": 52,
           "ties": 14,
           "pct": "0.410",
-          "rotoPoints": 181
+          "rotoPoints": 179.5
         }
       ]
     }
