@@ -383,20 +383,20 @@
           "name": "응노",
           "rank": 1,
           "wins": 56,
-          "losses": 28,
-          "ties": 16,
-          "pct": "0.640",
-          "rotoPoints": 201
+          "losses": 29,
+          "ties": 15,
+          "pct": "0.635",
+          "rotoPoints": 198
         },
         {
           "key": "469.l.18247.t.4",
           "name": "UTU‘s Jokers",
           "rank": 2,
           "wins": 50,
-          "losses": 36,
-          "ties": 14,
-          "pct": "0.570",
-          "rotoPoints": 139
+          "losses": 35,
+          "ties": 15,
+          "pct": "0.575",
+          "rotoPoints": 143
         },
         {
           "key": "469.l.18247.t.3",
@@ -406,27 +406,27 @@
           "losses": 39,
           "ties": 13,
           "pct": "0.545",
-          "rotoPoints": 159.5
+          "rotoPoints": 160
         },
         {
           "key": "469.l.18247.t.7",
           "name": "커 상 혁",
           "rank": 4,
           "wins": 46,
-          "losses": 38,
-          "ties": 16,
-          "pct": "0.540",
-          "rotoPoints": 176
+          "losses": 39,
+          "ties": 15,
+          "pct": "0.535",
+          "rotoPoints": 186
         },
         {
           "key": "469.l.18247.t.12",
           "name": "💥 JongHun's Busters",
           "rank": 5,
-          "wins": 44,
+          "wins": 45,
           "losses": 43,
-          "ties": 13,
-          "pct": "0.505",
-          "rotoPoints": 96.5
+          "ties": 12,
+          "pct": "0.510",
+          "rotoPoints": 98.5
         },
         {
           "key": "469.l.18247.t.1",
@@ -446,7 +446,7 @@
           "losses": 45,
           "ties": 13,
           "pct": "0.485",
-          "rotoPoints": 176.5
+          "rotoPoints": 162.5
         },
         {
           "key": "469.l.18247.t.2",
@@ -456,7 +456,7 @@
           "losses": 44,
           "ties": 15,
           "pct": "0.485",
-          "rotoPoints": 176.5
+          "rotoPoints": 172.5
         },
         {
           "key": "469.l.18247.t.5",
@@ -466,27 +466,27 @@
           "losses": 46,
           "ties": 14,
           "pct": "0.470",
-          "rotoPoints": 166.5
+          "rotoPoints": 171
         },
         {
           "key": "469.l.18247.t.10",
           "name": "🏆 ProfeSuh",
           "rank": 10,
-          "wins": 41,
+          "wins": 42,
           "losses": 49,
-          "ties": 10,
-          "pct": "0.460",
-          "rotoPoints": 144.5
+          "ties": 9,
+          "pct": "0.465",
+          "rotoPoints": 156.5
         },
         {
           "key": "469.l.18247.t.11",
           "name": "💥 JeongWoo's Shockers",
           "rank": 11,
-          "wins": 34,
+          "wins": 33,
           "losses": 52,
-          "ties": 14,
-          "pct": "0.410",
-          "rotoPoints": 175
+          "ties": 15,
+          "pct": "0.405",
+          "rotoPoints": 166.5
         },
         {
           "key": "469.l.18247.t.9",
@@ -496,7 +496,7 @@
           "losses": 54,
           "ties": 12,
           "pct": "0.400",
-          "rotoPoints": 134.5
+          "rotoPoints": 131
         }
       ]
     }
