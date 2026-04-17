@@ -386,7 +386,7 @@
           "losses": 28,
           "ties": 15,
           "pct": "0.645",
-          "rotoPoints": 209.5
+          "rotoPoints": 206.5
         },
         {
           "key": "469.l.18247.t.4",
@@ -396,7 +396,7 @@
           "losses": 36,
           "ties": 15,
           "pct": "0.565",
-          "rotoPoints": 148.5
+          "rotoPoints": 146
         },
         {
           "key": "469.l.18247.t.7",
@@ -406,7 +406,7 @@
           "losses": 37,
           "ties": 15,
           "pct": "0.555",
-          "rotoPoints": 182
+          "rotoPoints": 178.5
         },
         {
           "key": "469.l.18247.t.3",
@@ -416,7 +416,7 @@
           "losses": 39,
           "ties": 13,
           "pct": "0.545",
-          "rotoPoints": 162
+          "rotoPoints": 162.5
         },
         {
           "key": "469.l.18247.t.12",
@@ -426,7 +426,7 @@
           "losses": 44,
           "ties": 12,
           "pct": "0.500",
-          "rotoPoints": 96.5
+          "rotoPoints": 96
         },
         {
           "key": "469.l.18247.t.2",
@@ -436,7 +436,7 @@
           "losses": 44,
           "ties": 14,
           "pct": "0.490",
-          "rotoPoints": 179.5
+          "rotoPoints": 177.5
         },
         {
           "key": "469.l.18247.t.6",
@@ -446,27 +446,27 @@
           "losses": 45,
           "ties": 13,
           "pct": "0.485",
-          "rotoPoints": 170.5
-        },
-        {
-          "key": "469.l.18247.t.1",
-          "name": "2026 MVP Mike Trout",
-          "rank": 8,
-          "wins": 40,
-          "losses": 46,
-          "ties": 14,
-          "pct": "0.470",
-          "rotoPoints": 190.5
+          "rotoPoints": 174.5
         },
         {
           "key": "469.l.18247.t.5",
           "name": "✌️ Yeonwoo's Double Play",
-          "rank": 9,
+          "rank": 8,
           "wins": 40,
           "losses": 47,
           "ties": 13,
           "pct": "0.465",
-          "rotoPoints": 150.5
+          "rotoPoints": 161
+        },
+        {
+          "key": "469.l.18247.t.1",
+          "name": "2026 MVP Mike Trout",
+          "rank": 9,
+          "wins": 39,
+          "losses": 46,
+          "ties": 15,
+          "pct": "0.465",
+          "rotoPoints": 192
         },
         {
           "key": "469.l.18247.t.10",
@@ -476,17 +476,17 @@
           "losses": 51,
           "ties": 9,
           "pct": "0.445",
-          "rotoPoints": 147
+          "rotoPoints": 142
         },
         {
           "key": "469.l.18247.t.9",
           "name": "JJ yoogwanholt",
           "rank": 11,
           "wins": 37,
-          "losses": 53,
-          "ties": 10,
-          "pct": "0.420",
-          "rotoPoints": 134
+          "losses": 52,
+          "ties": 11,
+          "pct": "0.425",
+          "rotoPoints": 137
         },
         {
           "key": "469.l.18247.t.11",
@@ -496,7 +496,7 @@
           "losses": 51,
           "ties": 15,
           "pct": "0.415",
-          "rotoPoints": 179.5
+          "rotoPoints": 176.5
         }
       ]
     }
