@@ -386,7 +386,7 @@
           "losses": 32,
           "ties": 16,
           "pct": "0.600",
-          "rotoPoints": 173
+          "rotoPoints": 172.5
         },
         {
           "key": "469.l.18247.t.8",
@@ -396,7 +396,7 @@
           "losses": 34,
           "ties": 12,
           "pct": "0.600",
-          "rotoPoints": 195.5
+          "rotoPoints": 194.5
         },
         {
           "key": "469.l.18247.t.12",
@@ -406,27 +406,27 @@
           "losses": 41,
           "ties": 9,
           "pct": "0.545",
-          "rotoPoints": 90.5
-        },
-        {
-          "key": "469.l.18247.t.3",
-          "name": "TRUCK",
-          "rank": 4,
-          "wins": 47,
-          "losses": 40,
-          "ties": 13,
-          "pct": "0.535",
-          "rotoPoints": 152.5
+          "rotoPoints": 96
         },
         {
           "key": "469.l.18247.t.7",
           "name": "커 상 혁",
-          "rank": 5,
-          "wins": 45,
-          "losses": 38,
+          "rank": 4,
+          "wins": 46,
+          "losses": 37,
           "ties": 17,
+          "pct": "0.545",
+          "rotoPoints": 166.5
+        },
+        {
+          "key": "469.l.18247.t.3",
+          "name": "TRUCK",
+          "rank": 5,
+          "wins": 47,
+          "losses": 40,
+          "ties": 13,
           "pct": "0.535",
-          "rotoPoints": 167
+          "rotoPoints": 148.5
         },
         {
           "key": "469.l.18247.t.5",
@@ -436,7 +436,7 @@
           "losses": 42,
           "ties": 16,
           "pct": "0.500",
-          "rotoPoints": 181
+          "rotoPoints": 180
         },
         {
           "key": "469.l.18247.t.6",
@@ -446,32 +446,22 @@
           "losses": 44,
           "ties": 13,
           "pct": "0.495",
-          "rotoPoints": 185
+          "rotoPoints": 183
         },
         {
           "key": "469.l.18247.t.1",
           "name": "2026 MVP Mike Trout",
           "rank": 8,
           "wins": 38,
-          "losses": 43,
-          "ties": 19,
-          "pct": "0.475",
-          "rotoPoints": 198
-        },
-        {
-          "key": "469.l.18247.t.10",
-          "name": "🏆 ProfeSuh",
-          "rank": 9,
-          "wins": 41,
-          "losses": 48,
-          "ties": 11,
-          "pct": "0.465",
-          "rotoPoints": 154
+          "losses": 46,
+          "ties": 16,
+          "pct": "0.460",
+          "rotoPoints": 199.5
         },
         {
           "key": "469.l.18247.t.2",
           "name": "xXxAIxXx",
-          "rank": 10,
+          "rank": 9,
           "wins": 37,
           "losses": 46,
           "ties": 17,
@@ -479,14 +469,24 @@
           "rotoPoints": 149.5
         },
         {
+          "key": "469.l.18247.t.10",
+          "name": "🏆 ProfeSuh",
+          "rank": 10,
+          "wins": 40,
+          "losses": 49,
+          "ties": 11,
+          "pct": "0.455",
+          "rotoPoints": 151
+        },
+        {
           "key": "469.l.18247.t.9",
           "name": "JJ yoogwanholt",
           "rank": 11,
-          "wins": 34,
+          "wins": 37,
           "losses": 51,
-          "ties": 15,
-          "pct": "0.415",
-          "rotoPoints": 152
+          "ties": 12,
+          "pct": "0.430",
+          "rotoPoints": 155.5
         },
         {
           "key": "469.l.18247.t.11",
@@ -496,7 +496,7 @@
           "losses": 54,
           "ties": 16,
           "pct": "0.380",
-          "rotoPoints": 152
+          "rotoPoints": 153.5
         }
       ]
     }
