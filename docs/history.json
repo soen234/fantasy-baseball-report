@@ -517,11 +517,11 @@
           "key": "469.l.18247.t.7",
           "name": "커 상 혁",
           "rank": 2,
-          "wins": 60,
-          "losses": 41,
+          "wins": 61,
+          "losses": 40,
           "ties": 24,
-          "pct": "0.576",
-          "rotoPoints": 224
+          "pct": "0.584",
+          "rotoPoints": 225.5
         },
         {
           "key": "469.l.18247.t.12",
@@ -531,7 +531,7 @@
           "losses": 45,
           "ties": 18,
           "pct": "0.568",
-          "rotoPoints": 193
+          "rotoPoints": 192.5
         },
         {
           "key": "469.l.18247.t.8",
@@ -548,30 +548,30 @@
           "name": "2026 MVP Mike Trout",
           "rank": 5,
           "wins": 51,
-          "losses": 52,
-          "ties": 22,
-          "pct": "0.496",
+          "losses": 51,
+          "ties": 23,
+          "pct": "0.500",
           "rotoPoints": 152
-        },
-        {
-          "key": "469.l.18247.t.5",
-          "name": "✌️ Yeonwoo's Double Play",
-          "rank": 6,
-          "wins": 51,
-          "losses": 53,
-          "ties": 21,
-          "pct": "0.492",
-          "rotoPoints": 142
         },
         {
           "key": "469.l.18247.t.3",
           "name": "TRUCK",
-          "rank": 7,
+          "rank": 6,
           "wins": 51,
           "losses": 54,
           "ties": 20,
           "pct": "0.488",
           "rotoPoints": 130.5
+        },
+        {
+          "key": "469.l.18247.t.5",
+          "name": "✌️ Yeonwoo's Double Play",
+          "rank": 7,
+          "wins": 50,
+          "losses": 53,
+          "ties": 22,
+          "pct": "0.488",
+          "rotoPoints": 141
         },
         {
           "key": "469.l.18247.t.9",
@@ -581,22 +581,12 @@
           "losses": 59,
           "ties": 17,
           "pct": "0.460",
-          "rotoPoints": 195
-        },
-        {
-          "key": "469.l.18247.t.6",
-          "name": "정후야 야구가 어려워?",
-          "rank": 9,
-          "wins": 46,
-          "losses": 60,
-          "ties": 19,
-          "pct": "0.444",
-          "rotoPoints": 158
+          "rotoPoints": 194.5
         },
         {
           "key": "469.l.18247.t.2",
           "name": "xXxAIxXx",
-          "rank": 10,
+          "rank": 9,
           "wins": 45,
           "losses": 59,
           "ties": 21,
@@ -606,12 +596,22 @@
         {
           "key": "469.l.18247.t.10",
           "name": "🏆 ProfeSuh",
-          "rank": 11,
+          "rank": 10,
           "wins": 46,
           "losses": 61,
           "ties": 18,
           "pct": "0.440",
-          "rotoPoints": 149
+          "rotoPoints": 148
+        },
+        {
+          "key": "469.l.18247.t.6",
+          "name": "정후야 야구가 어려워?",
+          "rank": 11,
+          "wins": 45,
+          "losses": 61,
+          "ties": 19,
+          "pct": "0.436",
+          "rotoPoints": 154
         },
         {
           "key": "469.l.18247.t.11",
@@ -621,7 +621,7 @@
           "losses": 63,
           "ties": 22,
           "pct": "0.408",
-          "rotoPoints": 161
+          "rotoPoints": 166.5
         }
       ]
     }
