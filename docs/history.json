@@ -511,7 +511,7 @@
           "losses": 37,
           "ties": 20,
           "pct": "0.624",
-          "rotoPoints": 192
+          "rotoPoints": 195
         },
         {
           "key": "469.l.18247.t.8",
@@ -561,7 +561,7 @@
           "losses": 53,
           "ties": 16,
           "pct": "0.512",
-          "rotoPoints": 139.5
+          "rotoPoints": 139
         },
         {
           "key": "469.l.18247.t.12",
@@ -571,7 +571,7 @@
           "losses": 55,
           "ties": 14,
           "pct": "0.504",
-          "rotoPoints": 143.5
+          "rotoPoints": 143
         },
         {
           "key": "469.l.18247.t.6",
@@ -581,7 +581,7 @@
           "losses": 58,
           "ties": 15,
           "pct": "0.476",
-          "rotoPoints": 209.5
+          "rotoPoints": 209
         },
         {
           "key": "469.l.18247.t.1",
@@ -591,7 +591,7 @@
           "losses": 57,
           "ties": 17,
           "pct": "0.476",
-          "rotoPoints": 143
+          "rotoPoints": 142.5
         },
         {
           "key": "469.l.18247.t.2",
@@ -601,7 +601,7 @@
           "losses": 60,
           "ties": 16,
           "pct": "0.456",
-          "rotoPoints": 113
+          "rotoPoints": 112.5
         },
         {
           "key": "469.l.18247.t.11",
@@ -621,7 +621,7 @@
           "losses": 71,
           "ties": 13,
           "pct": "0.380",
-          "rotoPoints": 144.5
+          "rotoPoints": 144
         }
       ]
     }
