@@ -505,13 +505,13 @@
       "teams": [
         {
           "key": "469.l.18247.t.4",
-          "name": "UTU_아니예스",
+          "name": "Strait of UTU",
           "rank": 1,
           "wins": 70,
           "losses": 35,
           "ties": 20,
           "pct": "0.640",
-          "rotoPoints": 209
+          "rotoPoints": 207.5
         },
         {
           "key": "469.l.18247.t.8",
@@ -521,22 +521,12 @@
           "losses": 48,
           "ties": 18,
           "pct": "0.544",
-          "rotoPoints": 120.5
-        },
-        {
-          "key": "469.l.18247.t.3",
-          "name": "TRUCK",
-          "rank": 3,
-          "wins": 60,
-          "losses": 49,
-          "ties": 16,
-          "pct": "0.544",
-          "rotoPoints": 155
+          "rotoPoints": 118.5
         },
         {
           "key": "469.l.18247.t.7",
           "name": "커 상 혁",
-          "rank": 4,
+          "rank": 3,
           "wins": 58,
           "losses": 47,
           "ties": 20,
@@ -544,24 +534,34 @@
           "rotoPoints": 221
         },
         {
-          "key": "469.l.18247.t.10",
-          "name": "🏆 ProfeSuh",
+          "key": "469.l.18247.t.3",
+          "name": "TRUCK",
+          "rank": 4,
+          "wins": 58,
+          "losses": 49,
+          "ties": 18,
+          "pct": "0.536",
+          "rotoPoints": 151.5
+        },
+        {
+          "key": "469.l.18247.t.12",
+          "name": "💥 JongHun's Busters",
           "rank": 5,
           "wins": 57,
           "losses": 52,
           "ties": 16,
           "pct": "0.520",
-          "rotoPoints": 216.5
+          "rotoPoints": 144
         },
         {
-          "key": "469.l.18247.t.12",
-          "name": "💥 JongHun's Busters",
+          "key": "469.l.18247.t.10",
+          "name": "🏆 ProfeSuh",
           "rank": 6,
-          "wins": 57,
-          "losses": 54,
-          "ties": 14,
-          "pct": "0.512",
-          "rotoPoints": 140.5
+          "wins": 56,
+          "losses": 52,
+          "ties": 17,
+          "pct": "0.516",
+          "rotoPoints": 213.5
         },
         {
           "key": "469.l.18247.t.5",
@@ -571,7 +571,7 @@
           "losses": 55,
           "ties": 16,
           "pct": "0.496",
-          "rotoPoints": 110.5
+          "rotoPoints": 106
         },
         {
           "key": "469.l.18247.t.1",
@@ -581,7 +581,7 @@
           "losses": 55,
           "ties": 17,
           "pct": "0.492",
-          "rotoPoints": 147
+          "rotoPoints": 144.5
         },
         {
           "key": "469.l.18247.t.6",
@@ -591,7 +591,7 @@
           "losses": 58,
           "ties": 15,
           "pct": "0.476",
-          "rotoPoints": 200.5
+          "rotoPoints": 201.5
         },
         {
           "key": "469.l.18247.t.11",
@@ -601,7 +601,7 @@
           "losses": 60,
           "ties": 19,
           "pct": "0.444",
-          "rotoPoints": 162.5
+          "rotoPoints": 171.5
         },
         {
           "key": "469.l.18247.t.2",
@@ -611,17 +611,17 @@
           "losses": 65,
           "ties": 18,
           "pct": "0.408",
-          "rotoPoints": 101.5
+          "rotoPoints": 104
         },
         {
           "key": "469.l.18247.t.9",
           "name": "JJ yoogwanholt",
           "rank": 12,
           "wins": 40,
-          "losses": 70,
-          "ties": 15,
-          "pct": "0.380",
-          "rotoPoints": 165.5
+          "losses": 69,
+          "ties": 16,
+          "pct": "0.384",
+          "rotoPoints": 166.5
         }
       ]
     }
