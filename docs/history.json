@@ -521,7 +521,7 @@
           "losses": 48,
           "ties": 18,
           "pct": "0.544",
-          "rotoPoints": 118.5
+          "rotoPoints": 117.5
         },
         {
           "key": "469.l.18247.t.7",
@@ -531,7 +531,7 @@
           "losses": 47,
           "ties": 20,
           "pct": "0.544",
-          "rotoPoints": 221
+          "rotoPoints": 220.5
         },
         {
           "key": "469.l.18247.t.3",
@@ -541,7 +541,7 @@
           "losses": 49,
           "ties": 18,
           "pct": "0.536",
-          "rotoPoints": 151.5
+          "rotoPoints": 150
         },
         {
           "key": "469.l.18247.t.12",
@@ -551,17 +551,17 @@
           "losses": 52,
           "ties": 16,
           "pct": "0.520",
-          "rotoPoints": 144
+          "rotoPoints": 145
         },
         {
           "key": "469.l.18247.t.10",
           "name": "🏆 ProfeSuh",
           "rank": 6,
           "wins": 56,
-          "losses": 52,
-          "ties": 17,
-          "pct": "0.516",
-          "rotoPoints": 213.5
+          "losses": 54,
+          "ties": 15,
+          "pct": "0.508",
+          "rotoPoints": 212.5
         },
         {
           "key": "469.l.18247.t.5",
@@ -581,7 +581,7 @@
           "losses": 55,
           "ties": 17,
           "pct": "0.492",
-          "rotoPoints": 144.5
+          "rotoPoints": 143.5
         },
         {
           "key": "469.l.18247.t.6",
@@ -591,7 +591,7 @@
           "losses": 58,
           "ties": 15,
           "pct": "0.476",
-          "rotoPoints": 201.5
+          "rotoPoints": 201
         },
         {
           "key": "469.l.18247.t.11",
@@ -601,7 +601,7 @@
           "losses": 60,
           "ties": 19,
           "pct": "0.444",
-          "rotoPoints": 171.5
+          "rotoPoints": 174
         },
         {
           "key": "469.l.18247.t.2",
@@ -617,11 +617,11 @@
           "key": "469.l.18247.t.9",
           "name": "JJ yoogwanholt",
           "rank": 12,
-          "wins": 40,
+          "wins": 42,
           "losses": 69,
-          "ties": 16,
-          "pct": "0.384",
-          "rotoPoints": 166.5
+          "ties": 14,
+          "pct": "0.392",
+          "rotoPoints": 168.5
         }
       ]
     }
