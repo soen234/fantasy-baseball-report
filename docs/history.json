@@ -629,64 +629,64 @@
       "week": 6,
       "teams": [
         {
+          "key": "469.l.18247.t.4",
+          "name": "Strait of UTU",
+          "rank": 1,
+          "wins": 76,
+          "losses": 47,
+          "ties": 27,
+          "pct": "0.597",
+          "rotoPoints": 168.5
+        },
+        {
           "key": "469.l.18247.t.8",
           "name": "응노",
-          "rank": 1,
+          "rank": 2,
           "wins": 78,
           "losses": 49,
           "ties": 23,
           "pct": "0.597",
-          "rotoPoints": 230.5
-        },
-        {
-          "key": "469.l.18247.t.4",
-          "name": "Strait of UTU",
-          "rank": 2,
-          "wins": 72,
-          "losses": 49,
-          "ties": 29,
-          "pct": "0.577",
-          "rotoPoints": 162
-        },
-        {
-          "key": "469.l.18247.t.12",
-          "name": "💥 JongHun's Busters",
-          "rank": 3,
-          "wins": 71,
-          "losses": 54,
-          "ties": 25,
-          "pct": "0.557",
-          "rotoPoints": 214
+          "rotoPoints": 232
         },
         {
           "key": "469.l.18247.t.3",
           "name": "TRUCK",
-          "rank": 4,
-          "wins": 70,
+          "rank": 3,
+          "wins": 71,
           "losses": 58,
-          "ties": 22,
-          "pct": "0.540",
-          "rotoPoints": 181
+          "ties": 21,
+          "pct": "0.543",
+          "rotoPoints": 178
+        },
+        {
+          "key": "469.l.18247.t.12",
+          "name": "💥 JongHun's Busters",
+          "rank": 4,
+          "wins": 69,
+          "losses": 58,
+          "ties": 23,
+          "pct": "0.537",
+          "rotoPoints": 204.5
         },
         {
           "key": "469.l.18247.t.7",
           "name": "커 상 혁",
           "rank": 5,
           "wins": 67,
-          "losses": 59,
-          "ties": 24,
-          "pct": "0.527",
-          "rotoPoints": 180
+          "losses": 60,
+          "ties": 23,
+          "pct": "0.523",
+          "rotoPoints": 170
         },
         {
           "key": "469.l.18247.t.10",
           "name": "🏆 ProfeSuh",
           "rank": 6,
           "wins": 70,
-          "losses": 62,
-          "ties": 18,
-          "pct": "0.527",
-          "rotoPoints": 182.5
+          "losses": 63,
+          "ties": 17,
+          "pct": "0.523",
+          "rotoPoints": 173.5
         },
         {
           "key": "469.l.18247.t.1",
@@ -696,27 +696,27 @@
           "losses": 59,
           "ties": 25,
           "pct": "0.523",
-          "rotoPoints": 165.5
+          "rotoPoints": 155
         },
         {
           "key": "469.l.18247.t.6",
           "name": "Two Koreans can win",
           "rank": 8,
-          "wins": 64,
-          "losses": 59,
-          "ties": 27,
-          "pct": "0.517",
-          "rotoPoints": 163.5
+          "wins": 65,
+          "losses": 61,
+          "ties": 24,
+          "pct": "0.513",
+          "rotoPoints": 179.5
         },
         {
           "key": "469.l.18247.t.5",
           "name": "✌️ Yeonwoo's Double Play",
           "rank": 9,
-          "wins": 62,
+          "wins": 63,
           "losses": 69,
-          "ties": 19,
-          "pct": "0.477",
-          "rotoPoints": 133.5
+          "ties": 18,
+          "pct": "0.480",
+          "rotoPoints": 141
         },
         {
           "key": "469.l.18247.t.11",
@@ -732,11 +732,11 @@
           "key": "469.l.18247.t.9",
           "name": "JJ yoogwanholt",
           "rank": 11,
-          "wins": 43,
-          "losses": 81,
-          "ties": 26,
-          "pct": "0.373",
-          "rotoPoints": 119
+          "wins": 45,
+          "losses": 82,
+          "ties": 23,
+          "pct": "0.377",
+          "rotoPoints": 137
         },
         {
           "key": "469.l.18247.t.2",
@@ -746,7 +746,7 @@
           "losses": 84,
           "ties": 23,
           "pct": "0.363",
-          "rotoPoints": 111
+          "rotoPoints": 103.5
         }
       ]
     }
