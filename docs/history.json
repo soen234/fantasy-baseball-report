@@ -636,7 +636,7 @@
           "losses": 43,
           "ties": 26,
           "pct": "0.627",
-          "rotoPoints": 165
+          "rotoPoints": 167
         },
         {
           "key": "469.l.18247.t.8",
@@ -646,27 +646,27 @@
           "losses": 50,
           "ties": 22,
           "pct": "0.593",
-          "rotoPoints": 234.5
-        },
-        {
-          "key": "469.l.18247.t.3",
-          "name": "TRUCK",
-          "rank": 3,
-          "wins": 69,
-          "losses": 58,
-          "ties": 23,
-          "pct": "0.537",
-          "rotoPoints": 176.5
+          "rotoPoints": 234
         },
         {
           "key": "469.l.18247.t.10",
           "name": "🏆 ProfeSuh",
-          "rank": 4,
-          "wins": 71,
-          "losses": 60,
+          "rank": 3,
+          "wins": 72,
+          "losses": 59,
           "ties": 19,
+          "pct": "0.543",
+          "rotoPoints": 189
+        },
+        {
+          "key": "469.l.18247.t.3",
+          "name": "TRUCK",
+          "rank": 4,
+          "wins": 69,
+          "losses": 58,
+          "ties": 23,
           "pct": "0.537",
-          "rotoPoints": 190
+          "rotoPoints": 177
         },
         {
           "key": "469.l.18247.t.7",
@@ -676,7 +676,7 @@
           "losses": 58,
           "ties": 25,
           "pct": "0.530",
-          "rotoPoints": 157
+          "rotoPoints": 158
         },
         {
           "key": "469.l.18247.t.12",
@@ -692,41 +692,41 @@
           "key": "469.l.18247.t.1",
           "name": "2026 MVP Mike Trout",
           "rank": 7,
-          "wins": 62,
+          "wins": 61,
           "losses": 66,
-          "ties": 22,
-          "pct": "0.487",
-          "rotoPoints": 133
-        },
-        {
-          "key": "469.l.18247.t.5",
-          "name": "✌️ Yeonwoo's Double Play",
-          "rank": 8,
-          "wins": 60,
-          "losses": 70,
-          "ties": 20,
-          "pct": "0.467",
-          "rotoPoints": 134
-        },
-        {
-          "key": "469.l.18247.t.6",
-          "name": "Two Koreans can win",
-          "rank": 9,
-          "wins": 60,
-          "losses": 72,
-          "ties": 18,
-          "pct": "0.460",
-          "rotoPoints": 169.5
+          "ties": 23,
+          "pct": "0.483",
+          "rotoPoints": 131
         },
         {
           "key": "469.l.18247.t.11",
           "name": "💥 JeongWoo's Shockers",
-          "rank": 10,
+          "rank": 8,
           "wins": 57,
-          "losses": 69,
-          "ties": 24,
+          "losses": 68,
+          "ties": 25,
+          "pct": "0.463",
+          "rotoPoints": 138
+        },
+        {
+          "key": "469.l.18247.t.5",
+          "name": "✌️ Yeonwoo's Double Play",
+          "rank": 9,
+          "wins": 59,
+          "losses": 71,
+          "ties": 20,
           "pct": "0.460",
-          "rotoPoints": 131
+          "rotoPoints": 129
+        },
+        {
+          "key": "469.l.18247.t.6",
+          "name": "Two Koreans can win",
+          "rank": 10,
+          "wins": 60,
+          "losses": 72,
+          "ties": 18,
+          "pct": "0.460",
+          "rotoPoints": 168.5
         },
         {
           "key": "469.l.18247.t.9",
@@ -746,7 +746,7 @@
           "losses": 84,
           "ties": 22,
           "pct": "0.367",
-          "rotoPoints": 113.5
+          "rotoPoints": 112.5
         }
       ]
     }
