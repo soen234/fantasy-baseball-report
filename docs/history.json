@@ -636,7 +636,7 @@
           "losses": 43,
           "ties": 26,
           "pct": "0.627",
-          "rotoPoints": 167
+          "rotoPoints": 166.5
         },
         {
           "key": "469.l.18247.t.8",
@@ -646,7 +646,7 @@
           "losses": 50,
           "ties": 22,
           "pct": "0.593",
-          "rotoPoints": 234
+          "rotoPoints": 233.5
         },
         {
           "key": "469.l.18247.t.10",
@@ -656,27 +656,27 @@
           "losses": 59,
           "ties": 19,
           "pct": "0.543",
-          "rotoPoints": 189
-        },
-        {
-          "key": "469.l.18247.t.3",
-          "name": "TRUCK",
-          "rank": 4,
-          "wins": 69,
-          "losses": 58,
-          "ties": 23,
-          "pct": "0.537",
-          "rotoPoints": 177
+          "rotoPoints": 188.5
         },
         {
           "key": "469.l.18247.t.7",
           "name": "커 상 혁",
-          "rank": 5,
-          "wins": 67,
+          "rank": 4,
+          "wins": 68,
           "losses": 58,
-          "ties": 25,
-          "pct": "0.530",
-          "rotoPoints": 158
+          "ties": 24,
+          "pct": "0.533",
+          "rotoPoints": 161
+        },
+        {
+          "key": "469.l.18247.t.3",
+          "name": "TRUCK",
+          "rank": 5,
+          "wins": 69,
+          "losses": 59,
+          "ties": 22,
+          "pct": "0.533",
+          "rotoPoints": 176.5
         },
         {
           "key": "469.l.18247.t.12",
@@ -686,7 +686,7 @@
           "losses": 63,
           "ties": 22,
           "pct": "0.507",
-          "rotoPoints": 152
+          "rotoPoints": 151.5
         },
         {
           "key": "469.l.18247.t.1",
@@ -746,7 +746,7 @@
           "losses": 84,
           "ties": 22,
           "pct": "0.367",
-          "rotoPoints": 112.5
+          "rotoPoints": 112
         }
       ]
     }
