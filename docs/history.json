@@ -633,120 +633,120 @@
           "name": "Strait of UTU",
           "rank": 1,
           "wins": 85,
-          "losses": 41,
-          "ties": 24,
-          "pct": "0.647",
-          "rotoPoints": 174.5
+          "losses": 42,
+          "ties": 23,
+          "pct": "0.643",
+          "rotoPoints": 158.5
         },
         {
           "key": "469.l.18247.t.8",
           "name": "응노",
           "rank": 2,
           "wins": 81,
-          "losses": 49,
-          "ties": 20,
-          "pct": "0.607",
-          "rotoPoints": 231
+          "losses": 48,
+          "ties": 21,
+          "pct": "0.610",
+          "rotoPoints": 230.5
         },
         {
           "key": "469.l.18247.t.3",
           "name": "TRUCK",
           "rank": 3,
-          "wins": 72,
-          "losses": 56,
-          "ties": 22,
-          "pct": "0.553",
-          "rotoPoints": 181
+          "wins": 74,
+          "losses": 55,
+          "ties": 21,
+          "pct": "0.563",
+          "rotoPoints": 190.5
         },
         {
           "key": "469.l.18247.t.10",
           "name": "🏆 ProfeSuh",
           "rank": 4,
-          "wins": 72,
-          "losses": 58,
-          "ties": 20,
-          "pct": "0.547",
-          "rotoPoints": 189
+          "wins": 70,
+          "losses": 59,
+          "ties": 21,
+          "pct": "0.537",
+          "rotoPoints": 179.5
         },
         {
           "key": "469.l.18247.t.7",
           "name": "커 상 혁",
           "rank": 5,
-          "wins": 65,
-          "losses": 61,
-          "ties": 24,
-          "pct": "0.513",
-          "rotoPoints": 164
-        },
-        {
-          "key": "469.l.18247.t.1",
-          "name": "2026 MVP Mike Trout",
-          "rank": 6,
-          "wins": 65,
-          "losses": 65,
-          "ties": 20,
-          "pct": "0.500",
-          "rotoPoints": 173
+          "wins": 64,
+          "losses": 63,
+          "ties": 23,
+          "pct": "0.503",
+          "rotoPoints": 151.5
         },
         {
           "key": "469.l.18247.t.12",
           "name": "💥 JongHun's Busters",
-          "rank": 7,
-          "wins": 63,
+          "rank": 6,
+          "wins": 64,
           "losses": 67,
+          "ties": 19,
+          "pct": "0.490",
+          "rotoPoints": 119
+        },
+        {
+          "key": "469.l.18247.t.1",
+          "name": "2026 MVP Mike Trout",
+          "rank": 7,
+          "wins": 61,
+          "losses": 69,
           "ties": 20,
-          "pct": "0.487",
-          "rotoPoints": 120.5
-        },
-        {
-          "key": "469.l.18247.t.5",
-          "name": "✌️ Yeonwoo's Double Play",
-          "rank": 8,
-          "wins": 58,
-          "losses": 71,
-          "ties": 21,
-          "pct": "0.457",
-          "rotoPoints": 125.5
-        },
-        {
-          "key": "469.l.18247.t.6",
-          "name": "Two Koreans can win",
-          "rank": 9,
-          "wins": 59,
-          "losses": 73,
-          "ties": 18,
-          "pct": "0.453",
-          "rotoPoints": 157.5
+          "pct": "0.473",
+          "rotoPoints": 163.5
         },
         {
           "key": "469.l.18247.t.11",
           "name": "💥 JeongWoo's Shockers",
-          "rank": 10,
-          "wins": 56,
-          "losses": 72,
+          "rank": 8,
+          "wins": 60,
+          "losses": 68,
           "ties": 22,
-          "pct": "0.447",
-          "rotoPoints": 155
+          "pct": "0.473",
+          "rotoPoints": 177
+        },
+        {
+          "key": "469.l.18247.t.5",
+          "name": "✌️ Yeonwoo's Double Play",
+          "rank": 9,
+          "wins": 59,
+          "losses": 69,
+          "ties": 22,
+          "pct": "0.467",
+          "rotoPoints": 139.5
         },
         {
           "key": "469.l.18247.t.9",
           "name": "JJ yoogwanholt",
-          "rank": 11,
-          "wins": 57,
-          "losses": 76,
+          "rank": 10,
+          "wins": 60,
+          "losses": 73,
           "ties": 17,
-          "pct": "0.437",
-          "rotoPoints": 194
+          "pct": "0.457",
+          "rotoPoints": 204
+        },
+        {
+          "key": "469.l.18247.t.6",
+          "name": "Two Koreans can win",
+          "rank": 11,
+          "wins": 56,
+          "losses": 76,
+          "ties": 18,
+          "pct": "0.433",
+          "rotoPoints": 150
         },
         {
           "key": "469.l.18247.t.2",
           "name": "xXxAIxXx",
           "rank": 12,
-          "wins": 43,
+          "wins": 42,
           "losses": 87,
-          "ties": 20,
-          "pct": "0.353",
-          "rotoPoints": 85
+          "ties": 21,
+          "pct": "0.350",
+          "rotoPoints": 86.5
         }
       ]
     }
