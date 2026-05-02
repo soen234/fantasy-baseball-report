@@ -636,7 +636,7 @@
           "losses": 42,
           "ties": 23,
           "pct": "0.643",
-          "rotoPoints": 158.5
+          "rotoPoints": 161
         },
         {
           "key": "469.l.18247.t.8",
@@ -646,17 +646,17 @@
           "losses": 48,
           "ties": 21,
           "pct": "0.610",
-          "rotoPoints": 230.5
+          "rotoPoints": 231
         },
         {
           "key": "469.l.18247.t.3",
           "name": "TRUCK",
           "rank": 3,
-          "wins": 74,
+          "wins": 73,
           "losses": 55,
-          "ties": 21,
-          "pct": "0.563",
-          "rotoPoints": 190.5
+          "ties": 22,
+          "pct": "0.560",
+          "rotoPoints": 186
         },
         {
           "key": "469.l.18247.t.10",
@@ -666,17 +666,17 @@
           "losses": 59,
           "ties": 21,
           "pct": "0.537",
-          "rotoPoints": 179.5
+          "rotoPoints": 180
         },
         {
           "key": "469.l.18247.t.7",
           "name": "커 상 혁",
           "rank": 5,
           "wins": 64,
-          "losses": 63,
-          "ties": 23,
-          "pct": "0.503",
-          "rotoPoints": 151.5
+          "losses": 62,
+          "ties": 24,
+          "pct": "0.507",
+          "rotoPoints": 150.5
         },
         {
           "key": "469.l.18247.t.12",
@@ -686,7 +686,7 @@
           "losses": 67,
           "ties": 19,
           "pct": "0.490",
-          "rotoPoints": 119
+          "rotoPoints": 118
         },
         {
           "key": "469.l.18247.t.1",
@@ -696,7 +696,7 @@
           "losses": 69,
           "ties": 20,
           "pct": "0.473",
-          "rotoPoints": 163.5
+          "rotoPoints": 161
         },
         {
           "key": "469.l.18247.t.11",
@@ -706,7 +706,7 @@
           "losses": 68,
           "ties": 22,
           "pct": "0.473",
-          "rotoPoints": 177
+          "rotoPoints": 179
         },
         {
           "key": "469.l.18247.t.5",
@@ -716,27 +716,27 @@
           "losses": 69,
           "ties": 22,
           "pct": "0.467",
-          "rotoPoints": 139.5
+          "rotoPoints": 142
         },
         {
           "key": "469.l.18247.t.9",
           "name": "JJ yoogwanholt",
           "rank": 10,
           "wins": 60,
-          "losses": 73,
-          "ties": 17,
-          "pct": "0.457",
-          "rotoPoints": 204
+          "losses": 74,
+          "ties": 16,
+          "pct": "0.453",
+          "rotoPoints": 205.5
         },
         {
           "key": "469.l.18247.t.6",
           "name": "Two Koreans can win",
           "rank": 11,
-          "wins": 56,
+          "wins": 57,
           "losses": 76,
-          "ties": 18,
-          "pct": "0.433",
-          "rotoPoints": 150
+          "ties": 17,
+          "pct": "0.437",
+          "rotoPoints": 151
         },
         {
           "key": "469.l.18247.t.2",
@@ -746,7 +746,7 @@
           "losses": 87,
           "ties": 21,
           "pct": "0.350",
-          "rotoPoints": 86.5
+          "rotoPoints": 85
         }
       ]
     }
