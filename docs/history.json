@@ -758,10 +758,10 @@
           "name": "Strait of UTU",
           "rank": 1,
           "wins": 96,
-          "losses": 50,
-          "ties": 29,
-          "pct": "0.631",
-          "rotoPoints": 198
+          "losses": 51,
+          "ties": 28,
+          "pct": "0.629",
+          "rotoPoints": 187
         },
         {
           "key": "469.l.18247.t.8",
@@ -771,7 +771,7 @@
           "losses": 57,
           "ties": 25,
           "pct": "0.603",
-          "rotoPoints": 199.5
+          "rotoPoints": 196
         },
         {
           "key": "469.l.18247.t.7",
@@ -781,37 +781,37 @@
           "losses": 60,
           "ties": 26,
           "pct": "0.583",
-          "rotoPoints": 186
-        },
-        {
-          "key": "469.l.18247.t.10",
-          "name": "🏆 ProfeSuh",
-          "rank": 4,
-          "wins": 86,
-          "losses": 65,
-          "ties": 24,
-          "pct": "0.560",
-          "rotoPoints": 192.5
+          "rotoPoints": 182
         },
         {
           "key": "469.l.18247.t.3",
           "name": "TRUCK",
-          "rank": 5,
+          "rank": 4,
           "wins": 82,
-          "losses": 63,
-          "ties": 30,
-          "pct": "0.554",
-          "rotoPoints": 138.5
+          "losses": 62,
+          "ties": 31,
+          "pct": "0.557",
+          "rotoPoints": 131
+        },
+        {
+          "key": "469.l.18247.t.10",
+          "name": "🏆 ProfeSuh",
+          "rank": 5,
+          "wins": 85,
+          "losses": 67,
+          "ties": 23,
+          "pct": "0.551",
+          "rotoPoints": 204.5
         },
         {
           "key": "469.l.18247.t.5",
           "name": "✌️ Yeonwoo's Double Play",
           "rank": 6,
-          "wins": 77,
-          "losses": 76,
+          "wins": 76,
+          "losses": 77,
           "ties": 22,
-          "pct": "0.503",
-          "rotoPoints": 189
+          "pct": "0.497",
+          "rotoPoints": 192
         },
         {
           "key": "469.l.18247.t.1",
@@ -821,7 +821,7 @@
           "losses": 77,
           "ties": 27,
           "pct": "0.483",
-          "rotoPoints": 169
+          "rotoPoints": 163
         },
         {
           "key": "469.l.18247.t.12",
@@ -831,47 +831,47 @@
           "losses": 86,
           "ties": 22,
           "pct": "0.446",
-          "rotoPoints": 92
-        },
-        {
-          "key": "469.l.18247.t.9",
-          "name": "JJ yoogwanholt",
-          "rank": 9,
-          "wins": 64,
-          "losses": 86,
-          "ties": 25,
-          "pct": "0.437",
-          "rotoPoints": 128
+          "rotoPoints": 96
         },
         {
           "key": "469.l.18247.t.11",
           "name": "💥 JeongWoo's Shockers",
+          "rank": 9,
+          "wins": 62,
+          "losses": 84,
+          "ties": 29,
+          "pct": "0.437",
+          "rotoPoints": 149.5
+        },
+        {
+          "key": "469.l.18247.t.9",
+          "name": "JJ yoogwanholt",
           "rank": 10,
-          "wins": 60,
-          "losses": 85,
-          "ties": 30,
-          "pct": "0.429",
-          "rotoPoints": 132
+          "wins": 63,
+          "losses": 86,
+          "ties": 26,
+          "pct": "0.434",
+          "rotoPoints": 119
         },
         {
           "key": "469.l.18247.t.6",
           "name": "no more korean",
           "rank": 11,
-          "wins": 62,
-          "losses": 93,
+          "wins": 63,
+          "losses": 92,
           "ties": 20,
-          "pct": "0.411",
-          "rotoPoints": 144
+          "pct": "0.417",
+          "rotoPoints": 153
         },
         {
           "key": "469.l.18247.t.2",
           "name": "xXxAIxXx",
           "rank": 12,
-          "wins": 50,
+          "wins": 51,
           "losses": 99,
-          "ties": 26,
-          "pct": "0.360",
-          "rotoPoints": 181.5
+          "ties": 25,
+          "pct": "0.363",
+          "rotoPoints": 177
         }
       ]
     }
