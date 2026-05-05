@@ -757,11 +757,11 @@
           "key": "469.l.18247.t.4",
           "name": "Strait of UTU",
           "rank": 1,
-          "wins": 96,
-          "losses": 51,
-          "ties": 28,
+          "wins": 95,
+          "losses": 50,
+          "ties": 30,
           "pct": "0.629",
-          "rotoPoints": 187
+          "rotoPoints": 197
         },
         {
           "key": "469.l.18247.t.8",
@@ -771,37 +771,37 @@
           "losses": 57,
           "ties": 25,
           "pct": "0.603",
-          "rotoPoints": 196
-        },
-        {
-          "key": "469.l.18247.t.7",
-          "name": "커 상 혁",
-          "rank": 3,
-          "wins": 89,
-          "losses": 60,
-          "ties": 26,
-          "pct": "0.583",
-          "rotoPoints": 182
-        },
-        {
-          "key": "469.l.18247.t.3",
-          "name": "TRUCK",
-          "rank": 4,
-          "wins": 82,
-          "losses": 62,
-          "ties": 31,
-          "pct": "0.557",
-          "rotoPoints": 131
+          "rotoPoints": 201.5
         },
         {
           "key": "469.l.18247.t.10",
           "name": "🏆 ProfeSuh",
-          "rank": 5,
-          "wins": 85,
-          "losses": 67,
+          "rank": 3,
+          "wins": 86,
+          "losses": 66,
           "ties": 23,
-          "pct": "0.551",
-          "rotoPoints": 204.5
+          "pct": "0.557",
+          "rotoPoints": 203
+        },
+        {
+          "key": "469.l.18247.t.7",
+          "name": "커 상 혁",
+          "rank": 4,
+          "wins": 83,
+          "losses": 63,
+          "ties": 29,
+          "pct": "0.557",
+          "rotoPoints": 173
+        },
+        {
+          "key": "469.l.18247.t.3",
+          "name": "TRUCK",
+          "rank": 5,
+          "wins": 79,
+          "losses": 65,
+          "ties": 31,
+          "pct": "0.540",
+          "rotoPoints": 123
         },
         {
           "key": "469.l.18247.t.5",
@@ -811,7 +811,7 @@
           "losses": 77,
           "ties": 22,
           "pct": "0.497",
-          "rotoPoints": 192
+          "rotoPoints": 196.5
         },
         {
           "key": "469.l.18247.t.1",
@@ -821,37 +821,37 @@
           "losses": 77,
           "ties": 27,
           "pct": "0.483",
-          "rotoPoints": 163
+          "rotoPoints": 157.5
         },
         {
           "key": "469.l.18247.t.12",
           "name": "💥 JongHun's Busters",
           "rank": 8,
-          "wins": 67,
-          "losses": 86,
-          "ties": 22,
-          "pct": "0.446",
-          "rotoPoints": 96
-        },
-        {
-          "key": "469.l.18247.t.11",
-          "name": "💥 JeongWoo's Shockers",
-          "rank": 9,
-          "wins": 62,
-          "losses": 84,
-          "ties": 29,
-          "pct": "0.437",
-          "rotoPoints": 149.5
+          "wins": 70,
+          "losses": 80,
+          "ties": 25,
+          "pct": "0.471",
+          "rotoPoints": 104.5
         },
         {
           "key": "469.l.18247.t.9",
           "name": "JJ yoogwanholt",
-          "rank": 10,
-          "wins": 63,
-          "losses": 86,
+          "rank": 9,
+          "wins": 66,
+          "losses": 83,
           "ties": 26,
-          "pct": "0.434",
-          "rotoPoints": 119
+          "pct": "0.451",
+          "rotoPoints": 126
+        },
+        {
+          "key": "469.l.18247.t.11",
+          "name": "💥 JeongWoo's Shockers",
+          "rank": 10,
+          "wins": 61,
+          "losses": 85,
+          "ties": 29,
+          "pct": "0.431",
+          "rotoPoints": 154
         },
         {
           "key": "469.l.18247.t.6",
@@ -861,17 +861,17 @@
           "losses": 92,
           "ties": 20,
           "pct": "0.417",
-          "rotoPoints": 153
+          "rotoPoints": 145
         },
         {
           "key": "469.l.18247.t.2",
           "name": "xXxAIxXx",
           "rank": 12,
-          "wins": 51,
-          "losses": 99,
-          "ties": 25,
+          "wins": 50,
+          "losses": 98,
+          "ties": 27,
           "pct": "0.363",
-          "rotoPoints": 177
+          "rotoPoints": 169
         }
       ]
     }
