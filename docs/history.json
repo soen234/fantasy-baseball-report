@@ -754,124 +754,124 @@
       "week": 7,
       "teams": [
         {
-          "key": "469.l.18247.t.4",
-          "name": "Strait of UTU",
-          "rank": 1,
-          "wins": 91,
-          "losses": 56,
-          "ties": 28,
-          "pct": "0.600",
-          "rotoPoints": 183
-        },
-        {
           "key": "469.l.18247.t.8",
           "name": "응노",
-          "rank": 2,
-          "wins": 90,
-          "losses": 61,
+          "rank": 1,
+          "wins": 97,
+          "losses": 54,
           "ties": 24,
-          "pct": "0.583",
-          "rotoPoints": 180.5
+          "pct": "0.623",
+          "rotoPoints": 216
         },
         {
-          "key": "469.l.18247.t.7",
-          "name": "커 상 혁",
-          "rank": 3,
-          "wins": 80,
-          "losses": 69,
-          "ties": 26,
-          "pct": "0.531",
-          "rotoPoints": 138
+          "key": "469.l.18247.t.4",
+          "name": "Strait of UTU",
+          "rank": 2,
+          "wins": 95,
+          "losses": 55,
+          "ties": 25,
+          "pct": "0.614",
+          "rotoPoints": 191
         },
         {
           "key": "469.l.18247.t.10",
           "name": "🏆 ProfeSuh",
+          "rank": 3,
+          "wins": 84,
+          "losses": 69,
+          "ties": 22,
+          "pct": "0.543",
+          "rotoPoints": 158
+        },
+        {
+          "key": "469.l.18247.t.7",
+          "name": "커 상 혁",
           "rank": 4,
-          "wins": 82,
-          "losses": 72,
-          "ties": 21,
-          "pct": "0.529",
-          "rotoPoints": 162
+          "wins": 80,
+          "losses": 69,
+          "ties": 26,
+          "pct": "0.531",
+          "rotoPoints": 151
         },
         {
           "key": "469.l.18247.t.3",
           "name": "TRUCK",
           "rank": 5,
-          "wins": 79,
-          "losses": 70,
+          "wins": 78,
+          "losses": 71,
           "ties": 26,
-          "pct": "0.526",
-          "rotoPoints": 128.5
-        },
-        {
-          "key": "469.l.18247.t.1",
-          "name": "2026 MVP Mike Trout",
-          "rank": 6,
-          "wins": 75,
-          "losses": 74,
-          "ties": 26,
-          "pct": "0.503",
-          "rotoPoints": 178
+          "pct": "0.520",
+          "rotoPoints": 129.5
         },
         {
           "key": "469.l.18247.t.12",
           "name": "💥 JongHun's Busters",
-          "rank": 7,
+          "rank": 6,
           "wins": 76,
           "losses": 77,
           "ties": 22,
           "pct": "0.497",
-          "rotoPoints": 141.5
+          "rotoPoints": 145.5
         },
         {
           "key": "469.l.18247.t.9",
           "name": "JJ yoogwanholt",
-          "rank": 8,
-          "wins": 71,
-          "losses": 83,
+          "rank": 7,
+          "wins": 72,
+          "losses": 82,
           "ties": 21,
-          "pct": "0.466",
-          "rotoPoints": 145
+          "pct": "0.471",
+          "rotoPoints": 135
         },
         {
-          "key": "469.l.18247.t.11",
-          "name": "💥 JeongWoo's Shockers",
-          "rank": 9,
-          "wins": 67,
+          "key": "469.l.18247.t.1",
+          "name": "2026 MVP Mike Trout",
+          "rank": 8,
+          "wins": 68,
           "losses": 81,
-          "ties": 27,
-          "pct": "0.460",
-          "rotoPoints": 165
+          "ties": 26,
+          "pct": "0.463",
+          "rotoPoints": 139.5
+        },
+        {
+          "key": "469.l.18247.t.5",
+          "name": "✌️ Yeonwoo's Double Play",
+          "rank": 9,
+          "wins": 68,
+          "losses": 83,
+          "ties": 24,
+          "pct": "0.457",
+          "rotoPoints": 154.5
         },
         {
           "key": "469.l.18247.t.6",
           "name": "no more korean",
           "rank": 10,
-          "wins": 70,
+          "wins": 69,
           "losses": 84,
-          "ties": 21,
-          "pct": "0.460",
-          "rotoPoints": 181
+          "ties": 22,
+          "pct": "0.457",
+          "rotoPoints": 182.5
         },
         {
-          "key": "469.l.18247.t.5",
-          "name": "✌️ Yeonwoo's Double Play",
+          "key": "469.l.18247.t.11",
+          "name": "💥 JeongWoo's Shockers",
           "rank": 11,
-          "wins": 68,
-          "losses": 84,
-          "ties": 23,
-          "pct": "0.454",
-          "rotoPoints": 143
+          "wins": 64,
+          "losses": 83,
+          "ties": 28,
+          "pct": "0.446",
+          "rotoPoints": 156.5
         },
         {
           "key": "469.l.18247.t.2",
           "name": "xXxAIxXx",
           "rank": 12,
-          "wins": 56,
-          "losses": 94,
-          "ties": 25,
-          "pct": "0.391",
-          "rotoPoints": 204.5
+          "wins": 55,
+          "losses": 98,
+          "ties": 22,
+          "pct": "0.377",
+          "rotoPoints": 191
         }
       ]
     }
