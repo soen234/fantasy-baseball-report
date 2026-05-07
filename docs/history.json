@@ -761,17 +761,17 @@
           "losses": 54,
           "ties": 24,
           "pct": "0.623",
-          "rotoPoints": 216
+          "rotoPoints": 218.5
         },
         {
           "key": "469.l.18247.t.4",
           "name": "Strait of UTU",
           "rank": 2,
-          "wins": 95,
+          "wins": 93,
           "losses": 55,
-          "ties": 25,
-          "pct": "0.614",
-          "rotoPoints": 191
+          "ties": 27,
+          "pct": "0.609",
+          "rotoPoints": 189
         },
         {
           "key": "469.l.18247.t.10",
@@ -781,47 +781,47 @@
           "losses": 69,
           "ties": 22,
           "pct": "0.543",
-          "rotoPoints": 158
+          "rotoPoints": 157
         },
         {
           "key": "469.l.18247.t.7",
           "name": "커 상 혁",
           "rank": 4,
           "wins": 80,
-          "losses": 69,
-          "ties": 26,
-          "pct": "0.531",
-          "rotoPoints": 151
+          "losses": 70,
+          "ties": 25,
+          "pct": "0.529",
+          "rotoPoints": 149
         },
         {
           "key": "469.l.18247.t.3",
           "name": "TRUCK",
           "rank": 5,
-          "wins": 78,
+          "wins": 79,
           "losses": 71,
-          "ties": 26,
-          "pct": "0.520",
-          "rotoPoints": 129.5
+          "ties": 25,
+          "pct": "0.523",
+          "rotoPoints": 127.5
         },
         {
           "key": "469.l.18247.t.12",
           "name": "💥 JongHun's Busters",
           "rank": 6,
-          "wins": 76,
+          "wins": 77,
           "losses": 77,
-          "ties": 22,
-          "pct": "0.497",
-          "rotoPoints": 145.5
+          "ties": 21,
+          "pct": "0.500",
+          "rotoPoints": 141
         },
         {
           "key": "469.l.18247.t.9",
           "name": "JJ yoogwanholt",
           "rank": 7,
           "wins": 72,
-          "losses": 82,
-          "ties": 21,
-          "pct": "0.471",
-          "rotoPoints": 135
+          "losses": 83,
+          "ties": 20,
+          "pct": "0.469",
+          "rotoPoints": 137.5
         },
         {
           "key": "469.l.18247.t.1",
@@ -831,7 +831,7 @@
           "losses": 81,
           "ties": 26,
           "pct": "0.463",
-          "rotoPoints": 139.5
+          "rotoPoints": 137.5
         },
         {
           "key": "469.l.18247.t.5",
@@ -841,7 +841,7 @@
           "losses": 83,
           "ties": 24,
           "pct": "0.457",
-          "rotoPoints": 154.5
+          "rotoPoints": 156.5
         },
         {
           "key": "469.l.18247.t.6",
@@ -851,7 +851,7 @@
           "losses": 84,
           "ties": 22,
           "pct": "0.457",
-          "rotoPoints": 182.5
+          "rotoPoints": 177.5
         },
         {
           "key": "469.l.18247.t.11",
@@ -861,17 +861,17 @@
           "losses": 83,
           "ties": 28,
           "pct": "0.446",
-          "rotoPoints": 156.5
+          "rotoPoints": 155
         },
         {
           "key": "469.l.18247.t.2",
           "name": "xXxAIxXx",
           "rank": 12,
           "wins": 55,
-          "losses": 98,
-          "ties": 22,
-          "pct": "0.377",
-          "rotoPoints": 191
+          "losses": 96,
+          "ties": 24,
+          "pct": "0.383",
+          "rotoPoints": 204
         }
       ]
     }
