@@ -761,17 +761,17 @@
           "losses": 52,
           "ties": 27,
           "pct": "0.626",
-          "rotoPoints": 186
+          "rotoPoints": 189.5
         },
         {
           "key": "469.l.18247.t.8",
           "name": "응노",
           "rank": 2,
           "wins": 92,
-          "losses": 59,
-          "ties": 24,
-          "pct": "0.594",
-          "rotoPoints": 231
+          "losses": 60,
+          "ties": 23,
+          "pct": "0.591",
+          "rotoPoints": 229
         },
         {
           "key": "469.l.18247.t.3",
@@ -781,7 +781,7 @@
           "losses": 68,
           "ties": 25,
           "pct": "0.540",
-          "rotoPoints": 128.5
+          "rotoPoints": 128
         },
         {
           "key": "469.l.18247.t.7",
@@ -791,7 +791,7 @@
           "losses": 68,
           "ties": 26,
           "pct": "0.537",
-          "rotoPoints": 151
+          "rotoPoints": 149.5
         },
         {
           "key": "469.l.18247.t.10",
@@ -801,27 +801,27 @@
           "losses": 73,
           "ties": 23,
           "pct": "0.517",
-          "rotoPoints": 142.5
-        },
-        {
-          "key": "469.l.18247.t.12",
-          "name": "💥 JongHun's Busters",
-          "rank": 6,
-          "wins": 75,
-          "losses": 78,
-          "ties": 22,
-          "pct": "0.491",
-          "rotoPoints": 126.5
+          "rotoPoints": 143.5
         },
         {
           "key": "469.l.18247.t.1",
           "name": "2026 MVP Mike Trout",
-          "rank": 7,
-          "wins": 73,
+          "rank": 6,
+          "wins": 74,
           "losses": 76,
-          "ties": 26,
+          "ties": 25,
+          "pct": "0.494",
+          "rotoPoints": 194
+        },
+        {
+          "key": "469.l.18247.t.12",
+          "name": "💥 JongHun's Busters",
+          "rank": 7,
+          "wins": 75,
+          "losses": 78,
+          "ties": 22,
           "pct": "0.491",
-          "rotoPoints": 193
+          "rotoPoints": 126
         },
         {
           "key": "469.l.18247.t.5",
@@ -831,7 +831,7 @@
           "losses": 79,
           "ties": 22,
           "pct": "0.486",
-          "rotoPoints": 162.5
+          "rotoPoints": 162
         },
         {
           "key": "469.l.18247.t.11",
@@ -841,7 +841,7 @@
           "losses": 78,
           "ties": 29,
           "pct": "0.471",
-          "rotoPoints": 167.5
+          "rotoPoints": 167
         },
         {
           "key": "469.l.18247.t.9",
@@ -851,7 +851,7 @@
           "losses": 86,
           "ties": 20,
           "pct": "0.451",
-          "rotoPoints": 132.5
+          "rotoPoints": 132
         },
         {
           "key": "469.l.18247.t.6",
@@ -861,7 +861,7 @@
           "losses": 90,
           "ties": 20,
           "pct": "0.429",
-          "rotoPoints": 153.5
+          "rotoPoints": 154.5
         },
         {
           "key": "469.l.18247.t.2",
@@ -871,7 +871,7 @@
           "losses": 99,
           "ties": 24,
           "pct": "0.366",
-          "rotoPoints": 175.5
+          "rotoPoints": 175
         }
       ]
     }
