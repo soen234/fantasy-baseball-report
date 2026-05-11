@@ -886,17 +886,17 @@
           "losses": 52,
           "ties": 52,
           "pct": "0.610",
-          "rotoPoints": 162.5
+          "rotoPoints": 158.5
         },
         {
           "key": "469.l.18247.t.8",
           "name": "응노",
           "rank": 2,
-          "wins": 93,
-          "losses": 60,
-          "ties": 47,
-          "pct": "0.583",
-          "rotoPoints": 162.5
+          "wins": 97,
+          "losses": 63,
+          "ties": 40,
+          "pct": "0.585",
+          "rotoPoints": 181.5
         },
         {
           "key": "469.l.18247.t.7",
@@ -906,17 +906,17 @@
           "losses": 67,
           "ties": 51,
           "pct": "0.537",
-          "rotoPoints": 162.5
+          "rotoPoints": 158.5
         },
         {
           "key": "469.l.18247.t.10",
           "name": "🏆 ProfeSuh",
           "rank": 4,
-          "wins": 82,
-          "losses": 70,
-          "ties": 48,
-          "pct": "0.530",
-          "rotoPoints": 162.5
+          "wins": 85,
+          "losses": 74,
+          "ties": 41,
+          "pct": "0.527",
+          "rotoPoints": 171.5
         },
         {
           "key": "469.l.18247.t.3",
@@ -926,7 +926,7 @@
           "losses": 70,
           "ties": 49,
           "pct": "0.527",
-          "rotoPoints": 162.5
+          "rotoPoints": 158.5
         },
         {
           "key": "469.l.18247.t.1",
@@ -936,7 +936,7 @@
           "losses": 77,
           "ties": 49,
           "pct": "0.492",
-          "rotoPoints": 162.5
+          "rotoPoints": 158.5
         },
         {
           "key": "469.l.18247.t.12",
@@ -946,7 +946,7 @@
           "losses": 79,
           "ties": 47,
           "pct": "0.487",
-          "rotoPoints": 162.5
+          "rotoPoints": 158.5
         },
         {
           "key": "469.l.18247.t.5",
@@ -956,37 +956,37 @@
           "losses": 82,
           "ties": 47,
           "pct": "0.472",
-          "rotoPoints": 162.5
-        },
-        {
-          "key": "469.l.18247.t.9",
-          "name": "JJ yoogwanholt",
-          "rank": 9,
-          "wins": 71,
-          "losses": 85,
-          "ties": 44,
-          "pct": "0.465",
-          "rotoPoints": 162.5
+          "rotoPoints": 158.5
         },
         {
           "key": "469.l.18247.t.11",
           "name": "💥 JeongWoo's Shockers",
-          "rank": 10,
-          "wins": 65,
+          "rank": 9,
+          "wins": 69,
           "losses": 81,
-          "ties": 54,
-          "pct": "0.460",
-          "rotoPoints": 162.5
+          "ties": 50,
+          "pct": "0.470",
+          "rotoPoints": 176.5
+        },
+        {
+          "key": "469.l.18247.t.9",
+          "name": "JJ yoogwanholt",
+          "rank": 10,
+          "wins": 71,
+          "losses": 85,
+          "ties": 44,
+          "pct": "0.465",
+          "rotoPoints": 158.5
         },
         {
           "key": "469.l.18247.t.6",
           "name": "no more korean",
           "rank": 11,
           "wins": 68,
-          "losses": 87,
-          "ties": 45,
-          "pct": "0.453",
-          "rotoPoints": 162.5
+          "losses": 91,
+          "ties": 41,
+          "pct": "0.443",
+          "rotoPoints": 152.5
         },
         {
           "key": "469.l.18247.t.2",
@@ -996,7 +996,7 @@
           "losses": 99,
           "ties": 49,
           "pct": "0.383",
-          "rotoPoints": 162.5
+          "rotoPoints": 158.5
         }
       ]
     }
