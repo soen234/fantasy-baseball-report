@@ -761,37 +761,37 @@
           "losses": 52,
           "ties": 27,
           "pct": "0.626",
-          "rotoPoints": 197
+          "rotoPoints": 196
         },
         {
           "key": "469.l.18247.t.8",
           "name": "응노",
           "rank": 2,
           "wins": 93,
-          "losses": 59,
-          "ties": 23,
-          "pct": "0.597",
-          "rotoPoints": 198.5
-        },
-        {
-          "key": "469.l.18247.t.10",
-          "name": "🏆 ProfeSuh",
-          "rank": 3,
-          "wins": 82,
-          "losses": 70,
-          "ties": 23,
-          "pct": "0.534",
-          "rotoPoints": 160
+          "losses": 60,
+          "ties": 22,
+          "pct": "0.594",
+          "rotoPoints": 196
         },
         {
           "key": "469.l.18247.t.7",
           "name": "커 상 혁",
+          "rank": 3,
+          "wins": 82,
+          "losses": 67,
+          "ties": 26,
+          "pct": "0.543",
+          "rotoPoints": 149.5
+        },
+        {
+          "key": "469.l.18247.t.10",
+          "name": "🏆 ProfeSuh",
           "rank": 4,
-          "wins": 80,
-          "losses": 68,
-          "ties": 27,
+          "wins": 82,
+          "losses": 70,
+          "ties": 23,
           "pct": "0.534",
-          "rotoPoints": 134.5
+          "rotoPoints": 156.5
         },
         {
           "key": "469.l.18247.t.3",
@@ -801,27 +801,27 @@
           "losses": 70,
           "ties": 24,
           "pct": "0.531",
-          "rotoPoints": 172.5
-        },
-        {
-          "key": "469.l.18247.t.12",
-          "name": "💥 JongHun's Busters",
-          "rank": 6,
-          "wins": 75,
-          "losses": 77,
-          "ties": 23,
-          "pct": "0.494",
-          "rotoPoints": 124
+          "rotoPoints": 171.5
         },
         {
           "key": "469.l.18247.t.1",
           "name": "2026 MVP Mike Trout",
-          "rank": 7,
-          "wins": 73,
+          "rank": 6,
+          "wins": 74,
           "losses": 77,
-          "ties": 25,
-          "pct": "0.489",
-          "rotoPoints": 170
+          "ties": 24,
+          "pct": "0.491",
+          "rotoPoints": 171
+        },
+        {
+          "key": "469.l.18247.t.12",
+          "name": "💥 JongHun's Busters",
+          "rank": 7,
+          "wins": 74,
+          "losses": 79,
+          "ties": 22,
+          "pct": "0.486",
+          "rotoPoints": 122
         },
         {
           "key": "469.l.18247.t.5",
@@ -831,7 +831,7 @@
           "losses": 82,
           "ties": 22,
           "pct": "0.469",
-          "rotoPoints": 142.5
+          "rotoPoints": 140.5
         },
         {
           "key": "469.l.18247.t.9",
@@ -841,7 +841,7 @@
           "losses": 85,
           "ties": 19,
           "pct": "0.460",
-          "rotoPoints": 169
+          "rotoPoints": 173
         },
         {
           "key": "469.l.18247.t.11",
@@ -851,7 +851,7 @@
           "losses": 81,
           "ties": 29,
           "pct": "0.454",
-          "rotoPoints": 176
+          "rotoPoints": 173
         },
         {
           "key": "469.l.18247.t.6",
@@ -861,7 +861,7 @@
           "losses": 87,
           "ties": 20,
           "pct": "0.446",
-          "rotoPoints": 137
+          "rotoPoints": 135
         },
         {
           "key": "469.l.18247.t.2",
@@ -871,7 +871,7 @@
           "losses": 99,
           "ties": 24,
           "pct": "0.366",
-          "rotoPoints": 169
+          "rotoPoints": 166
         }
       ]
     }
