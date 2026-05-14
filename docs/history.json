@@ -886,27 +886,27 @@
           "losses": 57,
           "ties": 30,
           "pct": "0.640",
-          "rotoPoints": 223
+          "rotoPoints": 221.5
         },
         {
           "key": "469.l.18247.t.8",
           "name": "응노",
           "rank": 2,
-          "wins": 109,
-          "losses": 65,
+          "wins": 111,
+          "losses": 63,
           "ties": 26,
-          "pct": "0.610",
-          "rotoPoints": 210
+          "pct": "0.620",
+          "rotoPoints": 212.5
         },
         {
           "key": "469.l.18247.t.7",
           "name": "커 상 혁",
           "rank": 3,
-          "wins": 96,
-          "losses": 73,
-          "ties": 31,
+          "wins": 97,
+          "losses": 74,
+          "ties": 29,
           "pct": "0.557",
-          "rotoPoints": 194
+          "rotoPoints": 195
         },
         {
           "key": "469.l.18247.t.3",
@@ -922,11 +922,11 @@
           "key": "469.l.18247.t.10",
           "name": "🏆 ProfeSuh",
           "rank": 5,
-          "wins": 87,
-          "losses": 86,
+          "wins": 85,
+          "losses": 88,
           "ties": 27,
-          "pct": "0.502",
-          "rotoPoints": 133.5
+          "pct": "0.492",
+          "rotoPoints": 129.5
         },
         {
           "key": "469.l.18247.t.12",
@@ -936,7 +936,7 @@
           "losses": 91,
           "ties": 27,
           "pct": "0.477",
-          "rotoPoints": 131
+          "rotoPoints": 128.5
         },
         {
           "key": "469.l.18247.t.5",
@@ -946,7 +946,7 @@
           "losses": 93,
           "ties": 25,
           "pct": "0.472",
-          "rotoPoints": 158
+          "rotoPoints": 159
         },
         {
           "key": "469.l.18247.t.11",
@@ -966,17 +966,17 @@
           "losses": 94,
           "ties": 27,
           "pct": "0.463",
-          "rotoPoints": 160
+          "rotoPoints": 162
         },
         {
           "key": "469.l.18247.t.9",
           "name": "JJ yoogwanholt",
           "rank": 10,
-          "wins": 77,
-          "losses": 99,
-          "ties": 24,
+          "wins": 78,
+          "losses": 100,
+          "ties": 22,
           "pct": "0.445",
-          "rotoPoints": 173.5
+          "rotoPoints": 176
         },
         {
           "key": "469.l.18247.t.6",
@@ -996,7 +996,7 @@
           "losses": 107,
           "ties": 29,
           "pct": "0.393",
-          "rotoPoints": 135
+          "rotoPoints": 134
         }
       ]
     }
