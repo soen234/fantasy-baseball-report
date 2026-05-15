@@ -886,7 +886,7 @@
           "losses": 56,
           "ties": 30,
           "pct": "0.645",
-          "rotoPoints": 232.5
+          "rotoPoints": 231
         },
         {
           "key": "469.l.18247.t.8",
@@ -896,17 +896,17 @@
           "losses": 65,
           "ties": 25,
           "pct": "0.613",
-          "rotoPoints": 191
+          "rotoPoints": 188.5
         },
         {
           "key": "469.l.18247.t.7",
           "name": "커 상 혁",
           "rank": 3,
           "wins": 97,
-          "losses": 72,
-          "ties": 31,
-          "pct": "0.563",
-          "rotoPoints": 206
+          "losses": 71,
+          "ties": 32,
+          "pct": "0.565",
+          "rotoPoints": 212.5
         },
         {
           "key": "469.l.18247.t.3",
@@ -916,7 +916,7 @@
           "losses": 81,
           "ties": 29,
           "pct": "0.522",
-          "rotoPoints": 161.5
+          "rotoPoints": 162
         },
         {
           "key": "469.l.18247.t.10",
@@ -926,27 +926,27 @@
           "losses": 87,
           "ties": 26,
           "pct": "0.500",
-          "rotoPoints": 122.5
+          "rotoPoints": 123
         },
         {
-          "key": "469.l.18247.t.12",
-          "name": "💥 JongHun's Busters",
+          "key": "469.l.18247.t.5",
+          "name": "✌️ Yeonwoo's Double Play",
           "rank": 6,
           "wins": 82,
           "losses": 91,
           "ties": 27,
           "pct": "0.477",
-          "rotoPoints": 123.5
+          "rotoPoints": 169.5
         },
         {
-          "key": "469.l.18247.t.5",
-          "name": "✌️ Yeonwoo's Double Play",
+          "key": "469.l.18247.t.12",
+          "name": "💥 JongHun's Busters",
           "rank": 7,
-          "wins": 82,
-          "losses": 91,
+          "wins": 81,
+          "losses": 92,
           "ties": 27,
-          "pct": "0.477",
-          "rotoPoints": 170.5
+          "pct": "0.472",
+          "rotoPoints": 123
         },
         {
           "key": "469.l.18247.t.11",
@@ -956,7 +956,7 @@
           "losses": 90,
           "ties": 31,
           "pct": "0.472",
-          "rotoPoints": 134
+          "rotoPoints": 129.5
         },
         {
           "key": "469.l.18247.t.1",
@@ -966,37 +966,37 @@
           "losses": 95,
           "ties": 27,
           "pct": "0.458",
-          "rotoPoints": 153
-        },
-        {
-          "key": "469.l.18247.t.9",
-          "name": "JJ yoogwanholt",
-          "rank": 10,
-          "wins": 76,
-          "losses": 100,
-          "ties": 24,
-          "pct": "0.440",
-          "rotoPoints": 177.5
+          "rotoPoints": 154.5
         },
         {
           "key": "469.l.18247.t.6",
           "name": "no more korean",
-          "rank": 11,
+          "rank": 10,
           "wins": 77,
           "losses": 101,
           "ties": 22,
           "pct": "0.440",
-          "rotoPoints": 141.5
+          "rotoPoints": 142
+        },
+        {
+          "key": "469.l.18247.t.9",
+          "name": "JJ yoogwanholt",
+          "rank": 11,
+          "wins": 75,
+          "losses": 100,
+          "ties": 25,
+          "pct": "0.438",
+          "rotoPoints": 176.5
         },
         {
           "key": "469.l.18247.t.2",
           "name": "xXxAIxXx",
           "rank": 12,
-          "wins": 64,
-          "losses": 107,
+          "wins": 65,
+          "losses": 106,
           "ties": 29,
-          "pct": "0.393",
-          "rotoPoints": 136.5
+          "pct": "0.398",
+          "rotoPoints": 138
         }
       ]
     }
