@@ -883,20 +883,20 @@
           "name": "2016 MVP Kris Bryant",
           "rank": 1,
           "wins": 115,
-          "losses": 55,
-          "ties": 30,
-          "pct": "0.650",
-          "rotoPoints": 228
+          "losses": 56,
+          "ties": 29,
+          "pct": "0.647",
+          "rotoPoints": 221.5
         },
         {
           "key": "469.l.18247.t.8",
           "name": "응노",
           "rank": 2,
-          "wins": 107,
-          "losses": 68,
-          "ties": 25,
-          "pct": "0.598",
-          "rotoPoints": 203
+          "wins": 110,
+          "losses": 64,
+          "ties": 26,
+          "pct": "0.615",
+          "rotoPoints": 220.5
         },
         {
           "key": "469.l.18247.t.7",
@@ -906,67 +906,67 @@
           "losses": 72,
           "ties": 28,
           "pct": "0.570",
-          "rotoPoints": 212.5
+          "rotoPoints": 212
         },
         {
           "key": "469.l.18247.t.3",
           "name": "TRUCK",
           "rank": 4,
-          "wins": 94,
-          "losses": 78,
-          "ties": 28,
-          "pct": "0.540",
-          "rotoPoints": 161
+          "wins": 92,
+          "losses": 81,
+          "ties": 27,
+          "pct": "0.527",
+          "rotoPoints": 149
         },
         {
           "key": "469.l.18247.t.10",
           "name": "🏆 ProfeSuh",
           "rank": 5,
-          "wins": 90,
-          "losses": 84,
-          "ties": 26,
-          "pct": "0.515",
-          "rotoPoints": 151.5
+          "wins": 86,
+          "losses": 87,
+          "ties": 27,
+          "pct": "0.497",
+          "rotoPoints": 133
         },
         {
-          "key": "469.l.18247.t.11",
-          "name": "💥 JeongWoo's Shockers",
+          "key": "469.l.18247.t.5",
+          "name": "✌️ Yeonwoo's Double Play",
           "rank": 6,
-          "wins": 77,
-          "losses": 92,
-          "ties": 31,
-          "pct": "0.463",
-          "rotoPoints": 144
+          "wins": 82,
+          "losses": 93,
+          "ties": 25,
+          "pct": "0.472",
+          "rotoPoints": 149.5
         },
         {
           "key": "469.l.18247.t.12",
           "name": "💥 JongHun's Busters",
           "rank": 7,
-          "wins": 79,
-          "losses": 95,
-          "ties": 26,
-          "pct": "0.460",
-          "rotoPoints": 107
+          "wins": 82,
+          "losses": 94,
+          "ties": 24,
+          "pct": "0.470",
+          "rotoPoints": 122.5
         },
         {
-          "key": "469.l.18247.t.5",
-          "name": "✌️ Yeonwoo's Double Play",
+          "key": "469.l.18247.t.11",
+          "name": "💥 JeongWoo's Shockers",
           "rank": 8,
-          "wins": 79,
-          "losses": 95,
-          "ties": 26,
-          "pct": "0.460",
-          "rotoPoints": 144
+          "wins": 77,
+          "losses": 92,
+          "ties": 31,
+          "pct": "0.463",
+          "rotoPoints": 149
         },
         {
           "key": "469.l.18247.t.1",
           "name": "2026 MVP Bobby Witt",
           "rank": 9,
-          "wins": 77,
+          "wins": 78,
           "losses": 96,
-          "ties": 27,
-          "pct": "0.453",
-          "rotoPoints": 147.5
+          "ties": 26,
+          "pct": "0.455",
+          "rotoPoints": 148
         },
         {
           "key": "469.l.18247.t.6",
@@ -976,7 +976,7 @@
           "losses": 99,
           "ties": 22,
           "pct": "0.450",
-          "rotoPoints": 140
+          "rotoPoints": 148.5
         },
         {
           "key": "469.l.18247.t.9",
@@ -986,17 +986,17 @@
           "losses": 103,
           "ties": 21,
           "pct": "0.432",
-          "rotoPoints": 156.5
+          "rotoPoints": 143.5
         },
         {
           "key": "469.l.18247.t.2",
           "name": "xXxAIxXx",
           "rank": 12,
-          "wins": 68,
-          "losses": 104,
-          "ties": 28,
-          "pct": "0.410",
-          "rotoPoints": 155
+          "wins": 67,
+          "losses": 107,
+          "ties": 26,
+          "pct": "0.400",
+          "rotoPoints": 153
         }
       ]
     }
