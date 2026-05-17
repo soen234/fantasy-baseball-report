@@ -886,7 +886,7 @@
           "losses": 56,
           "ties": 29,
           "pct": "0.647",
-          "rotoPoints": 221.5
+          "rotoPoints": 222
         },
         {
           "key": "469.l.18247.t.8",
@@ -896,7 +896,7 @@
           "losses": 64,
           "ties": 26,
           "pct": "0.615",
-          "rotoPoints": 220.5
+          "rotoPoints": 218
         },
         {
           "key": "469.l.18247.t.7",
@@ -906,16 +906,16 @@
           "losses": 72,
           "ties": 28,
           "pct": "0.570",
-          "rotoPoints": 212
+          "rotoPoints": 213
         },
         {
           "key": "469.l.18247.t.3",
           "name": "TRUCK",
           "rank": 4,
           "wins": 92,
-          "losses": 81,
-          "ties": 27,
-          "pct": "0.527",
+          "losses": 80,
+          "ties": 28,
+          "pct": "0.530",
           "rotoPoints": 149
         },
         {
@@ -926,27 +926,27 @@
           "losses": 87,
           "ties": 27,
           "pct": "0.497",
-          "rotoPoints": 133
-        },
-        {
-          "key": "469.l.18247.t.5",
-          "name": "✌️ Yeonwoo's Double Play",
-          "rank": 6,
-          "wins": 82,
-          "losses": 93,
-          "ties": 25,
-          "pct": "0.472",
-          "rotoPoints": 149.5
+          "rotoPoints": 135
         },
         {
           "key": "469.l.18247.t.12",
           "name": "💥 JongHun's Busters",
-          "rank": 7,
+          "rank": 6,
           "wins": 82,
           "losses": 94,
           "ties": 24,
           "pct": "0.470",
           "rotoPoints": 122.5
+        },
+        {
+          "key": "469.l.18247.t.5",
+          "name": "✌️ Yeonwoo's Double Play",
+          "rank": 7,
+          "wins": 81,
+          "losses": 93,
+          "ties": 26,
+          "pct": "0.470",
+          "rotoPoints": 145.5
         },
         {
           "key": "469.l.18247.t.11",
@@ -956,7 +956,7 @@
           "losses": 92,
           "ties": 31,
           "pct": "0.463",
-          "rotoPoints": 149
+          "rotoPoints": 148
         },
         {
           "key": "469.l.18247.t.1",
@@ -966,7 +966,7 @@
           "losses": 96,
           "ties": 26,
           "pct": "0.455",
-          "rotoPoints": 148
+          "rotoPoints": 149
         },
         {
           "key": "469.l.18247.t.6",
@@ -976,7 +976,7 @@
           "losses": 99,
           "ties": 22,
           "pct": "0.450",
-          "rotoPoints": 148.5
+          "rotoPoints": 149
         },
         {
           "key": "469.l.18247.t.9",
@@ -996,7 +996,7 @@
           "losses": 107,
           "ties": 26,
           "pct": "0.400",
-          "rotoPoints": 153
+          "rotoPoints": 155.5
         }
       ]
     }
