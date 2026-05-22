@@ -1008,120 +1008,120 @@
           "name": "응노",
           "rank": 1,
           "wins": 120,
-          "losses": 77,
-          "ties": 28,
-          "pct": "0.596",
-          "rotoPoints": 106.5
+          "losses": 78,
+          "ties": 27,
+          "pct": "0.593",
+          "rotoPoints": 97
         },
         {
           "key": "469.l.18247.t.4",
           "name": "Strait of UTU",
           "rank": 2,
-          "wins": 116,
-          "losses": 75,
-          "ties": 34,
-          "pct": "0.591",
-          "rotoPoints": 121.5
+          "wins": 115,
+          "losses": 78,
+          "ties": 32,
+          "pct": "0.582",
+          "rotoPoints": 113.5
         },
         {
           "key": "469.l.18247.t.7",
           "name": "커 상 혁",
           "rank": 3,
-          "wins": 107,
-          "losses": 84,
+          "wins": 106,
+          "losses": 85,
           "ties": 34,
-          "pct": "0.551",
+          "pct": "0.547",
           "rotoPoints": 195.5
         },
         {
           "key": "469.l.18247.t.10",
           "name": "🏆 ProfeSuh",
           "rank": 4,
-          "wins": 105,
-          "losses": 89,
-          "ties": 31,
-          "pct": "0.536",
-          "rotoPoints": 216.5
+          "wins": 108,
+          "losses": 88,
+          "ties": 29,
+          "pct": "0.544",
+          "rotoPoints": 224.5
         },
         {
           "key": "469.l.18247.t.3",
           "name": "TRUCK",
           "rank": 5,
-          "wins": 98,
-          "losses": 95,
+          "wins": 97,
+          "losses": 96,
           "ties": 32,
-          "pct": "0.507",
-          "rotoPoints": 132
+          "pct": "0.502",
+          "rotoPoints": 127
         },
         {
           "key": "469.l.18247.t.11",
           "name": "💥 JeongWoo's Shockers",
           "rank": 6,
-          "wins": 92,
-          "losses": 97,
+          "wins": 93,
+          "losses": 96,
           "ties": 36,
-          "pct": "0.489",
-          "rotoPoints": 194
+          "pct": "0.493",
+          "rotoPoints": 190
         },
         {
           "key": "469.l.18247.t.5",
           "name": "✌️ Yeonwoo's Double Play",
           "rank": 7,
-          "wins": 93,
-          "losses": 101,
+          "wins": 94,
+          "losses": 100,
           "ties": 31,
-          "pct": "0.482",
-          "rotoPoints": 213
+          "pct": "0.487",
+          "rotoPoints": 217.5
         },
         {
           "key": "469.l.18247.t.12",
           "name": "💥 JongHun's Busters",
           "rank": 8,
-          "wins": 93,
-          "losses": 107,
-          "ties": 25,
-          "pct": "0.469",
-          "rotoPoints": 193.5
+          "wins": 94,
+          "losses": 104,
+          "ties": 27,
+          "pct": "0.478",
+          "rotoPoints": 208
         },
         {
           "key": "469.l.18247.t.6",
           "name": "no more korean",
           "rank": 9,
-          "wins": 92,
+          "wins": 93,
           "losses": 108,
-          "ties": 25,
-          "pct": "0.464",
-          "rotoPoints": 115.5
+          "ties": 24,
+          "pct": "0.467",
+          "rotoPoints": 112.5
         },
         {
           "key": "469.l.18247.t.1",
           "name": "2026 MVP Bobby Witt",
           "rank": 10,
-          "wins": 89,
-          "losses": 107,
-          "ties": 29,
-          "pct": "0.460",
-          "rotoPoints": 130.5
+          "wins": 87,
+          "losses": 106,
+          "ties": 32,
+          "pct": "0.458",
+          "rotoPoints": 130
         },
         {
           "key": "469.l.18247.t.9",
           "name": "JJ yoogwanholt",
           "rank": 11,
-          "wins": 89,
-          "losses": 114,
-          "ties": 22,
-          "pct": "0.444",
-          "rotoPoints": 201
+          "wins": 86,
+          "losses": 115,
+          "ties": 24,
+          "pct": "0.436",
+          "rotoPoints": 198.5
         },
         {
           "key": "469.l.18247.t.2",
           "name": "xXxAIxXx",
           "rank": 12,
-          "wins": 78,
-          "losses": 118,
-          "ties": 29,
-          "pct": "0.411",
-          "rotoPoints": 130.5
+          "wins": 77,
+          "losses": 116,
+          "ties": 32,
+          "pct": "0.413",
+          "rotoPoints": 136
         }
       ]
     }
