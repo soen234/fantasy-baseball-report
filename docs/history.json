@@ -1011,17 +1011,17 @@
           "losses": 78,
           "ties": 27,
           "pct": "0.593",
-          "rotoPoints": 98
+          "rotoPoints": 100.5
         },
         {
           "key": "469.l.18247.t.4",
           "name": "Strait of UTU",
           "rank": 2,
-          "wins": 115,
-          "losses": 78,
-          "ties": 32,
-          "pct": "0.582",
-          "rotoPoints": 112.5
+          "wins": 116,
+          "losses": 76,
+          "ties": 33,
+          "pct": "0.589",
+          "rotoPoints": 125
         },
         {
           "key": "469.l.18247.t.7",
@@ -1031,37 +1031,37 @@
           "losses": 84,
           "ties": 35,
           "pct": "0.549",
-          "rotoPoints": 190.5
+          "rotoPoints": 190
         },
         {
           "key": "469.l.18247.t.10",
           "name": "🏆 ProfeSuh",
           "rank": 4,
-          "wins": 108,
-          "losses": 88,
-          "ties": 29,
-          "pct": "0.544",
-          "rotoPoints": 225.5
+          "wins": 106,
+          "losses": 89,
+          "ties": 30,
+          "pct": "0.538",
+          "rotoPoints": 221
         },
         {
           "key": "469.l.18247.t.3",
           "name": "TRUCK",
           "rank": 5,
-          "wins": 97,
-          "losses": 97,
+          "wins": 98,
+          "losses": 96,
           "ties": 31,
-          "pct": "0.500",
-          "rotoPoints": 123.5
+          "pct": "0.504",
+          "rotoPoints": 125
         },
         {
           "key": "469.l.18247.t.11",
           "name": "💥 JeongWoo's Shockers",
           "rank": 6,
-          "wins": 94,
-          "losses": 96,
+          "wins": 93,
+          "losses": 97,
           "ties": 35,
-          "pct": "0.496",
-          "rotoPoints": 198
+          "pct": "0.491",
+          "rotoPoints": 196.5
         },
         {
           "key": "469.l.18247.t.5",
@@ -1071,7 +1071,7 @@
           "losses": 100,
           "ties": 32,
           "pct": "0.484",
-          "rotoPoints": 214
+          "rotoPoints": 210.5
         },
         {
           "key": "469.l.18247.t.12",
@@ -1081,7 +1081,7 @@
           "losses": 105,
           "ties": 26,
           "pct": "0.476",
-          "rotoPoints": 206.5
+          "rotoPoints": 205.5
         },
         {
           "key": "469.l.18247.t.6",
@@ -1091,7 +1091,7 @@
           "losses": 108,
           "ties": 24,
           "pct": "0.467",
-          "rotoPoints": 113.5
+          "rotoPoints": 111
         },
         {
           "key": "469.l.18247.t.1",
@@ -1101,7 +1101,7 @@
           "losses": 106,
           "ties": 30,
           "pct": "0.462",
-          "rotoPoints": 132
+          "rotoPoints": 132.5
         },
         {
           "key": "469.l.18247.t.9",
@@ -1111,7 +1111,7 @@
           "losses": 115,
           "ties": 23,
           "pct": "0.438",
-          "rotoPoints": 198.5
+          "rotoPoints": 196.5
         },
         {
           "key": "469.l.18247.t.2",
@@ -1121,7 +1121,7 @@
           "losses": 118,
           "ties": 30,
           "pct": "0.409",
-          "rotoPoints": 137.5
+          "rotoPoints": 136
         }
       ]
     }
