@@ -1007,51 +1007,51 @@
           "key": "469.l.18247.t.4",
           "name": "Strait of UTU",
           "rank": 1,
-          "wins": 119,
+          "wins": 120,
           "losses": 73,
-          "ties": 33,
-          "pct": "0.602",
-          "rotoPoints": 114.5
+          "ties": 32,
+          "pct": "0.604",
+          "rotoPoints": 111.5
         },
         {
           "key": "469.l.18247.t.8",
           "name": "응노",
           "rank": 2,
-          "wins": 121,
+          "wins": 120,
           "losses": 77,
-          "ties": 27,
-          "pct": "0.598",
-          "rotoPoints": 106
+          "ties": 28,
+          "pct": "0.596",
+          "rotoPoints": 110
         },
         {
           "key": "469.l.18247.t.7",
           "name": "커 상 혁",
           "rank": 3,
-          "wins": 111,
-          "losses": 80,
+          "wins": 110,
+          "losses": 81,
           "ties": 34,
-          "pct": "0.569",
-          "rotoPoints": 189.5
+          "pct": "0.564",
+          "rotoPoints": 186.5
         },
         {
           "key": "469.l.18247.t.3",
           "name": "TRUCK",
           "rank": 4,
           "wins": 104,
-          "losses": 89,
-          "ties": 32,
-          "pct": "0.533",
-          "rotoPoints": 153
+          "losses": 90,
+          "ties": 31,
+          "pct": "0.531",
+          "rotoPoints": 148
         },
         {
           "key": "469.l.18247.t.10",
           "name": "🏆 ProfeSuh",
           "rank": 5,
           "wins": 103,
-          "losses": 92,
-          "ties": 30,
-          "pct": "0.524",
-          "rotoPoints": 206
+          "losses": 93,
+          "ties": 29,
+          "pct": "0.522",
+          "rotoPoints": 203
         },
         {
           "key": "469.l.18247.t.12",
@@ -1061,47 +1061,47 @@
           "losses": 106,
           "ties": 26,
           "pct": "0.471",
-          "rotoPoints": 208.5
+          "rotoPoints": 207
         },
         {
           "key": "469.l.18247.t.5",
           "name": "✌️ Yeonwoo's Double Play",
           "rank": 7,
-          "wins": 89,
-          "losses": 105,
+          "wins": 90,
+          "losses": 104,
           "ties": 31,
-          "pct": "0.464",
-          "rotoPoints": 198.5
-        },
-        {
-          "key": "469.l.18247.t.1",
-          "name": "2026 MVP Bobby Witt",
-          "rank": 8,
-          "wins": 91,
-          "losses": 107,
-          "ties": 27,
-          "pct": "0.464",
-          "rotoPoints": 159
+          "pct": "0.469",
+          "rotoPoints": 197.5
         },
         {
           "key": "469.l.18247.t.11",
           "name": "💥 JeongWoo's Shockers",
-          "rank": 9,
-          "wins": 86,
+          "rank": 8,
+          "wins": 87,
           "losses": 103,
-          "ties": 36,
-          "pct": "0.462",
-          "rotoPoints": 161
+          "ties": 35,
+          "pct": "0.464",
+          "rotoPoints": 163
         },
         {
           "key": "469.l.18247.t.6",
           "name": "no more korean",
-          "rank": 10,
+          "rank": 9,
           "wins": 92,
-          "losses": 109,
-          "ties": 24,
+          "losses": 108,
+          "ties": 25,
+          "pct": "0.464",
+          "rotoPoints": 116
+        },
+        {
+          "key": "469.l.18247.t.1",
+          "name": "2026 MVP Bobby Witt",
+          "rank": 10,
+          "wins": 91,
+          "losses": 108,
+          "ties": 26,
           "pct": "0.462",
-          "rotoPoints": 109.5
+          "rotoPoints": 158.5
         },
         {
           "key": "469.l.18247.t.9",
@@ -1111,17 +1111,17 @@
           "losses": 114,
           "ties": 23,
           "pct": "0.442",
-          "rotoPoints": 214
+          "rotoPoints": 219
         },
         {
           "key": "469.l.18247.t.2",
           "name": "xXxAIxXx",
           "rank": 12,
-          "wins": 78,
+          "wins": 79,
           "losses": 120,
-          "ties": 27,
-          "pct": "0.407",
-          "rotoPoints": 130.5
+          "ties": 26,
+          "pct": "0.409",
+          "rotoPoints": 130
         }
       ]
     }
