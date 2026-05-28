@@ -1136,17 +1136,17 @@
           "losses": 77,
           "ties": 33,
           "pct": "0.626",
-          "rotoPoints": 178
+          "rotoPoints": 177.5
         },
         {
           "key": "469.l.18247.t.4",
           "name": "Strait of UTU",
           "rank": 2,
           "wins": 136,
-          "losses": 77,
-          "ties": 37,
-          "pct": "0.618",
-          "rotoPoints": 177.5
+          "losses": 79,
+          "ties": 35,
+          "pct": "0.614",
+          "rotoPoints": 179.5
         },
         {
           "key": "469.l.18247.t.7",
@@ -1156,17 +1156,17 @@
           "losses": 94,
           "ties": 35,
           "pct": "0.554",
-          "rotoPoints": 133.5
+          "rotoPoints": 129.5
         },
         {
           "key": "469.l.18247.t.10",
           "name": "🏆 ProfeSuh",
           "rank": 4,
-          "wins": 115,
-          "losses": 103,
-          "ties": 32,
-          "pct": "0.524",
-          "rotoPoints": 202
+          "wins": 113,
+          "losses": 104,
+          "ties": 33,
+          "pct": "0.518",
+          "rotoPoints": 206.5
         },
         {
           "key": "469.l.18247.t.3",
@@ -1176,7 +1176,7 @@
           "losses": 105,
           "ties": 37,
           "pct": "0.506",
-          "rotoPoints": 103
+          "rotoPoints": 99
         },
         {
           "key": "469.l.18247.t.12",
@@ -1186,7 +1186,7 @@
           "losses": 111,
           "ties": 31,
           "pct": "0.494",
-          "rotoPoints": 187
+          "rotoPoints": 185.5
         },
         {
           "key": "469.l.18247.t.11",
@@ -1196,7 +1196,7 @@
           "losses": 112,
           "ties": 40,
           "pct": "0.472",
-          "rotoPoints": 173
+          "rotoPoints": 172
         },
         {
           "key": "469.l.18247.t.5",
@@ -1206,7 +1206,7 @@
           "losses": 117,
           "ties": 33,
           "pct": "0.466",
-          "rotoPoints": 164
+          "rotoPoints": 162
         },
         {
           "key": "469.l.18247.t.1",
@@ -1216,7 +1216,7 @@
           "losses": 123,
           "ties": 30,
           "pct": "0.448",
-          "rotoPoints": 142.5
+          "rotoPoints": 141.5
         },
         {
           "key": "469.l.18247.t.9",
@@ -1226,27 +1226,27 @@
           "losses": 125,
           "ties": 29,
           "pct": "0.442",
-          "rotoPoints": 174
+          "rotoPoints": 173
         },
         {
           "key": "469.l.18247.t.6",
           "name": "no more korean",
           "rank": 11,
-          "wins": 93,
+          "wins": 95,
           "losses": 126,
-          "ties": 31,
-          "pct": "0.434",
-          "rotoPoints": 142
+          "ties": 29,
+          "pct": "0.438",
+          "rotoPoints": 144
         },
         {
           "key": "469.l.18247.t.2",
           "name": "xXxAIxXx",
           "rank": 12,
-          "wins": 89,
-          "losses": 131,
-          "ties": 30,
-          "pct": "0.416",
-          "rotoPoints": 173.5
+          "wins": 90,
+          "losses": 129,
+          "ties": 31,
+          "pct": "0.422",
+          "rotoPoints": 180
         }
       ]
     }
