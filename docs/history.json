@@ -1132,21 +1132,21 @@
           "key": "469.l.18247.t.8",
           "name": "응노",
           "rank": 1,
-          "wins": 140,
-          "losses": 77,
+          "wins": 141,
+          "losses": 76,
           "ties": 33,
-          "pct": "0.626",
-          "rotoPoints": 177.5
+          "pct": "0.630",
+          "rotoPoints": 166.5
         },
         {
           "key": "469.l.18247.t.4",
           "name": "Strait of UTU",
           "rank": 2,
-          "wins": 136,
+          "wins": 138,
           "losses": 79,
-          "ties": 35,
-          "pct": "0.614",
-          "rotoPoints": 179.5
+          "ties": 33,
+          "pct": "0.618",
+          "rotoPoints": 188.5
         },
         {
           "key": "469.l.18247.t.7",
@@ -1156,37 +1156,37 @@
           "losses": 94,
           "ties": 35,
           "pct": "0.554",
-          "rotoPoints": 129.5
+          "rotoPoints": 121
         },
         {
           "key": "469.l.18247.t.10",
           "name": "🏆 ProfeSuh",
           "rank": 4,
-          "wins": 113,
-          "losses": 104,
-          "ties": 33,
-          "pct": "0.518",
-          "rotoPoints": 206.5
+          "wins": 116,
+          "losses": 103,
+          "ties": 31,
+          "pct": "0.526",
+          "rotoPoints": 223
         },
         {
           "key": "469.l.18247.t.3",
           "name": "TRUCK",
           "rank": 5,
-          "wins": 108,
-          "losses": 105,
+          "wins": 107,
+          "losses": 106,
           "ties": 37,
-          "pct": "0.506",
-          "rotoPoints": 99
+          "pct": "0.502",
+          "rotoPoints": 96.5
         },
         {
           "key": "469.l.18247.t.12",
           "name": "💥 JongHun's Busters",
           "rank": 6,
-          "wins": 108,
-          "losses": 111,
-          "ties": 31,
-          "pct": "0.494",
-          "rotoPoints": 185.5
+          "wins": 107,
+          "losses": 113,
+          "ties": 30,
+          "pct": "0.488",
+          "rotoPoints": 174
         },
         {
           "key": "469.l.18247.t.11",
@@ -1196,57 +1196,57 @@
           "losses": 112,
           "ties": 40,
           "pct": "0.472",
-          "rotoPoints": 172
+          "rotoPoints": 160
         },
         {
           "key": "469.l.18247.t.5",
           "name": "✌️ Yeonwoo's Double Play",
           "rank": 8,
-          "wins": 100,
-          "losses": 117,
-          "ties": 33,
-          "pct": "0.466",
-          "rotoPoints": 162
+          "wins": 98,
+          "losses": 118,
+          "ties": 34,
+          "pct": "0.460",
+          "rotoPoints": 156.5
         },
         {
           "key": "469.l.18247.t.1",
           "name": "2026 MVP Bobby Witt",
           "rank": 9,
-          "wins": 97,
-          "losses": 123,
-          "ties": 30,
-          "pct": "0.448",
-          "rotoPoints": 141.5
+          "wins": 99,
+          "losses": 122,
+          "ties": 29,
+          "pct": "0.454",
+          "rotoPoints": 147.5
         },
         {
           "key": "469.l.18247.t.9",
           "name": "JJ yoogwanholt",
           "rank": 10,
-          "wins": 96,
-          "losses": 125,
-          "ties": 29,
-          "pct": "0.442",
-          "rotoPoints": 173
+          "wins": 97,
+          "losses": 123,
+          "ties": 30,
+          "pct": "0.448",
+          "rotoPoints": 176.5
         },
         {
           "key": "469.l.18247.t.6",
           "name": "no more korean",
           "rank": 11,
           "wins": 95,
-          "losses": 126,
-          "ties": 29,
-          "pct": "0.438",
-          "rotoPoints": 144
+          "losses": 128,
+          "ties": 27,
+          "pct": "0.434",
+          "rotoPoints": 160.5
         },
         {
           "key": "469.l.18247.t.2",
           "name": "xXxAIxXx",
           "rank": 12,
-          "wins": 90,
-          "losses": 129,
-          "ties": 31,
-          "pct": "0.422",
-          "rotoPoints": 180
+          "wins": 89,
+          "losses": 132,
+          "ties": 29,
+          "pct": "0.414",
+          "rotoPoints": 179.5
         }
       ]
     }
