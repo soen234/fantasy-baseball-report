@@ -1132,11 +1132,11 @@
           "key": "469.l.18247.t.8",
           "name": "응노",
           "rank": 1,
-          "wins": 138,
+          "wins": 139,
           "losses": 79,
-          "ties": 33,
-          "pct": "0.618",
-          "rotoPoints": 182.5
+          "ties": 32,
+          "pct": "0.620",
+          "rotoPoints": 179.5
         },
         {
           "key": "469.l.18247.t.4",
@@ -1146,7 +1146,7 @@
           "losses": 80,
           "ties": 33,
           "pct": "0.614",
-          "rotoPoints": 192
+          "rotoPoints": 196
         },
         {
           "key": "469.l.18247.t.7",
@@ -1156,27 +1156,27 @@
           "losses": 95,
           "ties": 35,
           "pct": "0.550",
-          "rotoPoints": 122
+          "rotoPoints": 121.5
         },
         {
           "key": "469.l.18247.t.10",
           "name": "🏆 ProfeSuh",
           "rank": 4,
-          "wins": 120,
-          "losses": 98,
+          "wins": 119,
+          "losses": 99,
           "ties": 32,
-          "pct": "0.544",
-          "rotoPoints": 233
+          "pct": "0.540",
+          "rotoPoints": 229
         },
         {
           "key": "469.l.18247.t.3",
           "name": "TRUCK",
           "rank": 5,
           "wins": 110,
-          "losses": 103,
-          "ties": 37,
-          "pct": "0.514",
-          "rotoPoints": 110.5
+          "losses": 104,
+          "ties": 36,
+          "pct": "0.512",
+          "rotoPoints": 108.5
         },
         {
           "key": "469.l.18247.t.12",
@@ -1186,7 +1186,7 @@
           "losses": 112,
           "ties": 31,
           "pct": "0.490",
-          "rotoPoints": 202
+          "rotoPoints": 195.5
         },
         {
           "key": "469.l.18247.t.11",
@@ -1196,7 +1196,7 @@
           "losses": 111,
           "ties": 40,
           "pct": "0.476",
-          "rotoPoints": 153.5
+          "rotoPoints": 147.5
         },
         {
           "key": "469.l.18247.t.5",
@@ -1216,7 +1216,7 @@
           "losses": 122,
           "ties": 30,
           "pct": "0.452",
-          "rotoPoints": 161
+          "rotoPoints": 162
         },
         {
           "key": "469.l.18247.t.6",
@@ -1226,7 +1226,7 @@
           "losses": 127,
           "ties": 27,
           "pct": "0.438",
-          "rotoPoints": 155.5
+          "rotoPoints": 163
         },
         {
           "key": "469.l.18247.t.9",
@@ -1242,11 +1242,11 @@
           "key": "469.l.18247.t.2",
           "name": "xXxAIxXx",
           "rank": 12,
-          "wins": 84,
-          "losses": 136,
+          "wins": 85,
+          "losses": 135,
           "ties": 30,
-          "pct": "0.396",
-          "rotoPoints": 139
+          "pct": "0.400",
+          "rotoPoints": 148.5
         }
       ]
     }
