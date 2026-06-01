@@ -1146,7 +1146,7 @@
           "losses": 79,
           "ties": 31,
           "pct": "0.622",
-          "rotoPoints": 180
+          "rotoPoints": 179.5
         },
         {
           "key": "469.l.18247.t.7",
@@ -1156,17 +1156,17 @@
           "losses": 91,
           "ties": 34,
           "pct": "0.568",
-          "rotoPoints": 153.5
+          "rotoPoints": 151
         },
         {
           "key": "469.l.18247.t.10",
           "name": "🏆 ProfeSuh",
           "rank": 4,
           "wins": 120,
-          "losses": 97,
-          "ties": 33,
-          "pct": "0.546",
-          "rotoPoints": 228
+          "losses": 98,
+          "ties": 32,
+          "pct": "0.544",
+          "rotoPoints": 226
         },
         {
           "key": "469.l.18247.t.3",
@@ -1176,25 +1176,25 @@
           "losses": 105,
           "ties": 35,
           "pct": "0.510",
-          "rotoPoints": 107.5
+          "rotoPoints": 113.5
         },
         {
           "key": "469.l.18247.t.12",
           "name": "💥 JongHun's Busters",
           "rank": 6,
-          "wins": 103,
-          "losses": 114,
-          "ties": 33,
+          "wins": 104,
+          "losses": 115,
+          "ties": 31,
           "pct": "0.478",
-          "rotoPoints": 177
+          "rotoPoints": 174.5
         },
         {
           "key": "469.l.18247.t.1",
           "name": "2026 MVP Bobby Witt",
           "rank": 7,
-          "wins": 100,
-          "losses": 118,
-          "ties": 32,
+          "wins": 101,
+          "losses": 119,
+          "ties": 30,
           "pct": "0.464",
           "rotoPoints": 161.5
         },
@@ -1216,7 +1216,7 @@
           "losses": 116,
           "ties": 39,
           "pct": "0.458",
-          "rotoPoints": 138
+          "rotoPoints": 136.5
         },
         {
           "key": "469.l.18247.t.9",
@@ -1226,7 +1226,7 @@
           "losses": 124,
           "ties": 27,
           "pct": "0.450",
-          "rotoPoints": 159.5
+          "rotoPoints": 165
         },
         {
           "key": "469.l.18247.t.6",
@@ -1236,16 +1236,16 @@
           "losses": 130,
           "ties": 29,
           "pct": "0.422",
-          "rotoPoints": 134.5
+          "rotoPoints": 132
         },
         {
           "key": "469.l.18247.t.2",
           "name": "xXxAIxXx",
           "rank": 12,
-          "wins": 83,
+          "wins": 84,
           "losses": 136,
-          "ties": 31,
-          "pct": "0.394",
+          "ties": 30,
+          "pct": "0.396",
           "rotoPoints": 161.5
         }
       ]
