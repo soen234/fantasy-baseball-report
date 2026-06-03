@@ -1261,7 +1261,7 @@
           "losses": 81,
           "ties": 39,
           "pct": "0.635",
-          "rotoPoints": 197
+          "rotoPoints": 202
         },
         {
           "key": "469.l.18247.t.8",
@@ -1271,7 +1271,7 @@
           "losses": 91,
           "ties": 38,
           "pct": "0.600",
-          "rotoPoints": 123
+          "rotoPoints": 121.5
         },
         {
           "key": "469.l.18247.t.7",
@@ -1281,17 +1281,17 @@
           "losses": 97,
           "ties": 41,
           "pct": "0.573",
-          "rotoPoints": 149
+          "rotoPoints": 144.5
         },
         {
           "key": "469.l.18247.t.10",
           "name": "🏆 ProfeSuh",
           "rank": 4,
-          "wins": 134,
+          "wins": 133,
           "losses": 105,
-          "ties": 36,
-          "pct": "0.553",
-          "rotoPoints": 141.5
+          "ties": 37,
+          "pct": "0.551",
+          "rotoPoints": 145
         },
         {
           "key": "469.l.18247.t.3",
@@ -1301,17 +1301,17 @@
           "losses": 120,
           "ties": 39,
           "pct": "0.493",
-          "rotoPoints": 167
+          "rotoPoints": 170.5
         },
         {
           "key": "469.l.18247.t.12",
           "name": "💥 JongHun's Busters",
           "rank": 6,
           "wins": 117,
-          "losses": 123,
-          "ties": 35,
-          "pct": "0.489",
-          "rotoPoints": 198
+          "losses": 124,
+          "ties": 34,
+          "pct": "0.487",
+          "rotoPoints": 189.5
         },
         {
           "key": "469.l.18247.t.11",
@@ -1328,20 +1328,20 @@
           "name": "2026 MVP Bobby Witt",
           "rank": 8,
           "wins": 108,
-          "losses": 133,
-          "ties": 34,
-          "pct": "0.455",
+          "losses": 132,
+          "ties": 35,
+          "pct": "0.456",
           "rotoPoints": 125
         },
         {
           "key": "469.l.18247.t.5",
           "name": "✌️ Yeonwoo's Double Play",
           "rank": 9,
-          "wins": 107,
+          "wins": 108,
           "losses": 133,
-          "ties": 35,
-          "pct": "0.453",
-          "rotoPoints": 166
+          "ties": 34,
+          "pct": "0.455",
+          "rotoPoints": 167
         },
         {
           "key": "469.l.18247.t.9",
@@ -1351,27 +1351,27 @@
           "losses": 140,
           "ties": 30,
           "pct": "0.436",
-          "rotoPoints": 126
+          "rotoPoints": 123.5
         },
         {
           "key": "469.l.18247.t.6",
           "name": "no more korean",
           "rank": 11,
           "wins": 101,
-          "losses": 142,
-          "ties": 32,
-          "pct": "0.425",
-          "rotoPoints": 182
+          "losses": 141,
+          "ties": 33,
+          "pct": "0.427",
+          "rotoPoints": 181.5
         },
         {
           "key": "469.l.18247.t.2",
           "name": "xXxAIxXx",
           "rank": 12,
-          "wins": 96,
+          "wins": 95,
           "losses": 146,
-          "ties": 33,
-          "pct": "0.409",
-          "rotoPoints": 186.5
+          "ties": 34,
+          "pct": "0.407",
+          "rotoPoints": 191
         }
       ]
     }
