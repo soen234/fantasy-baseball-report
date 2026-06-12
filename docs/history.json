@@ -1382,11 +1382,11 @@
           "key": "469.l.18247.t.4",
           "name": "Strait of UTU",
           "rank": 1,
-          "wins": 173,
-          "losses": 88,
+          "wins": 174,
+          "losses": 87,
           "ties": 39,
-          "pct": "0.642",
-          "rotoPoints": 202.5
+          "pct": "0.645",
+          "rotoPoints": 205.5
         },
         {
           "key": "469.l.18247.t.8",
@@ -1396,17 +1396,17 @@
           "losses": 112,
           "ties": 38,
           "pct": "0.563",
-          "rotoPoints": 169.5
+          "rotoPoints": 171
         },
         {
           "key": "469.l.18247.t.7",
           "name": "커 상 혁",
           "rank": 3,
-          "wins": 147,
-          "losses": 111,
+          "wins": 146,
+          "losses": 112,
           "ties": 42,
-          "pct": "0.560",
-          "rotoPoints": 130
+          "pct": "0.557",
+          "rotoPoints": 127.5
         },
         {
           "key": "469.l.18247.t.10",
@@ -1416,7 +1416,7 @@
           "losses": 119,
           "ties": 39,
           "pct": "0.538",
-          "rotoPoints": 177.5
+          "rotoPoints": 179.5
         },
         {
           "key": "469.l.18247.t.12",
@@ -1426,7 +1426,7 @@
           "losses": 126,
           "ties": 39,
           "pct": "0.515",
-          "rotoPoints": 205
+          "rotoPoints": 207.5
         },
         {
           "key": "469.l.18247.t.3",
@@ -1436,7 +1436,7 @@
           "losses": 129,
           "ties": 38,
           "pct": "0.507",
-          "rotoPoints": 178
+          "rotoPoints": 174.5
         },
         {
           "key": "469.l.18247.t.11",
@@ -1446,7 +1446,7 @@
           "losses": 135,
           "ties": 47,
           "pct": "0.472",
-          "rotoPoints": 91
+          "rotoPoints": 90.5
         },
         {
           "key": "469.l.18247.t.5",
@@ -1456,7 +1456,7 @@
           "losses": 142,
           "ties": 38,
           "pct": "0.463",
-          "rotoPoints": 132.5
+          "rotoPoints": 130
         },
         {
           "key": "469.l.18247.t.1",
@@ -1466,7 +1466,7 @@
           "losses": 143,
           "ties": 37,
           "pct": "0.462",
-          "rotoPoints": 169
+          "rotoPoints": 170
         },
         {
           "key": "469.l.18247.t.9",
@@ -1476,7 +1476,7 @@
           "losses": 150,
           "ties": 33,
           "pct": "0.445",
-          "rotoPoints": 198
+          "rotoPoints": 201
         },
         {
           "key": "469.l.18247.t.6",
@@ -1486,7 +1486,7 @@
           "losses": 150,
           "ties": 37,
           "pct": "0.438",
-          "rotoPoints": 153.5
+          "rotoPoints": 152.5
         },
         {
           "key": "469.l.18247.t.2",
@@ -1496,7 +1496,7 @@
           "losses": 164,
           "ties": 35,
           "pct": "0.395",
-          "rotoPoints": 143.5
+          "rotoPoints": 140.5
         }
       ]
     }
