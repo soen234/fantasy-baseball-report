@@ -1507,11 +1507,11 @@
           "key": "469.l.18247.t.4",
           "name": "Strait of UTU",
           "rank": 1,
-          "wins": 185,
-          "losses": 95,
+          "wins": 184,
+          "losses": 96,
           "ties": 45,
-          "pct": "0.638",
-          "rotoPoints": 217
+          "pct": "0.635",
+          "rotoPoints": 214.5
         },
         {
           "key": "469.l.18247.t.7",
@@ -1521,97 +1521,97 @@
           "losses": 112,
           "ties": 48,
           "pct": "0.582",
-          "rotoPoints": 214.5
+          "rotoPoints": 210
         },
         {
           "key": "469.l.18247.t.8",
           "name": "응노",
           "rank": 3,
-          "wins": 160,
-          "losses": 123,
+          "wins": 163,
+          "losses": 120,
           "ties": 42,
-          "pct": "0.557",
-          "rotoPoints": 172.5
+          "pct": "0.566",
+          "rotoPoints": 171.5
         },
         {
           "key": "469.l.18247.t.10",
           "name": "🏆 ProfeSuh",
           "rank": 4,
-          "wins": 155,
-          "losses": 127,
-          "ties": 43,
-          "pct": "0.543",
-          "rotoPoints": 166.5
+          "wins": 153,
+          "losses": 131,
+          "ties": 41,
+          "pct": "0.534",
+          "rotoPoints": 157.5
         },
         {
           "key": "469.l.18247.t.12",
           "name": "💥 JongHun's Busters",
           "rank": 5,
-          "wins": 146,
-          "losses": 132,
-          "ties": 47,
-          "pct": "0.522",
-          "rotoPoints": 139
+          "wins": 144,
+          "losses": 135,
+          "ties": 46,
+          "pct": "0.514",
+          "rotoPoints": 136
         },
         {
           "key": "469.l.18247.t.3",
           "name": "TRUCK",
           "rank": 6,
           "wins": 145,
-          "losses": 135,
-          "ties": 45,
-          "pct": "0.515",
-          "rotoPoints": 165.5
+          "losses": 136,
+          "ties": 44,
+          "pct": "0.514",
+          "rotoPoints": 165
         },
         {
           "key": "469.l.18247.t.5",
           "name": "✌️ Yeonwoo's Double Play",
           "rank": 7,
-          "wins": 139,
-          "losses": 145,
+          "wins": 136,
+          "losses": 148,
           "ties": 41,
-          "pct": "0.491",
-          "rotoPoints": 188
+          "pct": "0.482",
+          "rotoPoints": 180
         },
         {
           "key": "469.l.18247.t.1",
           "name": "2026 MVP Bobby Witt",
           "rank": 8,
-          "wins": 131,
+          "wins": 132,
           "losses": 154,
-          "ties": 40,
-          "pct": "0.465",
-          "rotoPoints": 151
+          "ties": 39,
+          "pct": "0.466",
+          "rotoPoints": 153.5
         },
         {
           "key": "469.l.18247.t.11",
           "name": "💥 JeongWoo's Shockers",
           "rank": 9,
-          "wins": 118,
-          "losses": 151,
-          "ties": 56,
-          "pct": "0.449",
-          "rotoPoints": 117.5
+          "wins": 121,
+          "losses": 149,
+          "ties": 55,
+          "pct": "0.457",
+          "rotoPoints": 126.5
         },
         {
           "key": "469.l.18247.t.6",
           "name": "no more korean",
           "rank": 10,
-          "wins": 120,
-          "losses": 164,
-          "ties": 41,
-          "pct": "0.432",
-          "rotoPoints": 125.5
+          "wins": 124,
+          "losses": 162,
+          "ties": 39,
+          "pct": "0.442",
+          "rotoPoints": 152
         },
         {
           "key": "469.l.18247.t.9",
           "name": "JJ yoogwanholt",
           "rank": 11,
-          "wins": 119,
-          "losses": 168,
+          "wins": 120,
+          "losses": 167,
           "ties": 38,
-          "pct": "0.425",
-          "rotoPoints": 161
+          "pct": "0.428",
+          "rotoPoints": 156.5
         },
         {
           "key": "469.l.18247.t.2",
@@ -1621,7 +1621,7 @@
           "losses": 180,
           "ties": 42,
           "pct": "0.382",
-          "rotoPoints": 132
+          "rotoPoints": 127
         }
       ]
     }
