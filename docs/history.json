@@ -1531,7 +1531,7 @@
           "losses": 118,
           "ties": 41,
           "pct": "0.574",
-          "rotoPoints": 153
+          "rotoPoints": 152.5
         },
         {
           "key": "469.l.18247.t.10",
@@ -1541,7 +1541,7 @@
           "losses": 129,
           "ties": 39,
           "pct": "0.543",
-          "rotoPoints": 188.5
+          "rotoPoints": 188
         },
         {
           "key": "469.l.18247.t.12",
@@ -1571,7 +1571,7 @@
           "losses": 151,
           "ties": 39,
           "pct": "0.475",
-          "rotoPoints": 172
+          "rotoPoints": 171.5
         },
         {
           "key": "469.l.18247.t.5",
@@ -1601,7 +1601,7 @@
           "losses": 159,
           "ties": 39,
           "pct": "0.451",
-          "rotoPoints": 186.5
+          "rotoPoints": 188
         },
         {
           "key": "469.l.18247.t.6",
