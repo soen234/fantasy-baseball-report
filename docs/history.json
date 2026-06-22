@@ -1508,10 +1508,10 @@
           "name": "Strait of UTU",
           "rank": 1,
           "wins": 180,
-          "losses": 100,
-          "ties": 45,
-          "pct": "0.623",
-          "rotoPoints": 200
+          "losses": 99,
+          "ties": 46,
+          "pct": "0.625",
+          "rotoPoints": 207.5
         },
         {
           "key": "469.l.18247.t.7",
@@ -1521,7 +1521,7 @@
           "losses": 112,
           "ties": 46,
           "pct": "0.585",
-          "rotoPoints": 197.5
+          "rotoPoints": 198.5
         },
         {
           "key": "469.l.18247.t.8",
@@ -1531,7 +1531,7 @@
           "losses": 123,
           "ties": 39,
           "pct": "0.562",
-          "rotoPoints": 150.5
+          "rotoPoints": 148.5
         },
         {
           "key": "469.l.18247.t.10",
@@ -1551,17 +1551,17 @@
           "losses": 136,
           "ties": 42,
           "pct": "0.517",
-          "rotoPoints": 168.5
+          "rotoPoints": 166.5
         },
         {
           "key": "469.l.18247.t.12",
           "name": "💥 JongHun's Busters",
           "rank": 6,
-          "wins": 145,
-          "losses": 141,
+          "wins": 144,
+          "losses": 142,
           "ties": 39,
-          "pct": "0.506",
-          "rotoPoints": 138
+          "pct": "0.503",
+          "rotoPoints": 138.5
         },
         {
           "key": "469.l.18247.t.5",
@@ -1571,17 +1571,17 @@
           "losses": 148,
           "ties": 38,
           "pct": "0.486",
-          "rotoPoints": 150.5
+          "rotoPoints": 144.5
         },
         {
           "key": "469.l.18247.t.11",
           "name": "💥 JeongWoo's Shockers",
           "rank": 8,
-          "wins": 127,
-          "losses": 150,
+          "wins": 128,
+          "losses": 149,
           "ties": 48,
-          "pct": "0.465",
-          "rotoPoints": 151.5
+          "pct": "0.468",
+          "rotoPoints": 159
         },
         {
           "key": "469.l.18247.t.1",
@@ -1597,11 +1597,11 @@
           "key": "469.l.18247.t.9",
           "name": "JJ yoogwanholt",
           "rank": 10,
-          "wins": 124,
+          "wins": 123,
           "losses": 163,
-          "ties": 38,
-          "pct": "0.440",
-          "rotoPoints": 167.5
+          "ties": 39,
+          "pct": "0.438",
+          "rotoPoints": 166.5
         },
         {
           "key": "469.l.18247.t.6",
@@ -1611,7 +1611,7 @@
           "losses": 167,
           "ties": 37,
           "pct": "0.429",
-          "rotoPoints": 159
+          "rotoPoints": 153
         },
         {
           "key": "469.l.18247.t.2",
@@ -1621,7 +1621,7 @@
           "losses": 182,
           "ties": 40,
           "pct": "0.378",
-          "rotoPoints": 120.5
+          "rotoPoints": 121
         }
       ]
     }
