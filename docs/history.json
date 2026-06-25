@@ -1636,7 +1636,7 @@
           "losses": 101,
           "ties": 51,
           "pct": "0.639",
-          "rotoPoints": 216
+          "rotoPoints": 217.5
         },
         {
           "key": "469.l.18247.t.7",
@@ -1653,10 +1653,10 @@
           "name": "응노",
           "rank": 3,
           "wins": 175,
-          "losses": 133,
-          "ties": 42,
-          "pct": "0.560",
-          "rotoPoints": 139
+          "losses": 135,
+          "ties": 40,
+          "pct": "0.557",
+          "rotoPoints": 130.5
         },
         {
           "key": "469.l.18247.t.10",
@@ -1666,7 +1666,7 @@
           "losses": 145,
           "ties": 44,
           "pct": "0.523",
-          "rotoPoints": 127
+          "rotoPoints": 126
         },
         {
           "key": "469.l.18247.t.3",
@@ -1676,7 +1676,7 @@
           "losses": 146,
           "ties": 43,
           "pct": "0.521",
-          "rotoPoints": 213.5
+          "rotoPoints": 212.5
         },
         {
           "key": "469.l.18247.t.12",
@@ -1696,17 +1696,17 @@
           "losses": 161,
           "ties": 39,
           "pct": "0.484",
-          "rotoPoints": 123.5
+          "rotoPoints": 127.5
         },
         {
           "key": "469.l.18247.t.11",
           "name": "💥 JeongWoo's Shockers",
           "rank": 8,
-          "wins": 139,
+          "wins": 141,
           "losses": 159,
-          "ties": 52,
-          "pct": "0.471",
-          "rotoPoints": 129.5
+          "ties": 50,
+          "pct": "0.474",
+          "rotoPoints": 130.5
         },
         {
           "key": "469.l.18247.t.5",
@@ -1726,7 +1726,7 @@
           "losses": 170,
           "ties": 45,
           "pct": "0.450",
-          "rotoPoints": 177.5
+          "rotoPoints": 180.5
         },
         {
           "key": "469.l.18247.t.6",
@@ -1746,7 +1746,7 @@
           "losses": 194,
           "ties": 46,
           "pct": "0.380",
-          "rotoPoints": 159
+          "rotoPoints": 160
         }
       ]
     }
