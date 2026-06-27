@@ -1633,20 +1633,20 @@
           "name": "Strait of UTU",
           "rank": 1,
           "wins": 197,
-          "losses": 105,
-          "ties": 48,
-          "pct": "0.631",
-          "rotoPoints": 233.5
+          "losses": 104,
+          "ties": 49,
+          "pct": "0.633",
+          "rotoPoints": 231.5
         },
         {
           "key": "469.l.18247.t.7",
           "name": "커 상 혁",
           "rank": 2,
           "wins": 178,
-          "losses": 123,
-          "ties": 49,
-          "pct": "0.579",
-          "rotoPoints": 144
+          "losses": 121,
+          "ties": 51,
+          "pct": "0.581",
+          "rotoPoints": 154
         },
         {
           "key": "469.l.18247.t.8",
@@ -1656,7 +1656,7 @@
           "losses": 129,
           "ties": 42,
           "pct": "0.571",
-          "rotoPoints": 162.5
+          "rotoPoints": 160.5
         },
         {
           "key": "469.l.18247.t.3",
@@ -1666,7 +1666,7 @@
           "losses": 144,
           "ties": 42,
           "pct": "0.529",
-          "rotoPoints": 225
+          "rotoPoints": 227
         },
         {
           "key": "469.l.18247.t.10",
@@ -1676,37 +1676,37 @@
           "losses": 148,
           "ties": 43,
           "pct": "0.516",
-          "rotoPoints": 93
+          "rotoPoints": 87.5
         },
         {
           "key": "469.l.18247.t.12",
           "name": "💥 JongHun's Busters",
           "rank": 6,
-          "wins": 150,
-          "losses": 157,
+          "wins": 148,
+          "losses": 159,
           "ties": 43,
-          "pct": "0.490",
-          "rotoPoints": 148
+          "pct": "0.484",
+          "rotoPoints": 145
         },
         {
           "key": "469.l.18247.t.1",
           "name": "2026 MVP Bobby Witt",
           "rank": 7,
-          "wins": 150,
+          "wins": 148,
           "losses": 163,
-          "ties": 37,
-          "pct": "0.481",
-          "rotoPoints": 123.5
+          "ties": 39,
+          "pct": "0.479",
+          "rotoPoints": 124.5
         },
         {
           "key": "469.l.18247.t.5",
           "name": "✌️ Yeonwoo's Double Play",
           "rank": 8,
-          "wins": 144,
+          "wins": 143,
           "losses": 167,
-          "ties": 39,
-          "pct": "0.467",
-          "rotoPoints": 189
+          "ties": 40,
+          "pct": "0.466",
+          "rotoPoints": 185.5
         },
         {
           "key": "469.l.18247.t.11",
@@ -1719,34 +1719,34 @@
           "rotoPoints": 120
         },
         {
-          "key": "469.l.18247.t.9",
-          "name": "JJ yoogwanholt",
-          "rank": 10,
-          "wins": 135,
-          "losses": 171,
-          "ties": 44,
-          "pct": "0.449",
-          "rotoPoints": 164.5
-        },
-        {
           "key": "469.l.18247.t.6",
           "name": "린도어 열차 출발!",
-          "rank": 11,
-          "wins": 135,
-          "losses": 173,
+          "rank": 10,
+          "wins": 137,
+          "losses": 171,
           "ties": 42,
-          "pct": "0.446",
-          "rotoPoints": 199.5
+          "pct": "0.451",
+          "rotoPoints": 195
+        },
+        {
+          "key": "469.l.18247.t.9",
+          "name": "JJ yoogwanholt",
+          "rank": 11,
+          "wins": 136,
+          "losses": 172,
+          "ties": 42,
+          "pct": "0.449",
+          "rotoPoints": 169.5
         },
         {
           "key": "469.l.18247.t.2",
           "name": "xXxAIxXx",
           "rank": 12,
-          "wins": 111,
-          "losses": 194,
-          "ties": 45,
+          "wins": 112,
+          "losses": 195,
+          "ties": 43,
           "pct": "0.381",
-          "rotoPoints": 147.5
+          "rotoPoints": 150
         }
       ]
     }
