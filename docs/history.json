@@ -1636,17 +1636,17 @@
           "losses": 104,
           "ties": 49,
           "pct": "0.633",
-          "rotoPoints": 231.5
+          "rotoPoints": 235.5
         },
         {
           "key": "469.l.18247.t.7",
           "name": "커 상 혁",
           "rank": 2,
-          "wins": 178,
+          "wins": 180,
           "losses": 121,
-          "ties": 51,
-          "pct": "0.581",
-          "rotoPoints": 154
+          "ties": 49,
+          "pct": "0.584",
+          "rotoPoints": 149.5
         },
         {
           "key": "469.l.18247.t.8",
@@ -1656,7 +1656,7 @@
           "losses": 129,
           "ties": 42,
           "pct": "0.571",
-          "rotoPoints": 160.5
+          "rotoPoints": 170
         },
         {
           "key": "469.l.18247.t.3",
@@ -1666,7 +1666,7 @@
           "losses": 144,
           "ties": 42,
           "pct": "0.529",
-          "rotoPoints": 227
+          "rotoPoints": 218.5
         },
         {
           "key": "469.l.18247.t.10",
@@ -1676,7 +1676,7 @@
           "losses": 148,
           "ties": 43,
           "pct": "0.516",
-          "rotoPoints": 87.5
+          "rotoPoints": 88
         },
         {
           "key": "469.l.18247.t.12",
@@ -1686,17 +1686,17 @@
           "losses": 159,
           "ties": 43,
           "pct": "0.484",
-          "rotoPoints": 145
+          "rotoPoints": 140
         },
         {
           "key": "469.l.18247.t.1",
           "name": "2026 MVP Bobby Witt",
           "rank": 7,
           "wins": 148,
-          "losses": 163,
-          "ties": 39,
-          "pct": "0.479",
-          "rotoPoints": 124.5
+          "losses": 165,
+          "ties": 37,
+          "pct": "0.476",
+          "rotoPoints": 117
         },
         {
           "key": "469.l.18247.t.5",
@@ -1706,7 +1706,7 @@
           "losses": 167,
           "ties": 40,
           "pct": "0.466",
-          "rotoPoints": 185.5
+          "rotoPoints": 188
         },
         {
           "key": "469.l.18247.t.11",
@@ -1716,7 +1716,7 @@
           "losses": 163,
           "ties": 52,
           "pct": "0.460",
-          "rotoPoints": 120
+          "rotoPoints": 131
         },
         {
           "key": "469.l.18247.t.6",
@@ -1726,27 +1726,27 @@
           "losses": 171,
           "ties": 42,
           "pct": "0.451",
-          "rotoPoints": 195
+          "rotoPoints": 187.5
         },
         {
           "key": "469.l.18247.t.9",
           "name": "JJ yoogwanholt",
           "rank": 11,
-          "wins": 136,
+          "wins": 133,
           "losses": 172,
-          "ties": 42,
-          "pct": "0.449",
-          "rotoPoints": 169.5
+          "ties": 45,
+          "pct": "0.444",
+          "rotoPoints": 166.5
         },
         {
           "key": "469.l.18247.t.2",
           "name": "xXxAIxXx",
           "rank": 12,
           "wins": 112,
-          "losses": 195,
-          "ties": 43,
-          "pct": "0.381",
-          "rotoPoints": 150
+          "losses": 192,
+          "ties": 46,
+          "pct": "0.386",
+          "rotoPoints": 158.5
         }
       ]
     }
