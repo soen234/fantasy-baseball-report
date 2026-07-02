@@ -1761,7 +1761,7 @@
           "losses": 114,
           "ties": 51,
           "pct": "0.628",
-          "rotoPoints": 231.5
+          "rotoPoints": 230
         },
         {
           "key": "469.l.18247.t.7",
@@ -1771,7 +1771,7 @@
           "losses": 136,
           "ties": 51,
           "pct": "0.569",
-          "rotoPoints": 126
+          "rotoPoints": 126.5
         },
         {
           "key": "469.l.18247.t.8",
@@ -1781,7 +1781,7 @@
           "losses": 146,
           "ties": 45,
           "pct": "0.551",
-          "rotoPoints": 124.5
+          "rotoPoints": 121.5
         },
         {
           "key": "469.l.18247.t.10",
@@ -1791,7 +1791,7 @@
           "losses": 158,
           "ties": 45,
           "pct": "0.519",
-          "rotoPoints": 148
+          "rotoPoints": 147.5
         },
         {
           "key": "469.l.18247.t.3",
@@ -1801,7 +1801,7 @@
           "losses": 159,
           "ties": 45,
           "pct": "0.516",
-          "rotoPoints": 193.5
+          "rotoPoints": 194
         },
         {
           "key": "469.l.18247.t.12",
@@ -1811,7 +1811,7 @@
           "losses": 161,
           "ties": 46,
           "pct": "0.509",
-          "rotoPoints": 193
+          "rotoPoints": 193.5
         },
         {
           "key": "469.l.18247.t.5",
@@ -1821,27 +1821,27 @@
           "losses": 175,
           "ties": 45,
           "pct": "0.473",
-          "rotoPoints": 145.5
+          "rotoPoints": 148
         },
         {
           "key": "469.l.18247.t.1",
           "name": "2026 MVP Bobby Witt",
           "rank": 8,
           "wins": 157,
-          "losses": 179,
-          "ties": 39,
-          "pct": "0.471",
-          "rotoPoints": 129
+          "losses": 180,
+          "ties": 38,
+          "pct": "0.469",
+          "rotoPoints": 130
         },
         {
           "key": "469.l.18247.t.9",
           "name": "JJ yoogwanholt",
           "rank": 9,
-          "wins": 149,
+          "wins": 150,
           "losses": 178,
-          "ties": 48,
-          "pct": "0.461",
-          "rotoPoints": 167
+          "ties": 47,
+          "pct": "0.463",
+          "rotoPoints": 172
         },
         {
           "key": "469.l.18247.t.6",
@@ -1851,7 +1851,7 @@
           "losses": 183,
           "ties": 44,
           "pct": "0.453",
-          "rotoPoints": 221
+          "rotoPoints": 219.5
         },
         {
           "key": "469.l.18247.t.11",
@@ -1861,7 +1861,7 @@
           "losses": 180,
           "ties": 51,
           "pct": "0.452",
-          "rotoPoints": 124.5
+          "rotoPoints": 126
         },
         {
           "key": "469.l.18247.t.2",
@@ -1871,7 +1871,7 @@
           "losses": 201,
           "ties": 50,
           "pct": "0.397",
-          "rotoPoints": 146.5
+          "rotoPoints": 141.5
         }
       ]
     }
