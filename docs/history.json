@@ -1761,27 +1761,27 @@
           "losses": 112,
           "ties": 51,
           "pct": "0.633",
-          "rotoPoints": 229.5
+          "rotoPoints": 229
         },
         {
           "key": "469.l.18247.t.7",
           "name": "커 상 혁",
           "rank": 2,
-          "wins": 189,
+          "wins": 188,
           "losses": 137,
-          "ties": 49,
-          "pct": "0.569",
-          "rotoPoints": 138.5
+          "ties": 50,
+          "pct": "0.568",
+          "rotoPoints": 141.5
         },
         {
           "key": "469.l.18247.t.8",
           "name": "응노",
           "rank": 3,
           "wins": 185,
-          "losses": 147,
-          "ties": 43,
-          "pct": "0.551",
-          "rotoPoints": 132
+          "losses": 148,
+          "ties": 42,
+          "pct": "0.549",
+          "rotoPoints": 131.5
         },
         {
           "key": "469.l.18247.t.3",
@@ -1791,57 +1791,57 @@
           "losses": 157,
           "ties": 45,
           "pct": "0.521",
-          "rotoPoints": 194.5
+          "rotoPoints": 189.5
         },
         {
           "key": "469.l.18247.t.10",
           "name": "🏆 ProfeSuh",
           "rank": 5,
           "wins": 173,
-          "losses": 159,
-          "ties": 43,
-          "pct": "0.519",
-          "rotoPoints": 142.5
+          "losses": 158,
+          "ties": 44,
+          "pct": "0.520",
+          "rotoPoints": 145.5
         },
         {
           "key": "469.l.18247.t.12",
           "name": "💥 JongHun's Busters",
           "rank": 6,
-          "wins": 169,
+          "wins": 170,
           "losses": 162,
-          "ties": 44,
-          "pct": "0.509",
-          "rotoPoints": 215
+          "ties": 43,
+          "pct": "0.511",
+          "rotoPoints": 208
         },
         {
           "key": "469.l.18247.t.5",
           "name": "✌️ Yeonwoo's Double Play",
           "rank": 7,
-          "wins": 157,
-          "losses": 173,
-          "ties": 45,
-          "pct": "0.479",
-          "rotoPoints": 149
+          "wins": 159,
+          "losses": 169,
+          "ties": 47,
+          "pct": "0.487",
+          "rotoPoints": 167.5
         },
         {
           "key": "469.l.18247.t.1",
           "name": "2026 MVP Bobby Witt",
           "rank": 8,
-          "wins": 159,
+          "wins": 160,
           "losses": 177,
-          "ties": 39,
-          "pct": "0.476",
-          "rotoPoints": 135
+          "ties": 38,
+          "pct": "0.477",
+          "rotoPoints": 133
         },
         {
           "key": "469.l.18247.t.9",
           "name": "JJ yoogwanholt",
           "rank": 9,
           "wins": 147,
-          "losses": 180,
-          "ties": 48,
-          "pct": "0.456",
-          "rotoPoints": 162.5
+          "losses": 181,
+          "ties": 47,
+          "pct": "0.455",
+          "rotoPoints": 155
         },
         {
           "key": "469.l.18247.t.6",
@@ -1851,7 +1851,7 @@
           "losses": 185,
           "ties": 44,
           "pct": "0.448",
-          "rotoPoints": 192
+          "rotoPoints": 189
         },
         {
           "key": "469.l.18247.t.11",
@@ -1861,17 +1861,17 @@
           "losses": 182,
           "ties": 51,
           "pct": "0.447",
-          "rotoPoints": 122.5
+          "rotoPoints": 126.5
         },
         {
           "key": "469.l.18247.t.2",
           "name": "xXAIXx개같2회생",
           "rank": 12,
-          "wins": 122,
-          "losses": 203,
-          "ties": 50,
-          "pct": "0.392",
-          "rotoPoints": 137
+          "wins": 118,
+          "losses": 205,
+          "ties": 52,
+          "pct": "0.384",
+          "rotoPoints": 134
         }
       ]
     }
