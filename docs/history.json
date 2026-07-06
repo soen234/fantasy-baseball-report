@@ -1761,7 +1761,7 @@
           "losses": 111,
           "ties": 51,
           "pct": "0.636",
-          "rotoPoints": 238
+          "rotoPoints": 229.5
         },
         {
           "key": "469.l.18247.t.7",
@@ -1771,7 +1771,7 @@
           "losses": 136,
           "ties": 53,
           "pct": "0.567",
-          "rotoPoints": 128.5
+          "rotoPoints": 127.5
         },
         {
           "key": "469.l.18247.t.8",
@@ -1781,17 +1781,17 @@
           "losses": 147,
           "ties": 42,
           "pct": "0.552",
-          "rotoPoints": 136.5
+          "rotoPoints": 136
         },
         {
           "key": "469.l.18247.t.3",
           "name": "TRUCK",
           "rank": 4,
-          "wins": 177,
-          "losses": 152,
-          "ties": 46,
-          "pct": "0.533",
-          "rotoPoints": 214
+          "wins": 179,
+          "losses": 151,
+          "ties": 45,
+          "pct": "0.537",
+          "rotoPoints": 222.5
         },
         {
           "key": "469.l.18247.t.10",
@@ -1801,7 +1801,7 @@
           "losses": 156,
           "ties": 47,
           "pct": "0.521",
-          "rotoPoints": 174
+          "rotoPoints": 168
         },
         {
           "key": "469.l.18247.t.12",
@@ -1811,7 +1811,7 @@
           "losses": 163,
           "ties": 43,
           "pct": "0.508",
-          "rotoPoints": 189.5
+          "rotoPoints": 191.5
         },
         {
           "key": "469.l.18247.t.5",
@@ -1821,7 +1821,7 @@
           "losses": 176,
           "ties": 42,
           "pct": "0.475",
-          "rotoPoints": 139.5
+          "rotoPoints": 134.5
         },
         {
           "key": "469.l.18247.t.9",
@@ -1831,7 +1831,7 @@
           "losses": 176,
           "ties": 47,
           "pct": "0.468",
-          "rotoPoints": 182.5
+          "rotoPoints": 184.5
         },
         {
           "key": "469.l.18247.t.1",
@@ -1841,7 +1841,7 @@
           "losses": 182,
           "ties": 38,
           "pct": "0.464",
-          "rotoPoints": 110
+          "rotoPoints": 117.5
         },
         {
           "key": "469.l.18247.t.11",
@@ -1851,17 +1851,17 @@
           "losses": 183,
           "ties": 51,
           "pct": "0.444",
-          "rotoPoints": 137.5
+          "rotoPoints": 136.5
         },
         {
           "key": "469.l.18247.t.6",
           "name": "린도어 열차 출발!",
           "rank": 11,
-          "wins": 141,
-          "losses": 189,
-          "ties": 45,
-          "pct": "0.436",
-          "rotoPoints": 172
+          "wins": 140,
+          "losses": 191,
+          "ties": 44,
+          "pct": "0.432",
+          "rotoPoints": 171.5
         },
         {
           "key": "469.l.18247.t.2",
@@ -1871,7 +1871,7 @@
           "losses": 203,
           "ties": 47,
           "pct": "0.396",
-          "rotoPoints": 128
+          "rotoPoints": 130.5
         }
       ]
     }
