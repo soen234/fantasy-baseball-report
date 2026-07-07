@@ -1883,120 +1883,120 @@
           "name": "Strait of UTU",
           "rank": 1,
           "wins": 222,
-          "losses": 119,
-          "ties": 59,
-          "pct": "0.629",
-          "rotoPoints": 158
+          "losses": 118,
+          "ties": 60,
+          "pct": "0.630",
+          "rotoPoints": 169.5
         },
         {
           "key": "469.l.18247.t.7",
           "name": "커 상 혁",
           "rank": 2,
-          "wins": 192,
-          "losses": 140,
-          "ties": 68,
-          "pct": "0.565",
-          "rotoPoints": 187.5
+          "wins": 196,
+          "losses": 139,
+          "ties": 65,
+          "pct": "0.571",
+          "rotoPoints": 197.5
         },
         {
           "key": "469.l.18247.t.8",
           "name": "응노",
           "rank": 3,
-          "wins": 194,
+          "wins": 193,
           "losses": 156,
-          "ties": 50,
-          "pct": "0.547",
-          "rotoPoints": 136.5
+          "ties": 51,
+          "pct": "0.546",
+          "rotoPoints": 138
         },
         {
           "key": "469.l.18247.t.3",
           "name": "TRUCK",
           "rank": 4,
-          "wins": 183,
-          "losses": 165,
-          "ties": 52,
-          "pct": "0.522",
-          "rotoPoints": 141.5
+          "wins": 185,
+          "losses": 164,
+          "ties": 51,
+          "pct": "0.526",
+          "rotoPoints": 149
         },
         {
           "key": "469.l.18247.t.10",
           "name": "🏆 ProfeSuh",
           "rank": 5,
-          "wins": 183,
-          "losses": 165,
-          "ties": 52,
-          "pct": "0.522",
-          "rotoPoints": 213
+          "wins": 182,
+          "losses": 167,
+          "ties": 51,
+          "pct": "0.519",
+          "rotoPoints": 204.5
         },
         {
           "key": "469.l.18247.t.12",
           "name": "💥 JongHun's Busters",
           "rank": 6,
-          "wins": 183,
-          "losses": 167,
-          "ties": 50,
-          "pct": "0.520",
-          "rotoPoints": 196
+          "wins": 182,
+          "losses": 169,
+          "ties": 49,
+          "pct": "0.516",
+          "rotoPoints": 187.5
         },
         {
           "key": "469.l.18247.t.5",
           "name": "✌️ Yeonwoo's Double Play",
           "rank": 7,
-          "wins": 163,
-          "losses": 181,
-          "ties": 56,
-          "pct": "0.477",
-          "rotoPoints": 149.5
+          "wins": 161,
+          "losses": 182,
+          "ties": 57,
+          "pct": "0.474",
+          "rotoPoints": 150
         },
         {
           "key": "469.l.18247.t.9",
           "name": "JJ yoogwanholt",
           "rank": 8,
-          "wins": 161,
-          "losses": 187,
-          "ties": 52,
-          "pct": "0.468",
-          "rotoPoints": 203.5
+          "wins": 163,
+          "losses": 186,
+          "ties": 51,
+          "pct": "0.471",
+          "rotoPoints": 201.5
         },
         {
           "key": "469.l.18247.t.1",
           "name": "2026 MVP Bobby Witt",
           "rank": 9,
-          "wins": 160,
-          "losses": 188,
-          "ties": 52,
-          "pct": "0.465",
-          "rotoPoints": 150
+          "wins": 161,
+          "losses": 186,
+          "ties": 53,
+          "pct": "0.469",
+          "rotoPoints": 159
         },
         {
           "key": "469.l.18247.t.11",
           "name": "💥 JeongWoo's Shockers",
           "rank": 10,
-          "wins": 148,
+          "wins": 150,
           "losses": 189,
-          "ties": 63,
-          "pct": "0.449",
-          "rotoPoints": 113.5
+          "ties": 61,
+          "pct": "0.451",
+          "rotoPoints": 115
         },
         {
           "key": "469.l.18247.t.6",
           "name": "린도어 열차 출발!",
           "rank": 11,
-          "wins": 144,
-          "losses": 197,
-          "ties": 59,
-          "pct": "0.434",
-          "rotoPoints": 179
+          "wins": 143,
+          "losses": 201,
+          "ties": 56,
+          "pct": "0.427",
+          "rotoPoints": 157
         },
         {
           "key": "469.l.18247.t.2",
           "name": "xXAIXx개같2회생",
           "rank": 12,
           "wins": 131,
-          "losses": 210,
-          "ties": 59,
-          "pct": "0.401",
-          "rotoPoints": 122
+          "losses": 212,
+          "ties": 57,
+          "pct": "0.399",
+          "rotoPoints": 121.5
         }
       ]
     }
