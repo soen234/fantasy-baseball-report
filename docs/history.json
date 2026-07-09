@@ -1882,41 +1882,41 @@
           "key": "469.l.18247.t.4",
           "name": "Strait of UTU",
           "rank": 1,
-          "wins": 225,
+          "wins": 224,
           "losses": 120,
-          "ties": 55,
-          "pct": "0.631",
-          "rotoPoints": 177
+          "ties": 56,
+          "pct": "0.630",
+          "rotoPoints": 173.5
         },
         {
           "key": "469.l.18247.t.7",
           "name": "커 상 혁",
           "rank": 2,
-          "wins": 195,
+          "wins": 196,
           "losses": 148,
-          "ties": 57,
-          "pct": "0.559",
-          "rotoPoints": 161.5
+          "ties": 56,
+          "pct": "0.560",
+          "rotoPoints": 162.5
         },
         {
           "key": "469.l.18247.t.8",
           "name": "응노",
           "rank": 3,
           "wins": 195,
-          "losses": 159,
-          "ties": 46,
-          "pct": "0.545",
-          "rotoPoints": 161
+          "losses": 158,
+          "ties": 47,
+          "pct": "0.546",
+          "rotoPoints": 162
         },
         {
           "key": "469.l.18247.t.3",
           "name": "TRUCK",
           "rank": 4,
-          "wins": 189,
-          "losses": 164,
-          "ties": 47,
-          "pct": "0.531",
-          "rotoPoints": 173
+          "wins": 188,
+          "losses": 162,
+          "ties": 50,
+          "pct": "0.532",
+          "rotoPoints": 180.5
         },
         {
           "key": "469.l.18247.t.10",
@@ -1926,17 +1926,17 @@
           "losses": 168,
           "ties": 52,
           "pct": "0.515",
-          "rotoPoints": 170.5
+          "rotoPoints": 167.5
         },
         {
           "key": "469.l.18247.t.12",
           "name": "💥 JongHun's Busters",
           "rank": 6,
-          "wins": 182,
-          "losses": 173,
-          "ties": 45,
-          "pct": "0.511",
-          "rotoPoints": 184
+          "wins": 180,
+          "losses": 172,
+          "ties": 48,
+          "pct": "0.510",
+          "rotoPoints": 191.5
         },
         {
           "key": "469.l.18247.t.9",
@@ -1946,7 +1946,7 @@
           "losses": 184,
           "ties": 52,
           "pct": "0.475",
-          "rotoPoints": 175
+          "rotoPoints": 173
         },
         {
           "key": "469.l.18247.t.1",
@@ -1956,7 +1956,7 @@
           "losses": 190,
           "ties": 41,
           "pct": "0.474",
-          "rotoPoints": 186
+          "rotoPoints": 182.5
         },
         {
           "key": "469.l.18247.t.5",
@@ -1966,7 +1966,7 @@
           "losses": 190,
           "ties": 45,
           "pct": "0.469",
-          "rotoPoints": 138
+          "rotoPoints": 139.5
         },
         {
           "key": "469.l.18247.t.11",
@@ -1976,17 +1976,17 @@
           "losses": 188,
           "ties": 54,
           "pct": "0.463",
-          "rotoPoints": 156.5
+          "rotoPoints": 156
         },
         {
           "key": "469.l.18247.t.6",
           "name": "린도어 열차 출발!",
           "rank": 11,
           "wins": 152,
-          "losses": 200,
-          "ties": 48,
-          "pct": "0.440",
-          "rotoPoints": 161
+          "losses": 201,
+          "ties": 47,
+          "pct": "0.439",
+          "rotoPoints": 158
         },
         {
           "key": "469.l.18247.t.2",
@@ -1996,7 +1996,7 @@
           "losses": 220,
           "ties": 50,
           "pct": "0.388",
-          "rotoPoints": 106.5
+          "rotoPoints": 103.5
         }
       ]
     }
