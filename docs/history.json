@@ -1886,17 +1886,17 @@
           "losses": 124,
           "ties": 54,
           "pct": "0.623",
-          "rotoPoints": 161.5
+          "rotoPoints": 159.5
         },
         {
           "key": "469.l.18247.t.7",
           "name": "커 상 혁",
           "rank": 2,
-          "wins": 195,
+          "wins": 196,
           "losses": 148,
-          "ties": 57,
-          "pct": "0.559",
-          "rotoPoints": 149
+          "ties": 56,
+          "pct": "0.560",
+          "rotoPoints": 155.5
         },
         {
           "key": "469.l.18247.t.8",
@@ -1906,16 +1906,16 @@
           "losses": 156,
           "ties": 45,
           "pct": "0.554",
-          "rotoPoints": 187
+          "rotoPoints": 186
         },
         {
           "key": "469.l.18247.t.3",
           "name": "TRUCK",
           "rank": 4,
-          "wins": 192,
-          "losses": 161,
+          "wins": 193,
+          "losses": 160,
           "ties": 47,
-          "pct": "0.539",
+          "pct": "0.541",
           "rotoPoints": 196.5
         },
         {
@@ -1926,17 +1926,17 @@
           "losses": 168,
           "ties": 49,
           "pct": "0.519",
-          "rotoPoints": 189
+          "rotoPoints": 186
         },
         {
           "key": "469.l.18247.t.12",
           "name": "💥 JongHun's Busters",
           "rank": 6,
-          "wins": 179,
-          "losses": 176,
+          "wins": 178,
+          "losses": 177,
           "ties": 45,
-          "pct": "0.504",
-          "rotoPoints": 166.5
+          "pct": "0.501",
+          "rotoPoints": 161
         },
         {
           "key": "469.l.18247.t.5",
@@ -1946,7 +1946,7 @@
           "losses": 189,
           "ties": 45,
           "pct": "0.471",
-          "rotoPoints": 133.5
+          "rotoPoints": 127.5
         },
         {
           "key": "469.l.18247.t.9",
@@ -1956,7 +1956,7 @@
           "losses": 187,
           "ties": 49,
           "pct": "0.471",
-          "rotoPoints": 194.5
+          "rotoPoints": 195
         },
         {
           "key": "469.l.18247.t.1",
@@ -1966,37 +1966,37 @@
           "losses": 191,
           "ties": 41,
           "pct": "0.471",
-          "rotoPoints": 173
+          "rotoPoints": 172
         },
         {
           "key": "469.l.18247.t.11",
           "name": "💥 JeongWoo's Shockers",
           "rank": 10,
-          "wins": 159,
+          "wins": 158,
           "losses": 187,
-          "ties": 54,
-          "pct": "0.465",
-          "rotoPoints": 135.5
+          "ties": 55,
+          "pct": "0.464",
+          "rotoPoints": 146
         },
         {
           "key": "469.l.18247.t.6",
           "name": "린도어 열차 출발!",
           "rank": 11,
           "wins": 152,
-          "losses": 200,
-          "ties": 48,
-          "pct": "0.440",
-          "rotoPoints": 159
+          "losses": 201,
+          "ties": 47,
+          "pct": "0.439",
+          "rotoPoints": 156
         },
         {
           "key": "469.l.18247.t.2",
-          "name": "xXAIXx개같2회생",
+          "name": "XAGIX",
           "rank": 12,
           "wins": 129,
-          "losses": 221,
-          "ties": 50,
-          "pct": "0.385",
-          "rotoPoints": 105
+          "losses": 220,
+          "ties": 51,
+          "pct": "0.386",
+          "rotoPoints": 109
         }
       ]
     }
