@@ -2007,11 +2007,11 @@
           "key": "469.l.18247.t.4",
           "name": "Strait of UTU",
           "rank": 1,
-          "wins": 221,
+          "wins": 227,
           "losses": 123,
-          "ties": 81,
-          "pct": "0.615",
-          "rotoPoints": 156
+          "ties": 75,
+          "pct": "0.622",
+          "rotoPoints": 190
         },
         {
           "key": "469.l.18247.t.7",
@@ -2021,7 +2021,7 @@
           "losses": 146,
           "ties": 80,
           "pct": "0.562",
-          "rotoPoints": 156
+          "rotoPoints": 152
         },
         {
           "key": "469.l.18247.t.8",
@@ -2031,7 +2031,7 @@
           "losses": 155,
           "ties": 73,
           "pct": "0.549",
-          "rotoPoints": 156
+          "rotoPoints": 152
         },
         {
           "key": "469.l.18247.t.3",
@@ -2041,7 +2041,7 @@
           "losses": 155,
           "ties": 75,
           "pct": "0.547",
-          "rotoPoints": 156
+          "rotoPoints": 152
         },
         {
           "key": "469.l.18247.t.10",
@@ -2051,37 +2051,37 @@
           "losses": 172,
           "ties": 66,
           "pct": "0.518",
-          "rotoPoints": 193.5
+          "rotoPoints": 191.5
         },
         {
           "key": "469.l.18247.t.12",
           "name": "💥 JongHun's Busters",
           "rank": 6,
           "wins": 174,
-          "losses": 179,
-          "ties": 72,
-          "pct": "0.494",
-          "rotoPoints": 162
-        },
-        {
-          "key": "469.l.18247.t.1",
-          "name": "2026 MVP Bobby Witt",
-          "rank": 7,
-          "wins": 169,
-          "losses": 191,
-          "ties": 65,
-          "pct": "0.474",
-          "rotoPoints": 156
+          "losses": 185,
+          "ties": 66,
+          "pct": "0.487",
+          "rotoPoints": 153.5
         },
         {
           "key": "469.l.18247.t.9",
           "name": "JJ yoogwanholt",
-          "rank": 8,
-          "wins": 167,
-          "losses": 190,
-          "ties": 68,
+          "rank": 7,
+          "wins": 168,
+          "losses": 191,
+          "ties": 66,
           "pct": "0.473",
-          "rotoPoints": 156
+          "rotoPoints": 152
+        },
+        {
+          "key": "469.l.18247.t.1",
+          "name": "2026 MVP Bobby Witt",
+          "rank": 8,
+          "wins": 171,
+          "losses": 196,
+          "ties": 58,
+          "pct": "0.471",
+          "rotoPoints": 152
         },
         {
           "key": "469.l.18247.t.5",
@@ -2091,27 +2091,27 @@
           "losses": 197,
           "ties": 61,
           "pct": "0.465",
-          "rotoPoints": 156
+          "rotoPoints": 151.5
         },
         {
           "key": "469.l.18247.t.11",
           "name": "💥 JeongWoo's Shockers",
           "rank": 10,
-          "wins": 155,
-          "losses": 192,
-          "ties": 78,
-          "pct": "0.456",
-          "rotoPoints": 156
+          "wins": 160,
+          "losses": 194,
+          "ties": 71,
+          "pct": "0.460",
+          "rotoPoints": 170
         },
         {
           "key": "469.l.18247.t.6",
           "name": "블게쥬 열차 출발!",
           "rank": 11,
-          "wins": 156,
-          "losses": 204,
-          "ties": 65,
+          "wins": 157,
+          "losses": 205,
+          "ties": 63,
           "pct": "0.444",
-          "rotoPoints": 190.5
+          "rotoPoints": 181.5
         },
         {
           "key": "469.l.18247.t.2",
@@ -2121,7 +2121,7 @@
           "losses": 217,
           "ties": 74,
           "pct": "0.402",
-          "rotoPoints": 156
+          "rotoPoints": 152
         }
       ]
     }
