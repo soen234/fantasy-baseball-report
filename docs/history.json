@@ -2008,10 +2008,10 @@
           "name": "Strait of UTU",
           "rank": 1,
           "wins": 224,
-          "losses": 140,
-          "ties": 61,
-          "pct": "0.599",
-          "rotoPoints": 144
+          "losses": 139,
+          "ties": 62,
+          "pct": "0.600",
+          "rotoPoints": 148
         },
         {
           "key": "469.l.18247.t.7",
@@ -2021,7 +2021,7 @@
           "losses": 154,
           "ties": 57,
           "pct": "0.571",
-          "rotoPoints": 228
+          "rotoPoints": 227
         },
         {
           "key": "469.l.18247.t.8",
@@ -2031,7 +2031,7 @@
           "losses": 170,
           "ties": 52,
           "pct": "0.539",
-          "rotoPoints": 118
+          "rotoPoints": 117.5
         },
         {
           "key": "469.l.18247.t.3",
@@ -2041,27 +2041,27 @@
           "losses": 170,
           "ties": 52,
           "pct": "0.539",
-          "rotoPoints": 190
+          "rotoPoints": 184.5
         },
         {
           "key": "469.l.18247.t.10",
           "name": "🏆 ProfeSuh",
           "rank": 5,
-          "wins": 196,
+          "wins": 195,
           "losses": 173,
-          "ties": 56,
-          "pct": "0.527",
-          "rotoPoints": 172.5
+          "ties": 57,
+          "pct": "0.526",
+          "rotoPoints": 170.5
         },
         {
           "key": "469.l.18247.t.12",
           "name": "💥 JongHun's Busters",
           "rank": 6,
-          "wins": 191,
+          "wins": 190,
           "losses": 182,
-          "ties": 52,
-          "pct": "0.511",
-          "rotoPoints": 193
+          "ties": 53,
+          "pct": "0.509",
+          "rotoPoints": 194
         },
         {
           "key": "469.l.18247.t.9",
@@ -2071,7 +2071,7 @@
           "losses": 196,
           "ties": 51,
           "pct": "0.479",
-          "rotoPoints": 152.5
+          "rotoPoints": 160
         },
         {
           "key": "469.l.18247.t.1",
@@ -2091,17 +2091,17 @@
           "losses": 201,
           "ties": 55,
           "pct": "0.462",
-          "rotoPoints": 156
+          "rotoPoints": 155
         },
         {
           "key": "469.l.18247.t.5",
           "name": "✌️ Yeonwoo's Double Play",
           "rank": 10,
           "wins": 168,
-          "losses": 206,
-          "ties": 51,
-          "pct": "0.455",
-          "rotoPoints": 110
+          "losses": 205,
+          "ties": 52,
+          "pct": "0.456",
+          "rotoPoints": 109.5
         },
         {
           "key": "469.l.18247.t.6",
@@ -2111,7 +2111,7 @@
           "losses": 215,
           "ties": 48,
           "pct": "0.438",
-          "rotoPoints": 162.5
+          "rotoPoints": 162
         },
         {
           "key": "469.l.18247.t.2",
@@ -2121,7 +2121,7 @@
           "losses": 223,
           "ties": 53,
           "pct": "0.413",
-          "rotoPoints": 196.5
+          "rotoPoints": 195
         }
       ]
     }
