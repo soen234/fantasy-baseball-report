@@ -2031,7 +2031,7 @@
           "losses": 170,
           "ties": 52,
           "pct": "0.539",
-          "rotoPoints": 116
+          "rotoPoints": 117
         },
         {
           "key": "469.l.18247.t.3",
@@ -2047,11 +2047,11 @@
           "key": "469.l.18247.t.10",
           "name": "🏆 ProfeSuh",
           "rank": 5,
-          "wins": 195,
-          "losses": 174,
-          "ties": 56,
-          "pct": "0.525",
-          "rotoPoints": 164.5
+          "wins": 193,
+          "losses": 175,
+          "ties": 57,
+          "pct": "0.521",
+          "rotoPoints": 162
         },
         {
           "key": "469.l.18247.t.12",
@@ -2061,7 +2061,7 @@
           "losses": 182,
           "ties": 53,
           "pct": "0.509",
-          "rotoPoints": 194
+          "rotoPoints": 191.5
         },
         {
           "key": "469.l.18247.t.9",
@@ -2071,7 +2071,7 @@
           "losses": 197,
           "ties": 52,
           "pct": "0.475",
-          "rotoPoints": 156
+          "rotoPoints": 155
         },
         {
           "key": "469.l.18247.t.1",
@@ -2091,17 +2091,17 @@
           "losses": 201,
           "ties": 55,
           "pct": "0.462",
-          "rotoPoints": 156
+          "rotoPoints": 161.5
         },
         {
           "key": "469.l.18247.t.5",
           "name": "✌️ Yeonwoo's Double Play",
           "rank": 10,
-          "wins": 169,
-          "losses": 205,
-          "ties": 51,
-          "pct": "0.458",
-          "rotoPoints": 106
+          "wins": 170,
+          "losses": 203,
+          "ties": 52,
+          "pct": "0.461",
+          "rotoPoints": 107
         },
         {
           "key": "469.l.18247.t.6",
@@ -2111,7 +2111,7 @@
           "losses": 213,
           "ties": 49,
           "pct": "0.441",
-          "rotoPoints": 164.5
+          "rotoPoints": 164
         },
         {
           "key": "469.l.18247.t.2",
@@ -2121,7 +2121,7 @@
           "losses": 223,
           "ties": 53,
           "pct": "0.413",
-          "rotoPoints": 192.5
+          "rotoPoints": 191.5
         }
       ]
     }
