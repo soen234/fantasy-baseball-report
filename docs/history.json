@@ -2011,47 +2011,47 @@
           "losses": 137,
           "ties": 60,
           "pct": "0.607",
-          "rotoPoints": 166
+          "rotoPoints": 167
         },
         {
           "key": "469.l.18247.t.7",
           "name": "커 상 혁",
           "rank": 2,
           "wins": 216,
-          "losses": 150,
-          "ties": 59,
-          "pct": "0.578",
-          "rotoPoints": 237
+          "losses": 151,
+          "ties": 58,
+          "pct": "0.576",
+          "rotoPoints": 235
         },
         {
           "key": "469.l.18247.t.8",
           "name": "응노",
           "rank": 3,
           "wins": 204,
-          "losses": 169,
-          "ties": 52,
-          "pct": "0.541",
-          "rotoPoints": 132.5
+          "losses": 168,
+          "ties": 53,
+          "pct": "0.542",
+          "rotoPoints": 133
         },
         {
           "key": "469.l.18247.t.3",
           "name": "TRUCK",
           "rank": 4,
-          "wins": 199,
+          "wins": 200,
           "losses": 172,
-          "ties": 54,
-          "pct": "0.532",
-          "rotoPoints": 180.5
+          "ties": 53,
+          "pct": "0.533",
+          "rotoPoints": 181.5
         },
         {
           "key": "469.l.18247.t.10",
           "name": "🏆 ProfeSuh",
           "rank": 5,
-          "wins": 195,
+          "wins": 196,
           "losses": 175,
-          "ties": 55,
-          "pct": "0.524",
-          "rotoPoints": 160
+          "ties": 54,
+          "pct": "0.525",
+          "rotoPoints": 160.5
         },
         {
           "key": "469.l.18247.t.12",
@@ -2098,10 +2098,10 @@
           "name": "✌️ Yeonwoo's Double Play",
           "rank": 10,
           "wins": 170,
-          "losses": 205,
-          "ties": 50,
-          "pct": "0.459",
-          "rotoPoints": 113
+          "losses": 206,
+          "ties": 49,
+          "pct": "0.458",
+          "rotoPoints": 111.5
         },
         {
           "key": "469.l.18247.t.6",
@@ -2111,17 +2111,17 @@
           "losses": 215,
           "ties": 49,
           "pct": "0.436",
-          "rotoPoints": 157
+          "rotoPoints": 158
         },
         {
           "key": "469.l.18247.t.2",
           "name": "XAGIX",
           "rank": 12,
-          "wins": 148,
+          "wins": 147,
           "losses": 224,
-          "ties": 53,
-          "pct": "0.411",
-          "rotoPoints": 181.5
+          "ties": 54,
+          "pct": "0.409",
+          "rotoPoints": 181
         }
       ]
     }
