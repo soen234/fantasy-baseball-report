@@ -2007,21 +2007,21 @@
           "key": "469.l.18247.t.4",
           "name": "Strait of UTU",
           "rank": 1,
-          "wins": 228,
-          "losses": 136,
+          "wins": 229,
+          "losses": 135,
           "ties": 61,
-          "pct": "0.608",
-          "rotoPoints": 177
+          "pct": "0.611",
+          "rotoPoints": 174.5
         },
         {
           "key": "469.l.18247.t.7",
           "name": "커 상 혁",
           "rank": 2,
           "wins": 216,
-          "losses": 150,
-          "ties": 59,
-          "pct": "0.578",
-          "rotoPoints": 241
+          "losses": 149,
+          "ties": 60,
+          "pct": "0.579",
+          "rotoPoints": 237.5
         },
         {
           "key": "469.l.18247.t.8",
@@ -2031,47 +2031,47 @@
           "losses": 169,
           "ties": 50,
           "pct": "0.544",
-          "rotoPoints": 137
+          "rotoPoints": 149
         },
         {
           "key": "469.l.18247.t.3",
           "name": "TRUCK",
           "rank": 4,
-          "wins": 199,
+          "wins": 198,
           "losses": 172,
-          "ties": 54,
-          "pct": "0.532",
-          "rotoPoints": 190
+          "ties": 55,
+          "pct": "0.531",
+          "rotoPoints": 193
         },
         {
           "key": "469.l.18247.t.10",
           "name": "🏆 ProfeSuh",
           "rank": 5,
           "wins": 194,
-          "losses": 178,
-          "ties": 53,
-          "pct": "0.519",
-          "rotoPoints": 141
+          "losses": 179,
+          "ties": 52,
+          "pct": "0.518",
+          "rotoPoints": 136.5
         },
         {
           "key": "469.l.18247.t.12",
           "name": "💥 JongHun's Busters",
           "rank": 6,
-          "wins": 187,
-          "losses": 186,
+          "wins": 186,
+          "losses": 187,
           "ties": 52,
-          "pct": "0.501",
-          "rotoPoints": 205
+          "pct": "0.499",
+          "rotoPoints": 200
         },
         {
           "key": "469.l.18247.t.9",
           "name": "JJ yoogwanholt",
           "rank": 7,
-          "wins": 179,
+          "wins": 178,
           "losses": 195,
-          "ties": 51,
-          "pct": "0.481",
-          "rotoPoints": 154.5
+          "ties": 52,
+          "pct": "0.480",
+          "rotoPoints": 146.5
         },
         {
           "key": "469.l.18247.t.1",
@@ -2081,17 +2081,17 @@
           "losses": 205,
           "ties": 43,
           "pct": "0.467",
-          "rotoPoints": 110.5
+          "rotoPoints": 106
         },
         {
           "key": "469.l.18247.t.5",
           "name": "✌️ Yeonwoo's Double Play",
           "rank": 9,
-          "wins": 173,
+          "wins": 174,
           "losses": 204,
-          "ties": 48,
-          "pct": "0.464",
-          "rotoPoints": 115.5
+          "ties": 47,
+          "pct": "0.465",
+          "rotoPoints": 115
         },
         {
           "key": "469.l.18247.t.11",
@@ -2101,17 +2101,17 @@
           "losses": 200,
           "ties": 56,
           "pct": "0.464",
-          "rotoPoints": 127
+          "rotoPoints": 139.5
         },
         {
           "key": "469.l.18247.t.6",
           "name": "블게쥬 열차 출발!",
           "rank": 11,
           "wins": 161,
-          "losses": 216,
-          "ties": 48,
-          "pct": "0.435",
-          "rotoPoints": 168.5
+          "losses": 215,
+          "ties": 49,
+          "pct": "0.436",
+          "rotoPoints": 166
         },
         {
           "key": "469.l.18247.t.2",
@@ -2121,7 +2121,7 @@
           "losses": 226,
           "ties": 51,
           "pct": "0.408",
-          "rotoPoints": 183
+          "rotoPoints": 186.5
         }
       ]
     }
