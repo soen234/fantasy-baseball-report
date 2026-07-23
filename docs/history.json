@@ -2011,7 +2011,7 @@
           "losses": 136,
           "ties": 61,
           "pct": "0.608",
-          "rotoPoints": 160.5
+          "rotoPoints": 160
         },
         {
           "key": "469.l.18247.t.7",
@@ -2021,7 +2021,7 @@
           "losses": 149,
           "ties": 58,
           "pct": "0.581",
-          "rotoPoints": 241
+          "rotoPoints": 245
         },
         {
           "key": "469.l.18247.t.8",
@@ -2031,7 +2031,7 @@
           "losses": 170,
           "ties": 51,
           "pct": "0.540",
-          "rotoPoints": 143
+          "rotoPoints": 137
         },
         {
           "key": "469.l.18247.t.3",
@@ -2041,7 +2041,7 @@
           "losses": 174,
           "ties": 53,
           "pct": "0.528",
-          "rotoPoints": 183.5
+          "rotoPoints": 185
         },
         {
           "key": "469.l.18247.t.10",
@@ -2051,7 +2051,7 @@
           "losses": 178,
           "ties": 52,
           "pct": "0.520",
-          "rotoPoints": 138
+          "rotoPoints": 137
         },
         {
           "key": "469.l.18247.t.12",
@@ -2061,57 +2061,57 @@
           "losses": 186,
           "ties": 52,
           "pct": "0.501",
-          "rotoPoints": 201
+          "rotoPoints": 200
         },
         {
           "key": "469.l.18247.t.9",
           "name": "JJ yoogwanholt",
           "rank": 7,
-          "wins": 177,
-          "losses": 195,
-          "ties": 53,
-          "pct": "0.479",
-          "rotoPoints": 147
+          "wins": 179,
+          "losses": 192,
+          "ties": 54,
+          "pct": "0.485",
+          "rotoPoints": 159.5
         },
         {
           "key": "469.l.18247.t.1",
           "name": "2026 MVP Bobby Witt",
           "rank": 8,
-          "wins": 177,
-          "losses": 205,
-          "ties": 43,
-          "pct": "0.467",
-          "rotoPoints": 110
-        },
-        {
-          "key": "469.l.18247.t.11",
-          "name": "💥 JeongWoo's Shockers",
-          "rank": 9,
-          "wins": 169,
-          "losses": 200,
-          "ties": 56,
-          "pct": "0.464",
-          "rotoPoints": 150.5
+          "wins": 179,
+          "losses": 204,
+          "ties": 42,
+          "pct": "0.471",
+          "rotoPoints": 116
         },
         {
           "key": "469.l.18247.t.5",
           "name": "✌️ Yeonwoo's Double Play",
-          "rank": 10,
+          "rank": 9,
           "wins": 173,
           "losses": 205,
           "ties": 47,
           "pct": "0.462",
-          "rotoPoints": 109
+          "rotoPoints": 107
+        },
+        {
+          "key": "469.l.18247.t.11",
+          "name": "💥 JeongWoo's Shockers",
+          "rank": 10,
+          "wins": 168,
+          "losses": 202,
+          "ties": 55,
+          "pct": "0.460",
+          "rotoPoints": 147.5
         },
         {
           "key": "469.l.18247.t.6",
           "name": "블게쥬 열차 출발!",
           "rank": 11,
-          "wins": 161,
-          "losses": 214,
-          "ties": 50,
-          "pct": "0.438",
-          "rotoPoints": 172.5
+          "wins": 158,
+          "losses": 216,
+          "ties": 51,
+          "pct": "0.432",
+          "rotoPoints": 168
         },
         {
           "key": "469.l.18247.t.2",
@@ -2121,7 +2121,7 @@
           "losses": 224,
           "ties": 52,
           "pct": "0.412",
-          "rotoPoints": 194
+          "rotoPoints": 188
         }
       ]
     }
