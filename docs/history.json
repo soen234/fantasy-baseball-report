@@ -2008,10 +2008,10 @@
           "name": "Strait of UTU",
           "rank": 1,
           "wins": 228,
-          "losses": 136,
-          "ties": 61,
-          "pct": "0.608",
-          "rotoPoints": 159.5
+          "losses": 135,
+          "ties": 62,
+          "pct": "0.609",
+          "rotoPoints": 165.5
         },
         {
           "key": "469.l.18247.t.7",
@@ -2028,10 +2028,10 @@
           "name": "응노",
           "rank": 3,
           "wins": 204,
-          "losses": 171,
-          "ties": 50,
-          "pct": "0.539",
-          "rotoPoints": 137
+          "losses": 170,
+          "ties": 51,
+          "pct": "0.540",
+          "rotoPoints": 139.5
         },
         {
           "key": "469.l.18247.t.3",
@@ -2041,7 +2041,7 @@
           "losses": 174,
           "ties": 53,
           "pct": "0.528",
-          "rotoPoints": 185
+          "rotoPoints": 184
         },
         {
           "key": "469.l.18247.t.10",
@@ -2051,27 +2051,27 @@
           "losses": 178,
           "ties": 52,
           "pct": "0.520",
-          "rotoPoints": 137
+          "rotoPoints": 136.5
         },
         {
           "key": "469.l.18247.t.12",
           "name": "💥 JongHun's Busters",
           "rank": 6,
-          "wins": 187,
+          "wins": 186,
           "losses": 186,
-          "ties": 52,
-          "pct": "0.501",
-          "rotoPoints": 201.5
+          "ties": 53,
+          "pct": "0.500",
+          "rotoPoints": 201
         },
         {
           "key": "469.l.18247.t.9",
           "name": "JJ yoogwanholt",
           "rank": 7,
-          "wins": 179,
+          "wins": 180,
           "losses": 192,
-          "ties": 54,
-          "pct": "0.485",
-          "rotoPoints": 159
+          "ties": 53,
+          "pct": "0.486",
+          "rotoPoints": 161.5
         },
         {
           "key": "469.l.18247.t.1",
@@ -2091,7 +2091,7 @@
           "losses": 205,
           "ties": 47,
           "pct": "0.462",
-          "rotoPoints": 106.5
+          "rotoPoints": 107
         },
         {
           "key": "469.l.18247.t.11",
@@ -2101,27 +2101,27 @@
           "losses": 202,
           "ties": 55,
           "pct": "0.460",
-          "rotoPoints": 144.5
+          "rotoPoints": 139.5
         },
         {
           "key": "469.l.18247.t.6",
           "name": "블게쥬 열차 출발!",
           "rank": 11,
           "wins": 158,
-          "losses": 216,
-          "ties": 51,
-          "pct": "0.432",
-          "rotoPoints": 167.5
+          "losses": 217,
+          "ties": 50,
+          "pct": "0.431",
+          "rotoPoints": 166
         },
         {
           "key": "469.l.18247.t.2",
           "name": "XAGIX",
           "rank": 12,
-          "wins": 150,
+          "wins": 149,
           "losses": 224,
-          "ties": 51,
-          "pct": "0.413",
-          "rotoPoints": 190.5
+          "ties": 52,
+          "pct": "0.412",
+          "rotoPoints": 187.5
         }
       ]
     }
