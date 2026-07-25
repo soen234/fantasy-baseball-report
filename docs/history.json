@@ -2011,47 +2011,47 @@
           "losses": 132,
           "ties": 62,
           "pct": "0.616",
-          "rotoPoints": 161.5
+          "rotoPoints": 163
         },
         {
           "key": "469.l.18247.t.7",
           "name": "커 상 혁",
           "rank": 2,
           "wins": 215,
-          "losses": 154,
-          "ties": 56,
-          "pct": "0.572",
-          "rotoPoints": 237
+          "losses": 151,
+          "ties": 59,
+          "pct": "0.575",
+          "rotoPoints": 240.5
         },
         {
           "key": "469.l.18247.t.8",
           "name": "응노",
           "rank": 3,
-          "wins": 205,
+          "wins": 204,
           "losses": 170,
-          "ties": 50,
-          "pct": "0.541",
-          "rotoPoints": 135.5
+          "ties": 51,
+          "pct": "0.540",
+          "rotoPoints": 132.5
         },
         {
           "key": "469.l.18247.t.3",
           "name": "TRUCK",
           "rank": 4,
-          "wins": 203,
+          "wins": 200,
           "losses": 171,
-          "ties": 51,
-          "pct": "0.538",
-          "rotoPoints": 194.5
+          "ties": 54,
+          "pct": "0.534",
+          "rotoPoints": 202
         },
         {
           "key": "469.l.18247.t.10",
           "name": "🏆 ProfeSuh",
           "rank": 5,
-          "wins": 197,
+          "wins": 199,
           "losses": 175,
-          "ties": 53,
-          "pct": "0.526",
-          "rotoPoints": 160
+          "ties": 51,
+          "pct": "0.528",
+          "rotoPoints": 158
         },
         {
           "key": "469.l.18247.t.12",
@@ -2061,17 +2061,17 @@
           "losses": 189,
           "ties": 53,
           "pct": "0.493",
-          "rotoPoints": 188.5
+          "rotoPoints": 178
         },
         {
           "key": "469.l.18247.t.9",
           "name": "JJ yoogwanholt",
           "rank": 7,
-          "wins": 177,
-          "losses": 196,
-          "ties": 52,
-          "pct": "0.478",
-          "rotoPoints": 156.5
+          "wins": 178,
+          "losses": 194,
+          "ties": 53,
+          "pct": "0.481",
+          "rotoPoints": 170.5
         },
         {
           "key": "469.l.18247.t.1",
@@ -2081,7 +2081,7 @@
           "losses": 203,
           "ties": 42,
           "pct": "0.473",
-          "rotoPoints": 117
+          "rotoPoints": 113.5
         },
         {
           "key": "469.l.18247.t.11",
@@ -2091,36 +2091,36 @@
           "losses": 203,
           "ties": 55,
           "pct": "0.458",
-          "rotoPoints": 135
+          "rotoPoints": 131
         },
         {
           "key": "469.l.18247.t.5",
           "name": "✌️ Yeonwoo's Double Play",
           "rank": 10,
           "wins": 170,
-          "losses": 207,
-          "ties": 48,
-          "pct": "0.456",
-          "rotoPoints": 97
+          "losses": 209,
+          "ties": 46,
+          "pct": "0.454",
+          "rotoPoints": 96.5
         },
         {
           "key": "469.l.18247.t.6",
           "name": "블게쥬 열차 출발!",
           "rank": 11,
-          "wins": 162,
-          "losses": 214,
-          "ties": 49,
-          "pct": "0.439",
-          "rotoPoints": 184.5
+          "wins": 160,
+          "losses": 215,
+          "ties": 50,
+          "pct": "0.435",
+          "rotoPoints": 181.5
         },
         {
           "key": "469.l.18247.t.2",
           "name": "XAGIX",
           "rank": 12,
           "wins": 149,
-          "losses": 225,
-          "ties": 51,
-          "pct": "0.411",
+          "losses": 224,
+          "ties": 52,
+          "pct": "0.412",
           "rotoPoints": 183
         }
       ]
