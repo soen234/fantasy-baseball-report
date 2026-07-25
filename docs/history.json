@@ -2061,17 +2061,17 @@
           "losses": 189,
           "ties": 53,
           "pct": "0.493",
-          "rotoPoints": 187.5
+          "rotoPoints": 188.5
         },
         {
           "key": "469.l.18247.t.9",
           "name": "JJ yoogwanholt",
           "rank": 7,
-          "wins": 176,
-          "losses": 197,
+          "wins": 177,
+          "losses": 196,
           "ties": 52,
-          "pct": "0.475",
-          "rotoPoints": 156
+          "pct": "0.478",
+          "rotoPoints": 156.5
         },
         {
           "key": "469.l.18247.t.1",
@@ -2107,11 +2107,11 @@
           "key": "469.l.18247.t.6",
           "name": "블게쥬 열차 출발!",
           "rank": 11,
-          "wins": 163,
-          "losses": 213,
+          "wins": 162,
+          "losses": 214,
           "ties": 49,
-          "pct": "0.441",
-          "rotoPoints": 186.5
+          "pct": "0.439",
+          "rotoPoints": 184.5
         },
         {
           "key": "469.l.18247.t.2",
@@ -2121,7 +2121,7 @@
           "losses": 225,
           "ties": 51,
           "pct": "0.411",
-          "rotoPoints": 182.5
+          "rotoPoints": 183
         }
       ]
     }
